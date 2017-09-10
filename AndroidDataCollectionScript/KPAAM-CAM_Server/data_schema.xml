@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSchema name="linguistic_project_UB">
+    <!--This data schema is for researchers to collect data for field trip-->
+    <!--RelationshipElement stores the relationships among entities-->
+    <RelationshipElement name="QuestionBank and Question" type ="bidirectional">
+        <description> Implements a 1:N relationship between QuestionBank and Question</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="Questionnaire and Question" type="bidirectional">
+        <description>Implements a 1:N relationship between Questionnaire and Question</description>
+    </RelationshipElement>
+
+    <RelationshipElement name="Questionnaire and QuesnirType" type="bidirectional">
+        <description>Implements a N:1 relationship between Questionnaire and Questionnaire Type</description>
+    </RelationshipElement>
+
+    <RelationshipElement name="File and Session" type="bidirectional">
+        <description>Implements a N:N relationship between File and Session</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="Answer and Question" type="bidirectcional">
+        <description>Implements a N:1 relationship between Answer and Question</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="Answer and File" type="bidirectional">
+        <description>Implements a 1:N relationship between Answer and File</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="Answer and Person" type="bidirectional">
+        <description>Implements a N:N relationship between Answer and Person</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="Session and Consultant" type="bidirectional">        
+        <description>Implements a N:N relationship between Session and Consultant</description>     
+    </RelationshipElement>      
+            
+    <RelationshipElement name="Session and Interviewer" type="bidirectional">        
+        <description>Implements a N:N relationship between Session and Interviewer</description>     
+    </RelationshipElement>
+
+    <RelationshipElement name="Session and Person" type="bidirectional">        
+        <description>Implements a N:N relationship between Session and Person</description>     
+    </RelationshipElement>
+    
+    <RelationshipElement name="Answer and Session" type="bidirectional">
+        <description>Implements a N:1 relationship between Answer and Session</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="File and FieldTrip" type="bidirectional">        
+        <description>Implements a N:N relationship between File and FieldTrip</description>
+     </RelationshipElement>   
+     
+    <RelationshipElement name="Person and Language" type="bidirectional">
+        <description>Implements a N:N relationship between Person and Language</description>
+    </RelationshipElement>
+
+    <RelationshipElement name="Person and PersonRole" type="bidirectional">
+        <description>Implements a N:M relationship between Person and PersonRole</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="Question and Language" type="bidirectional">
+        <description>Implements a N:N relationship between Question and Language</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="Session and Bookmark" type="bidirectional">
+        <description>Implements a 1:N relationship between Session and Bookmark</description>
+    </RelationshipElement>
+    
+    <RelationshipElement name="Session and FieldTrip" type="bidirectional">
+        <description>Implements a N:1 relationship between Session and FieldTrip</description>
+    </RelationshipElement>
+    
+    
+    
+    
+    <ArchaeologicalElement name="Questionnaire">
+        <description> Entity Questionnaire, basically this entity stores the metadata of a Questionnaire, the questions in the questionnaire is stored in QuestionBank entity </description>
+        <property name="QuestionnaireID" isIdentifier="true" type="measure"></property>
+        <property name="QuestionnaireName" type="measure"></property>
+        <property name="QuestionnaireDescription" type="measure">
+            <formatString><![CDATA[$3]]></formatString>
+        </property>
+        <property name="QuestionnaireType" type="measure"></property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="QuesnirType">
+        <description> Entity Questionnaire type</description>
+        <property name="QuesnirTypeName" isIdentifier="true" type="measure">
+        </property>
+        <property name="QuesnirTypeDesc" type="measure">
+        </property>
+    </ArchaeologicalElement>
+
+    <ArchaeologicalElement name="QuesnirPropDef">
+        <description> Properties of a questionnaire</description>
+        <property name="QuesnirPropDefName" isIdentifier="true" type="measure"></property>
+        <property name="QuesnirPropDefDesc" type="measure"></property>
+    </ArchaeologicalElement>
+
+    <ArchaeologicalElement name="QuesnirProperties">
+        <description> Properties of a questionnaire</description>
+        <property name="QuesnirUuid" isIdentifier="true" type="measure"></property>
+        <property name="QuesnirPropDefID" type="measure"></property>
+        <property name="QuesnirPropValue" type="enum">
+            <description>Indicating the binary value of a questionnaire property</description>
+             <lookup>
+                <term>Yes</term>
+                <term>No</term>
+            </lookup>
+        </property>
+    </ArchaeologicalElement>
+
+    <ArchaeologicalElement name="QuestionBank">
+        <description>Entity QuestionBank, stores the questions created by user</description>
+        <property name="QuestionID" isIdentifier="true" type="measure"></property> 
+        <property name="QuestionType" type="measure"></property>       
+    </ArchaeologicalElement>
+
+    <ArchaeologicalElement name="QuestionOption">
+        <description>Entity QuestionOptions, stores the options for multi-chioce question</description>
+        <property name="QuesUuidOpt" isIdentifier="true" type="measure"></property>  
+        <property name="QuesLangUuidOpt" isIdentifier="true" type="measure"></property>  
+        <property name="QuesOptionText" type="measure"></property>       
+    </ArchaeologicalElement>
+
+    <ArchaeologicalElement name="QuestionLang">
+        <description>Entity QuestionBank, stores the questions created by user</description>
+        <property name="QuestionUuid" isIdentifier="true" type="measure"></property>
+        <property name="QuesLangUuid" type="measure">
+            <formatString><![CDATA[$3]]></formatString>
+        </property>
+          <property name="QuesContent" type="measure">
+            <formatString><![CDATA[$3]]></formatString>
+        </property>
+    </ArchaeologicalElement>
+
+    <ArchaeologicalElement name="QuesPropDef">
+        <description> Properties of a questionnaire</description>
+        <property name="QuesPropDefName" isIdentifier="true" type="measure"></property>
+        <property name="QuesPropDefDesc" type="measure"></property>
+    </ArchaeologicalElement>
+
+    <ArchaeologicalElement name="QuesProperty">
+        <description> Properties of a questions</description>
+        <property name="QuesUuid" isIdentifier="true" type="measure"></property>
+        <property name="QuesPropDefID" type="measure"></property>
+        <property name="QuesPropValue" type="enum">
+            <description>Indicating the binary value of a question property</description>
+             <lookup>
+                <term>Yes</term>
+                <term>No</term>
+            </lookup>
+        </property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="QuesnirQuesOrder">
+        <description> Recording the orders of questions in a questionnaire </description>
+        <property name="QuesnirID" isIdentifier="true" type="measure"></property>
+        <property name="QuesID" isIdentifier="true" type="measure"></property>
+        <property name="QuesOrderLocal" type="measure"></property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="Language">
+        <description>Entity Language, stores code, language name of languages</description>
+        <property name="LanguageID" isIdentifier="true" type="measure">
+            <description> Use the 639 code as the language ID</description>
+        </property>
+        <property name="LanguageName" type="measure"></property>
+        <property name="LanguageOtherNames" type="measure"></property>
+        <property name="LanguageTypeID" type="measure"></property>
+    </ArchaeologicalElement>
+
+    <ArchaeologicalElement name="LangTypeDef">
+        <description>Entity Language, stores code, language name of languages</description>
+        <property name="LangTypeName" isIdentifier="true" type="measure"></property>
+        <property name="LangTypeDesc" type="measure"></property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="AnswerToQuestionnaire">
+        <description>Entity AnswerToQuestionnaire, represent the metadata and data of the answers collected for a questionnaire</description>
+        <property name="AnswerQuestionnaireID" isIdentifier="true" type="measure"></property>              
+        <property name="AnswerQuestionID" isIdentifier="true" type="measure"></property>
+        <property name="AnswerLabel" isIdentifier="true" type="measure"></property>
+        <property name="AnswerText" type="measure"></property>
+        <property name="AnswerStartTime" type="measure"></property>
+        <property name="AnswerEndTime" type="measure"></property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="Person">
+        <description>Entity Person, indicates the person's info including names and photo</description>
+        <property name="PersonID" isIdentifier="true" type="measure"></property>
+        <property name="PersonName" type="measure"></property>
+        <property name="PersonOtherNames" type="measure"></property>
+        <property name="PersonDOB" type="measure" isIdentifier="true"></property>
+        <property name="PersonRole" type="measure" isIdentifier="true"></property>
+        <property name="PersonPhoto" type="file" file="true" thumbnail="true"></property>
+        <property name="PersonPhotoDescription" type="measure"></property>
+        <property name="PersonIntroQuenirDesp" type="measure"></property>
+    </ArchaeologicalElement>
+
+     <ArchaeologicalElement name="PersonRole">
+        <description> Entity Questionnaire type</description>
+        <!--property name="PersonRoleID" isIdentifier="true" type="freetext">
+        </property-->
+        <property name="PersonRoleName" isIdentifier="true" type="dropdown">
+            <lookup>
+                <term>annotator</term>
+                <term>author</term>
+                <term>compiler</term>
+                <term>consultant</term>
+                <term>data_inputter</term>
+                <term>depositor</term>
+                <term>developer</term>
+                <term>editor</term>
+                <term>illustrator</term>
+                <term>interpreter</term>
+                <term>interviewer</term>
+                <term>participant</term>
+                <term>performer</term>
+                <term>photographer</term>
+                <term>recorder</term>
+                <term>researcher</term>
+                <term>research_participant</term>
+                <term>responder</term>
+                <term>signer</term>
+                <term>singer</term>
+                <term>speaker</term>
+                <term>sponsor</term>
+                <term>transcriber</term>
+                <term>translator</term>
+            </lookup>
+        </property>
+        <property name="RoleIntroAnsRequired" type="enum">
+             <description>Indicating whether person of this role need to finish answering introductory questionnaire</description>
+             <lookup>
+                <term>Yes</term>
+                <term>No</term>
+            </lookup>
+        </property>
+
+         <property name="RolePhotoRequired" type="enum">
+             <description>Indicating whether taking photo for person of this role is required</description>
+             <lookup>
+                <term>Yes</term>
+                <term>No</term>
+            </lookup>
+        </property>
+
+         <property name="RoleDataOnClient" type="enum">
+            <description>Indicating whether this role is shown on client module's list for creating person information</description>
+             <lookup>
+                <term>Yes</term>
+                <term>No</term>
+            </lookup>
+        </property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="Session">
+        <description>Entity Session, is a logical collection of files</description>
+        <property name="SessionID" isIdentifier="true" type="measure"></property>
+        <property name="SessionName" type="measure"></property>
+        <property name="SessionAnswer" type="measure"></property>
+        <property name="SessionStartTimestamp" type="measure"></property>
+        <property name="SessionEndTimestamp" type="measure"></property>
+        <property name="SessionLocation" type="measure"></property>
+        <property name="SessionDescription" type="measure"></property>
+    </ArchaeologicalElement>
+
+     <ArchaeologicalElement name="SessionPerson">
+        <description>Entity SessionPerson, recording person and person roles in a session</description>
+        <property name="SessionIDforPerson" isIdentifier="true" type="measure"></property>
+        <property name="SessionPersonName" type="measure"></property>
+        <property name="SessionPersonRole" type="measure"></property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="File">
+        <description>Entity File, is the relationship stores files and metadata o files</description>
+        <property name="FileID" isIdentifier="true" type="measure"></property>
+        <property name="FileName" type="measure"></property>
+        <property name="FileType" type="measure"></property>
+        <property name="FilePath" type="measure"></property>
+        <property name="FileCreator" type="measure"></property>
+        <property name="FileContent" type="file" file="true"></property>
+        <property name="FileStartTime" type="measure"></property>
+        <property name="FileEndTime" type="measure"></property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="Bookmark">
+        <description>Entity Bookmark, for recording the significant timestamps in a session</description>
+        <property name="BmSessionID" isIdentifier="true" type="measure"></property>
+        <property name="BmTimestamp" isIdentifier="true" type="measure"></property>
+        <property name="BookmarkName" type="measure"></property>
+        <property name="BkQuestionnaireID" type="measure"></property>
+        <property name="BkQuestionID" type="measure"></property>
+    </ArchaeologicalElement>
+    
+    <ArchaeologicalElement name="FieldTrip">
+        <description>Entity FieldTrip, may consists of multiple sessions</description>
+        <property name="FieldTripID" isIdentifier="true" type="measure"></property>
+        <property name="FieldTripName" type="measure"></property>
+        <property name="FieldTripStartTime" type="measure"></property>
+        <property name="FieldTripEndTime" type="measure"></property>
+        <property name="FieldTripDescription" type="measure"></property>
+    </ArchaeologicalElement>
+</dataSchema>

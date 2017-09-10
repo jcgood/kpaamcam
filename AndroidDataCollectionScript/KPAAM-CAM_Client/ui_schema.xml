@@ -1,0 +1,409 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms"
+        xmlns:h="http://www.w3.org/1999/xhtml"
+        xmlns:ev="http://www.w3.org/2001/xml-events"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:jr="http://openrosa.org/javarosa">
+
+
+<h:head>
+    <h:title>Linguistic data documentation</h:title>
+    <model>
+        <instance>
+            <faims id="ldd_client">
+
+               <style>
+                <orientation>
+                    <orientation/>
+                </orientation>
+            <even>
+                <layout_weight/>
+            </even>
+            <large>
+              <layout_weight/>
+            </large>
+          </style>
+      
+                <user>
+                    <usertab>
+                         <container12>
+                            <child1>
+                                <user_keyword/>
+                            </child1>
+                            <child2>
+                                <user_Search/>
+                            </child2>
+                        </container12>
+                        <users/>
+                        <login/>
+                    </usertab>
+                </user>
+
+                <fieldTripSel>
+                    <fieldTripSelInfo>
+                    </fieldTripSelInfo>
+                </fieldTripSel>
+                 
+                 
+                <control>         
+                    <survey_control>                   
+                    </survey_control>
+
+                    <user_control>              
+                    </user_control>
+
+                    <language_control>
+                    </language_control>
+
+                    <other_control>
+                    </other_control> 
+                </control>
+
+                <questionnaireListAll>
+                   <questionnaireListInfo>
+                   </questionnaireListInfo> 
+                </questionnaireListAll>
+               
+                <questionnaireInfo>
+                    <surveyQuesnirHidden>
+                    </surveyQuesnirHidden>
+                    <surveyQuestionnaire>
+                    </surveyQuestionnaire>
+                </questionnaireInfo>
+
+                <sessionForAnswer>
+                  	<sssHidden>
+                  	</sssHidden>
+                    
+                    <sssAnsBasicInfo>
+                    </sssAnsBasicInfo>
+                    
+                    <sssPersonInfo>
+                    </sssPersonInfo>
+                    
+                    <sssAnsList>                     
+                    </sssAnsList>
+                </sessionForAnswer>
+                
+                <survey>
+                	<answerHidden>                      
+                    </answerHidden>
+                    
+                    <answerBasic>        
+                   	</answerBasic>   
+                                         
+                   	<answerFile>
+                   	</answerFile>                                              
+                </survey>                
+
+
+
+                <langIntroQues>
+                    <langIntroQuesInfo>                      
+                    </langIntroQuesInfo>                                              
+                </langIntroQues>
+
+                <langIntroAns>
+                    <langIntroAnsInfo>                      
+                    </langIntroAnsInfo>                                              
+                </langIntroAns>
+
+                <choiceAns>
+                    <choiceAnsInfo>                      
+                    </choiceAnsInfo>                                              
+                </choiceAns>
+
+
+                <language>
+                  <languageInfo>
+                  </languageInfo>
+                </language>
+
+                <fieldTrip_control>
+                  <fieldTripControl>
+                  </fieldTripControl>
+                </fieldTrip_control>
+                
+                <fieldTrip>
+                    <fieldTripBasicInfo>
+                    </fieldTripBasicInfo>
+                    <fieldTripSession>
+                    </fieldTripSession>
+                    <fieldTripBasicInfoHidden>
+                    </fieldTripBasicInfoHidden>
+                </fieldTrip>
+
+                <file_control>
+                  <fileControlInfo>
+                  </fileControlInfo>
+                </file_control>
+
+                <file>
+                   	<fileHidden>
+                  	</fileHidden>
+                    <fileInfo>
+                    </fileInfo>
+                </file>
+
+                <personRoleSelect>
+                    <personRoleSelectInfo>
+                    </personRoleSelectInfo>
+                </personRoleSelect>
+
+                <person>     
+                 	<personInfoHide>
+                	</personInfoHide>
+
+                	<personInfo>
+                  	</personInfo>
+                </person>
+
+                <introSssList>
+                    <introSssInfo>
+                    </introSssInfo>
+                </introSssList>
+
+            </faims>
+        </instance>
+      
+    </model>
+</h:head>
+
+
+<h:body>
+    <group ref="style">
+      <label/>
+      <group ref="orientation">
+        <label/>
+        <input ref="orientation">
+          <label>horizontal</label>
+        </input>
+      </group>
+      <group ref="even">
+        <label/>
+        <input ref="layout_weight">
+          <label>1</label>
+        </input>
+      </group>
+      <group ref="large">
+        <label/>
+        <input ref="layout_weight">
+          <label>3</label>
+        </input>
+      </group>
+    </group>
+   
+     <group ref="user">
+      <label>User List</label>
+      <group ref="usertab">
+        <label>User List</label>
+         <group ref="container12" faims_style="orientation">
+        
+          <label></label>
+          <group ref="child1" faims_style="even">
+            <label></label>
+             <input ref="user_keyword">
+                <label>User name</label>
+            </input>
+        </group>
+       <group ref="child2" faims_style="even">
+            <label></label>
+             <trigger ref="user_Search" faims_style_class="faims-blue">
+                <label>Search</label>
+            </trigger>
+          </group>
+        
+        </group>
+        
+        <select1 appearance="compact" ref="users" faims_style_class="user-list">
+          <label>Users:</label>
+          <item>
+            <label>placeholder</label>
+            <value>placeholder</value>
+          </item>
+        </select1>
+      </group>
+    </group>
+
+    <group ref="fieldTripSel">
+          <label>Select FieldTrip</label>
+           <group ref="fieldTripSelInfo">
+            <label>Select FieldTrip</label>
+            </group>
+    </group>
+             
+    <group ref="control" faims_scrollable="false">
+        
+        <label>{Control}</label>
+        
+        
+        <group ref="survey_control" faims_scrollable="false">
+            <label>Session</label>
+        </group>
+
+        <group ref="user_control" faims_scrollable="false">
+            <label>Person</label>
+        </group>
+
+        <group ref="language_control" faims_scrollable="false">
+            <label>Language</label>
+        </group>
+
+        <group ref="other_control" faims_scrollable="false">
+            <label>FieldTrip</label>
+        </group>
+    </group>
+
+
+    <group ref="questionnaireListAll" faims_scrollable="false">
+          <label>Questionnaire</label>
+           <group ref="questionnaireListInfo" faims_scrollable="false">
+            <label>Questionnaire</label>
+            </group>
+    </group>
+    
+    
+    <group ref="questionnaireInfo" faims_archent_type="Questionnaire" faims_scrollable="false">
+          <label>Questionnaire info</label>
+        <group ref="surveyQuesnirHidden" faims_hidden="true">
+            <label>currentQuesnirHiddenInfo</label>
+        </group>
+
+         <group ref="surveyQuestionnaire">
+            <label>Questionnaire info</label>
+        </group>
+    </group>
+      
+
+    <group ref="sessionForAnswer" faims_archent_type="Session" faims_scrollable="false">
+            <label>Session</label>
+            <group ref="sssHidden" faims_hidden="true">
+                <label>Session info</label>
+            </group>
+            <group ref="sssAnsBasicInfo">
+                <label>Session</label>
+            </group>
+         
+             <group ref="sssPersonInfo">
+                 <label>Person</label>
+             </group>
+
+            <group ref="sssAnsList">
+                 <label>Quesnir</label>
+            </group>
+    </group>    
+      
+    <group ref="survey" faims_archent_type="AnswerToQuestionnaire" faims_scrollable="false">
+        <label>Survey/Answer</label>
+        
+        
+        <group ref="answerHidden" faims_hidden="true">
+            <label></label>        
+        </group>
+        
+        <group ref="answerBasic">
+            <label>Basic Info</label>
+        </group>
+
+        <group ref="answerFile">
+             <label>Files</label>
+            </group>
+    </group>
+
+    <group ref="langIntroQues">
+        <label>Questions</label>
+        <group ref="langIntroQuesInfo">
+            <label>Questions</label>
+        </group>
+    </group>
+
+    <group ref="langIntroAns">
+        <label>Answer</label>
+        <group ref="langIntroAnsInfo">
+            <label>Answer</label>
+        </group>
+    </group>
+
+    <group ref="choiceAns">
+        <label>Answer</label>
+        <group ref="choiceAnsInfo">
+            <label>Answer</label>
+        </group>
+    </group>
+
+    <group ref="language"  faims_archent_type="Language">
+        <label>Language</label>        
+        <group ref="languageInfo" faims_scrollable="false">
+            <label>Language Info</label>
+        </group>
+    </group>
+
+
+     <group ref="fieldTrip_control">
+        <label>FieldTrip List</label>
+        <group ref="fieldTripControl">
+          <label>FieldTrip List</label>
+      </group>
+    </group>
+             
+     <group ref="fieldTrip" faims_archent_type="FieldTrip">
+        <label>FieldTrip</label>
+        <group ref="fieldTripBasicInfo">
+          <label>Basic Info</label>
+      </group>
+      <group ref="fieldTripSession">
+          <label>Sessions</label>
+      </group>
+      <group ref="fieldTripBasicInfoHidden" faims_hidden="true">
+          <label>Hidden</label>
+      </group>
+    </group>
+
+
+     <group ref="file_control">
+        <label>File List</label>
+        <group ref="fileControlInfo">
+          <label>File List</label>
+      </group>
+    </group>
+
+  	<group ref="file" faims_archent_type="File">
+        <label>File</label>
+        <group ref="fileHidden" faims_hidden="true">
+            <label>Basic Info</label>
+        </group>
+        <group ref="fileInfo">
+            <label>File Info</label>
+        </group>
+    </group>
+  
+     <group ref="personRoleSelect">
+        <label>Person Role</label>  
+
+        <group ref="personRoleSelectInfo">
+          <label>Person General Role</label>
+        </group>
+
+    </group>
+
+        
+    <group ref="person" faims_archent_type="Person">
+        <label>Person</label>
+
+        <group ref="personInfoHide" faims_hidden="true">
+          <label>{PersonInfoHide}</label>
+        </group>
+        
+        <group ref="personInfo">
+          <label>Person Info</label>
+        </group>
+    </group>
+
+    <group ref="introSssList">
+        <label>Intro Session</label>
+        <group ref="introSssInfo" >
+            <label>Intro sessions</label>
+        </group>
+     </group>
+ </h:body>
+</h:html>

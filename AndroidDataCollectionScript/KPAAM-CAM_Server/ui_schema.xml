@@ -1,0 +1,450 @@
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <!-- ****** -->
+  <h:head>
+    <h:title>Linguistics Admin</h:title>
+    <!--model lists user interface tabgroups, tabs and content of tabs-->
+    <model>
+      <instance>
+        <faims id="Linguistics_Admin">
+          <style>
+            <orientation>
+              <orientation/>
+            </orientation>
+            <even>
+              <layout_weight/>
+            </even>
+            <large>
+              <layout_weight/>
+            </large>
+            
+          </style>
+          <user>
+            <usertab>
+                <container6>
+                   <child1>
+                    	<user_keyword/>
+                    </child1>
+                    <child2>
+                    	<user_Search/>
+                    </child2>
+                </container6>
+              <users/>
+              <login/>
+            </usertab>
+          </user>
+           
+          <control>
+              <questionnaire_control>
+              </questionnaire_control>
+
+              <question_control>
+              </question_control>
+
+              <user_control>
+              </user_control>
+
+              <language_control>
+              </language_control>
+
+              <other_control>
+              </other_control>
+
+              <search>
+              </search>
+          </control>
+          
+          <questionnaire>
+              <questionnaire_info_hide>
+              </questionnaire_info_hide>
+              <questionnaire_info>
+              </questionnaire_info>
+          </questionnaire>
+
+          <quesnirType>
+              <quesnirType_info>
+              </quesnirType_info>
+          </quesnirType>
+
+          <quesProperty>
+              <quesPropertyInfo>
+              </quesPropertyInfo>
+          </quesProperty>
+
+          <questionnaire_question>
+              <questionnaire_question_info>
+                <container3>
+                  <child1>
+                    <keywordOfQuestion/>
+                  </child1>
+                  <!--child2>
+                    <category/>
+                  </child2-->
+                  <child2>
+                    <Search_Question/>
+                  </child2>
+                </container3>
+                <questionList/>
+              </questionnaire_question_info>
+          </questionnaire_question>
+
+          <questionListOrder>
+            <questionListOrderInfo>
+              <container4>
+                  <child1>
+                    <kwOfQuestion/>
+                  </child1>
+                  <child2>
+                     <SearchQuestion/>
+                  </child2>
+                </container4>
+            </questionListOrderInfo>
+          </questionListOrder>
+
+
+          <questionBank>
+              <questionInfo>
+                  <questionID/>
+                  <questionProp/>                             
+              </questionInfo>
+          </questionBank>
+
+          <questionChoice>
+            <questionChoiceInfo>
+            </questionChoiceInfo>
+          </questionChoice>
+
+          <personRoleSelect>
+            <personRoleSelectInfo>
+            </personRoleSelectInfo>
+          </personRoleSelect>
+
+          <person>
+            <personInfoHide>
+            </personInfoHide>
+
+            <personInfo>
+            </personInfo>
+          </person>
+
+          <personRole>
+            <personRoleInfo>
+            </personRoleInfo>
+          </personRole>
+                
+          <language>
+            <languageInfo>
+            </languageInfo>
+          </language>
+
+          <langType>
+              <langType_info>
+              </langType_info>
+          </langType>
+
+          <role_control>
+            <role_control_info>
+            </role_control_info>
+          </role_control>
+
+          <type_control>
+            <type_control_info>
+            </type_control_info>
+          </type_control>
+          
+
+          <prop_control>
+            <prop_control_info>
+            </prop_control_info>
+          </prop_control>
+
+          <langType_control>
+            <langType_control_info>
+            </langType_control_info>
+          </langType_control>
+
+        </faims>
+      </instance>
+
+    </model>
+  </h:head>
+  <h:body>
+    <group ref="style">
+      <label/>
+      <group ref="orientation">
+        <label/>
+        <input ref="orientation">
+          <label>horizontal</label>
+        </input>
+      </group>
+      <group ref="even">
+        <label/>
+        <input ref="layout_weight">
+          <label>1</label>
+        </input>
+      </group>
+      <group ref="large">
+        <label/>
+        <input ref="layout_weight">
+          <label>3</label>
+        </input>
+      </group>
+    </group>
+
+    <group ref="user">
+      <label>User</label>
+      <group ref="usertab">
+        <label>User List</label>
+         
+         <group ref="container6" faims_style="orientation">
+        
+          <label></label>
+          <group ref="child1" faims_style="even">
+            <label></label>
+             <input ref="user_keyword">
+            	<label>User name</label>
+            </input>
+        </group>
+       <group ref="child2" faims_style="even">
+            <label></label>
+             <trigger ref="user_Search" faims_style_class="faims-blue">
+                <label>Search</label>
+            </trigger>
+          </group>
+        
+        </group>
+        
+        <select1 appearance="compact" ref="users" faims_style_class="user_list">
+          <label>Users</label>
+          <item>
+            <label>placeholder</label>
+            <value>placeholder</value>
+          </item>
+        </select1>
+      </group>
+    </group>
+    <group ref="control" faims_scrollable="false">     
+      <label>Admin</label>
+      
+      <group ref="questionnaire_control" faims_scrollable="false">
+          <label>Questionnaire</label>
+      </group>
+      
+      <group ref="question_control" faims_scrollable="false">
+          <label>Question</label>
+      </group>
+      
+      <group ref="user_control" faims_scrollable="false">
+          <label>Person</label>
+      </group>
+      
+      <group ref="language_control" faims_scrollable="false">
+          <label>Language</label>
+      </group>
+
+      <group ref="other_control">
+          <label>Other</label>
+      </group>
+       
+      <group ref="search" faims_scrollable="false">
+          <label>Search</label>
+
+      </group>
+    </group>
+    
+    <group ref="questionnaire" faims_archent_type="Questionnaire">
+      <label>Questionnaire</label>      
+
+      <group ref="questionnaire_info_hide" faims_hidden="true">
+          <label></label>
+      </group>
+
+      <group ref="questionnaire_info">
+        <label>Basic Data</label>
+      </group>       
+    </group> 
+
+
+    <group ref="quesnirType" faims_archent_type="QuesnirType">
+      <label>Questionnaire Type</label>      
+      
+      <group ref="quesnirType_info">
+        <label>Questionnaire Type</label>
+      </group>        
+    </group>
+
+    <group ref="questionnaire_question">
+        <label>Questionnaire</label>
+        
+        <group ref="questionnaire_question_info">
+          <label>Question Selction</label>
+
+            <group ref="container3" faims_style="orientation">
+        
+              <label></label>
+              <group ref="child1" faims_style="even">
+                <label></label>
+
+                   <input ref="keywordOfQuestion" faims_attribute_type="measure" faims_certainty="false" faims_annotation="false">
+                    <label>Keyword</label>
+                </input>
+              </group>
+
+              <!--group ref="child2" faims_style="even">
+                <label></label>
+                   <select1 ref="category">
+                    <label>Category</label>
+                    <item>
+                        <label>placeholder</label>
+                        <value>placeholder</value>
+                    </item>
+                </select1>
+              </group-->            
+           <group ref="child2" faims_style="even">
+                <label></label>
+                 <trigger ref="Search_Question" faims_style_class="faims-blue-search">
+                 <label>Search</label>
+               </trigger>
+              </group>
+        
+        </group>
+
+           <select1 appearance="compact" faims_annotation="false" ref="questionList" faims_style_class="questionSel-list">
+                <label>Add question</label>
+                <item>
+                    <label>placeholder</label>
+                    <value>placeholder</value>
+                </item>
+          </select1>  
+        </group>
+    </group>
+
+     <group ref="questionListOrder">
+      <label>Questions</label>      
+      <group ref="questionListOrderInfo">
+        <label>Questions</label>
+        <group ref="container4" faims_style="orientation">
+        
+              <label></label>
+              <group ref="child1" faims_style="even">
+                <label></label>
+                   <input ref="kwOfQuestion" faims_attribute_type="measure" faims_certainty="false" faims_annotation="false">
+                    <label>Keyword</label>
+                </input>
+              </group>
+ 
+           <group ref="child2" faims_style="even">
+                <label></label>
+                 <trigger ref="SearchQuestion" faims_style_class="faims-blue-search">
+                 <label>Search</label>
+               </trigger>
+              </group>
+        
+        </group>
+      </group>        
+    </group>   
+
+    <group ref="quesProperty" faims_archent_type="QuesPropDef">
+      <label>Question Property</label>      
+      <group ref="quesPropertyInfo">
+        <label>Question Property Info</label>
+      </group>        
+    </group>
+
+    <group ref="questionBank" faims_archent_type="QuestionBank">
+        <label>Question</label>
+        
+        <group ref="questionInfo">
+          <label>Question Information</label>
+          <input ref="questionID" faims_attribute_name="QuestionID" faims_attribute_type="measure" faims_certainty="false" faims_annotation="false" faims_style_class="required">
+          <label>Question label</label>
+        </input>
+      
+       <select1 ref="questionProp"  faims_certainty="false" faims_annotation="false">
+          <label>Question property</label>
+          <item>
+            <label>placeholder</label>
+            <value>placeholder</value>
+          </item>
+          </select1>
+        </group>
+    </group>
+
+    <group ref="questionChoice">
+      <label>Question answer options</label>     
+      <group ref="questionChoiceInfo">
+        <label>Question answer options</label>
+      </group>
+    </group>
+
+    <group ref="personRoleSelect">
+      <label>Person Role</label>     
+      <group ref="personRoleSelectInfo">
+        <label>Person Role</label>
+      </group>
+    </group>
+
+    <group ref="person" faims_archent_type="Person">
+      <label>Person</label>
+
+      <group ref="personInfoHide" faims_hidden="true">
+        <label>{PersonInfoHide}</label>
+      </group>
+
+      <group ref="personInfo">
+        <label>Person Information</label>
+      </group>
+    </group>
+
+    <group ref="personRole" faims_archent_type="PersonRole">
+      <label>Person Role</label>
+      <group ref="personRoleInfo">
+        <label>Person Role</label>
+      </group>
+    </group>
+
+    <group ref="language" faims_archent_type="Language">
+      <label>Language</label>
+      <group ref="languageInfo">
+        <label>Language</label>
+      </group>
+    </group>
+
+    <group ref="langType" faims_archent_type="LangTypeDef">
+      <label>Language Type</label>      
+      
+      <group ref="langType_info">
+        <label>Language Type</label>
+      </group>        
+    </group>
+
+    <group ref="role_control">
+      <label>Role</label>
+      <group ref="role_control_info">
+        <label>Role Info</label>
+      </group>
+    </group>
+
+     <group ref="type_control">
+      <label>Type</label>
+      <group ref="type_control_info">
+        <label>Questionnaire type</label>
+      </group>
+    </group>
+
+     <group ref="prop_control">
+      <label>Propert</label>
+      <group ref="prop_control_info">
+          <label>Property</label>
+      </group>
+    </group>
+
+    <group ref="langType_control">
+      <label>Type</label>
+      <group ref="langType_control_info">
+        <label>Type</label>
+      </group>
+    </group>
+
+  </h:body>
+</h:html>

@@ -1,0 +1,149 @@
+.user-list{
+    height: 100%;
+}
+
+.ftSel-list{
+    height: 100%;
+}
+
+.survey-list {
+    height: 100%;
+}
+
+.session-list{
+    height: 100%;   
+}
+
+.introSss-list{
+    height: 100%;   
+}
+
+.sssSelPs-list {
+    height: 100%;
+}
+
+.sssAns-list {
+    height: 100%;
+}
+
+.allQuesnir-list {
+    height: 100%;
+}
+
+.quesInQuesnir-list {
+    height: 100%;
+}
+
+.loopQues-list{
+    height: 100%;
+}
+.sssFile-list {
+    height: 100%;
+}
+
+.ansFile-list{
+    height: 100%;
+}
+
+.person-list {
+    height: 100%;
+}
+
+.language-list {
+    height: 100%;
+}
+
+.fieldTrip-list {
+    height: 100%;
+}
+
+.file-list {
+    height: 100%;
+}
+.ft-sss-list{
+    height: 180px;
+}
+.list-label{
+        margin-top:7%;
+}
+
+.required-label {
+        color: red;
+}
+
+.required{
+    color: red;
+        }
+
+.required-picture-gallery-label{
+    color: red;
+}
+
+.input-field{
+        
+}
+.input-field-label{
+    margin-top:7%;
+    }
+
+.read-only {
+            background-color: #EEEEEE;
+}
+.read-only-label{
+    }
+
+
+.gps-status {
+    height: 60px;
+}
+
+.all {
+    margin-left: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
+    margin-top:7%;
+    padding-top:5%;
+    color: #222222;
+}
+
+.faims-blue {
+    background-color: #33b5e5;
+    border-color: #26a0cd;
+    color: white;
+    margin-top:10px;
+    margin-bottom:10px;
+
+    
+}
+
+.faims-blue-parallel {
+    background-color: #33b5e5;
+    border-color: #26a0cd;
+    color: white;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    
+}
+
+.faims-blue-search {
+    background-color: #33b5e5;
+    border-color: #26a0cd;
+    color: white;
+    margin-top:10px;
+    margin-bottom:10px;
+      width: auto;  
+}
+
+.faims-danger {
+    background-color: #d9534f;
+    border-color: #be3e3a;
+    color: white;
+}
+
+.faims-success {
+    background-color: #45b845;
+    border-color: #38a538;
+    color: white;
+}

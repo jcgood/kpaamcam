@@ -1,0 +1,1 @@
+These scripts are intended for use with the FAIMS platform (http://www.fedarch.org/faims-mobile/).

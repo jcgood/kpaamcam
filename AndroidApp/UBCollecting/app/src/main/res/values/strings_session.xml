@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="session_id_label">Session ID</string>
+    <string name="session_label_label">Session Label</string>
+    <string name="session_name_label"> Session Name</string>
+    <string name="session_start_time_label">Start Time</string>
+    <string name="session_location_label">Location</string>
+    <string name="session_description_label">Session Description</string>
+</resources>

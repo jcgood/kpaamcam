@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_id_label">Language ID</string>
+    <string name="language_name_label">Language Name</string>
+    <string name="language_description_label">Language Description</string>
+    <string name="language_other_names_label">Other Names</string>
+    <string name="language_langtype_label">Type</string>
+</resources>

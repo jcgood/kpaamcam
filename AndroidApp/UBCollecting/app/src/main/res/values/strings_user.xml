@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_session">Create New Session </string>
+    <string name="create_fieldtrip">Create New Field Trip </string>
+    <string name="active_fieldtrips">Please Choose an Active Field Trip to Continue: </string>
+    <string name="choose_session">Please Choose a Session to Continue: </string>
+    <string name="choose_questionnnaire">Please Select a Questionnaire: </string>
+
+
+</resources>

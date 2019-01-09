@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_new_person">Create New Person</string>
+    <string name="assign_session_roles">Please Assign Session Roles to Continue (you must specify
+        the interviewer and consultant) : </string>
+    <string name="assign_session_roles_continue">Continue</string>
+    <string name="assign">Assign</string>
+    <string name="chosen_roles">Assigned Roles: </string>
+    <string name="select_person">Select Person</string>
+    <string name="select_role">Select Role</string>
+
+
+
+
+</resources>

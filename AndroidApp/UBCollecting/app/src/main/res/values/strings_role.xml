@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="role_name_label">Role Name</string>
+    <string name="role_intro_required_label">Intro Required</string>
+    <string name="role_photo_required_label">Photo Required</string>
+    <string name="role_on_client_label">On Client</string>
+</resources>

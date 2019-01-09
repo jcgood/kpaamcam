@@ -1,0 +1,6 @@
+include ':app'
+include ':libraries:drag-sort-listview:library'
+include ':libraries:drag-sort-listview:library'
+include ':libraries:drag-sort-listview:library'
+include ':libraries:drag-sort-listview:library'
+include ':libraries:drag-sort-listview:library'

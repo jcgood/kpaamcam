@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="submit_button_label">Submit</string>
+    <string name="update_button_label">Update</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="login_button_label">Login</string>
+    <string name="done_button_label">Done</string>
+    <string name="login_error">Incorrect Email or Password</string>
+    <string name="select_question_properties">Please Select All Desired Properties: </string>
+    <string name="select_question_languages">Please Select All Question Languages: </string>
+    <string name="languages">Languages</string>
+
+
+</resources>

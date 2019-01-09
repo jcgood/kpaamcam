@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">UB Collecting</string>
+    <string name="person_name_label">Full Name</string>
+    <string name="person_preferred_name_label">Other Name(s)</string>
+    <string name="person_dob_label">Date of Birth</string>
+    <string name="person_role_label">Role</string>
+    <string name="person_photo_label">Photo</string>
+    <string name="person_photo_description_label">Photo Description</string>
+    <string name="person_questionnaire_description_label">Questionnaire Description</string>
+    <string name="person_email_label">Email</string>
+    <string name="person_password_label">Password</string>
+</resources>

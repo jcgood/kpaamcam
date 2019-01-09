@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="answer_id_label">ID</string>
+    <string name="answer_questionnaire_name_label">Questionnaire</string>
+    <string name="answer_question_name_label">Question</string>
+    <string name="answer_label_label">Answer Label</string>
+    <string name="answer_text_label">Answer Text</string>
+</resources>

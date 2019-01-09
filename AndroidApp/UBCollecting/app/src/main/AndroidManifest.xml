@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.buffalo.cse.ubcollecting">
+
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+    <application
+        android:name=".app.App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.CreateQuestionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.UpdateQuestionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".PersonActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".FieldTripActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".FileActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".LanguageActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".QuestionnaireActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".QuestionnaireContentActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".QuestionnaireTypeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".RoleActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SessionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".AnswerActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".LanguageTypeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AddQuestionsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".QuestionLangVersionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".QuestionOptionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".QuestionPropertyActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".QuestionPropertyDefActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SessionAnswerActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SessionPersonActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".TableSelectActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".TableViewActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.LoginActivity"  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.AdminActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.interviewer.UserLandingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.interviewer.UserSelectSessionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.interviewer.AddSessionRolesActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.interviewer.UserSelectQuestionnaireActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ui.interviewer.TakeQuestionnaireActivity" android:screenOrientation="portrait"/>
+    </application>
+
+
+</manifest>

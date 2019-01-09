@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.buffalo.cse.ubcollecting.QuestionnaireContentActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="@string/questionnaire_content_questionnaire_label" />
+
+        <TextView
+            android:id="@+id/questionnaire_content_questionnaire_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16pt"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="@string/questionnaire_content_question_label" />
+
+        <TextView
+            android:id="@+id/questionnaire_content_question_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16pt" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="@string/questionnaire_content_order_label" />
+
+        <EditText
+            android:id="@+id/questionnaire_content_order_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/questionnaire_content_submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_button_label" />
+    </LinearLayout>
+
+</ScrollView>
+

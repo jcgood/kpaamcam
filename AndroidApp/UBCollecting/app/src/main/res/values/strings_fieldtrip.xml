@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fieldtrip_name_label">Field Trip Name</string>
+    <string name="fieldtrip_start_date_label">Choose Start Date</string>
+    <string name="fieldtrip_end_date_label">Choose End Date</string>
+</resources>

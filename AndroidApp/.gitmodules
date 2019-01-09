@@ -1,0 +1,3 @@
+[submodule "UBCollecting/libraries/drag-sort-listview"]
+	path = UBCollecting/libraries/drag-sort-listview
+	url = https://github.com/JayH5/drag-sort-listview.git

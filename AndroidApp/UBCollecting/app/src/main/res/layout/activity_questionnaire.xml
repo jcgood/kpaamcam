@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:dslv="http://schemas.android.com/apk/res-auto"
+    tools:context="edu.buffalo.cse.ubcollecting.QuestionnaireActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="@string/questionnaire_label_label" />
+
+        <EditText
+            android:id="@+id/questionnaire_label_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="@string/questionnaire_name_label" />
+
+        <EditText
+            android:id="@+id/questionnaire_name_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="@string/questionnaire_description_label" />
+
+        <EditText
+            android:id="@+id/questionnaire_description_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="@string/questionnaire_type_label" />
+
+        <Spinner
+            android:id="@+id/questionnaire_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+
+        <Button
+            android:id="@+id/questionnaire_add_questions_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/questionnaire_add_questions" />
+
+        <com.mobeta.android.dslv.DragSortListView
+            android:id="@+id/questionnaire_question_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="266dp"
+            android:visibility="gone"
+            dslv:float_background_color="@color/white"
+            dslv:drag_handle_id="@id/numbered_list_item_drag_handle"/>
+
+        <Button
+            android:id="@+id/questionnaire_update_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/update_button_label" />
+
+        <Button
+            android:id="@+id/questionnaire_submit_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_button_label" />
+    </LinearLayout>
+
+</ScrollView>
+

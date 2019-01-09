@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="questionnaire_label_label">Questionnaire Label</string>
+    <string name="questionnaire_name_label">Questionnaire Name</string>
+    <string name="questionnaire_description_label">Questionnaire Description</string>
+    <string name="questionnaire_type_label">Questionnaire Type</string>
+    <string name="questionnaire_add_questions">Add Questions</string>
+</resources>

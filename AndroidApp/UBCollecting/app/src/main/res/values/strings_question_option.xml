@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="question_option_lang_label">Language</string>
+    <string name="question_option_text_label">Question Option Text</string>
+</resources>

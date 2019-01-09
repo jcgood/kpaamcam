@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="question_property_label">Property</string>
+    <string name="question_property_question_label">Question</string>
+    <string name="question_property_value_label">Property Value</string>
+</resources>

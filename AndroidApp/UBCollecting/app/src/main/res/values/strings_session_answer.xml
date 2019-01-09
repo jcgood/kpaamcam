@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="session_answer_questionnaire_label">Questionnaire</string>
+    <string name="session_answer_question_label">Question</string>
+    <string name="session_answer_answer_label">Answer</string>
+</resources>

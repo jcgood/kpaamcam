@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="insert_button">Insert</string>
+    <string name="view_button">View</string>
+    <string name="edit_button">Edit</string>
+    <string name="delete_button">Delete</string>
+</resources>

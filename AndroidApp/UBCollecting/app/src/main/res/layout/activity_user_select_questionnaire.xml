@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textSize="16dp"
+        android:textColor="#000000"
+        android:text="@string/choose_questionnnaire"/>
+
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/questionnaire_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity">
+    </android.support.v7.widget.RecyclerView>
+
+
+</LinearLayout>

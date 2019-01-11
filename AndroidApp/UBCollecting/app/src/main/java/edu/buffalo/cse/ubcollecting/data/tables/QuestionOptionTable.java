@@ -25,7 +25,7 @@ public class QuestionOptionTable extends Table<QuestionOption> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT, " + KEY_QUESTION_ID + " TEXT, "
+                + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_QUESTION_ID + " TEXT NOT NULL, "
                 + KEY_QUESTION_LANGUAGE_ID + " TEXT," + KEY_OPTION_TEXT + " VARCHAR,"
                 + "PRIMARY KEY(" + KEY_QUESTION_ID + ", " + KEY_QUESTION_LANGUAGE_ID + "),"
                 + " FOREIGN KEY(" + KEY_QUESTION_LANGUAGE_ID + ") REFERENCES " + LanguageTable.TABLE

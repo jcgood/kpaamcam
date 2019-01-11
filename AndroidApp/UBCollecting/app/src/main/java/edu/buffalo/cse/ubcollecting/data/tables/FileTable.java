@@ -29,10 +29,10 @@ public class FileTable extends Table<File> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_NAME
-                + " VARCHAR," + KEY_ANSWER_ID + " TEXT," + KEY_TYPE
-                + " VARCHAR," + KEY_PATH + " VARCHAR," + KEY_CREATOR_ID
-                + " TEXT," + KEY_START_TIME + " DATETIME," + KEY_END_TIME + " DATETIME,"
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_NAME
+                + " VARCHAR NOT NULL," + KEY_ANSWER_ID + " TEXT NOT NULL," + KEY_TYPE
+                + " VARCHAR," + KEY_PATH + " VARCHAR NOT NULL," + KEY_CREATOR_ID
+                + " TEXT NOT NULL," + KEY_START_TIME + " DATETIME," + KEY_END_TIME + " DATETIME,"
                 + " FOREIGN KEY(" + KEY_ANSWER_ID + ") REFERENCES " + AnswerTable.TABLE
                 + " (" + AnswerTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_CREATOR_ID + ") REFERENCES "
                 + PersonTable.TABLE + " (" + PersonTable.KEY_ID + ")" + ")";

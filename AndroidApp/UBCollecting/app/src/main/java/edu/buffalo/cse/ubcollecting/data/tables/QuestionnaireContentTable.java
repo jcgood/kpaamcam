@@ -28,8 +28,8 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT, " + KEY_QUESTIONNAIRE_ID + " TEXT, "
-                + KEY_QUESTION_ID + " TEXT," + KEY_QUESTION_ORDER + " VARCHAR,"
+                + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_QUESTIONNAIRE_ID + " TEXT NOT NULL, "
+                + KEY_QUESTION_ID + " TEXT NOT NULL," + KEY_QUESTION_ORDER + " VARCHAR NOT NULL,"
                 + "PRIMARY KEY(" + KEY_QUESTIONNAIRE_ID + ", " + KEY_QUESTION_ID + "),"
                 + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES " + QuestionTable.TABLE
                 + " (" + QuestionTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_QUESTIONNAIRE_ID

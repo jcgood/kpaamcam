@@ -26,7 +26,7 @@ public class AnswerTable extends Table<Answer> {
 
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT," + KEY_QUESTIONNAIRE_ID
+                + TABLE + "(" + KEY_ID + " TEXT NOT NULL," + KEY_QUESTIONNAIRE_ID
                 + " TEXT," + KEY_QUESTION_ID + " TEXT," + KEY_LABEL + " VARCHAR,"
                 + KEY_TEXT + " VARCHAR," + KEY_SESSION_ID + " TEXT, "
                 + " PRIMARY KEY(" + KEY_QUESTIONNAIRE_ID + ", " + KEY_QUESTION_ID + ", " + KEY_ID + ", "

@@ -26,7 +26,7 @@ public class QuestionTable extends Table<Question> {
     public String createTable() {
 //        Log.i("QuestionTable", TABLE);
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY, " + KEY_TYPE + " VARCHAR, " + KEY_DISPLAY_TEXT + " VARCHAR" + ")";
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL, " + KEY_TYPE + " VARCHAR, " + KEY_DISPLAY_TEXT + " VARCHAR" + ")";
     }
 
     @Override

@@ -32,10 +32,10 @@ public class SessionTable extends Table<Session> {
 
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_LABEL
-                + " VARCHAR," + KEY_NAME + " VARCHAR," + KEY_START_TIME
-                + " DATETIME," + KEY_LOCATION + " VARCHAR," + KEY_DESCRIPTION
-                + " VARCHAR," + KEY_FIELD_TRIP_ID + " TEXT," + " FOREIGN KEY(" + KEY_FIELD_TRIP_ID
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_LABEL
+                + " VARCHAR," + KEY_NAME + " VARCHAR NOT NULL," + KEY_START_TIME
+                + " DATETIME NOT NULL," + KEY_LOCATION + " VARCHAR," + KEY_DESCRIPTION
+                + " VARCHAR," + KEY_FIELD_TRIP_ID + " TEXT NOT NULL," + " FOREIGN KEY(" + KEY_FIELD_TRIP_ID
                 + ") REFERENCES " + FieldTripTable.TABLE + " (" + FieldTripTable.KEY_ID + ")" + ")";
     }
 

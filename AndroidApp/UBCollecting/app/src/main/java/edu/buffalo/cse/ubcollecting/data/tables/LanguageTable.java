@@ -33,8 +33,8 @@ public class LanguageTable extends Table<Language> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_NAME
-                + " VARCHAR," + KEY_DESCRIPTION + " VARCHAR," + KEY_OTHER_NAMES
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_NAME
+                + " VARCHAR NOT NULL," + KEY_DESCRIPTION + " VARCHAR," + KEY_OTHER_NAMES
                 + " VARCHAR," + KEY_TYPE_ID + " TEXT," + " FOREIGN KEY(" + KEY_TYPE_ID
                 + ") REFERENCES " + LanguageTypeTable.TABLE + " (" + LanguageTypeTable.KEY_ID + ")"
                 + ")";

@@ -23,7 +23,7 @@ public class LanguageTypeTable extends Table<LanguageType> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_NAME + " VARCHAR" + ")";
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_NAME + " VARCHAR NOT NULL" + ")";
     }
 
     @Override

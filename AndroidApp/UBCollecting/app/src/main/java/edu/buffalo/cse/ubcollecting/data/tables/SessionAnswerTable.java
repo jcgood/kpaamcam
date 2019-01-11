@@ -25,8 +25,8 @@ public class SessionAnswerTable extends Table<SessionAnswer> {
     public String createTable() {
 
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT, " + KEY_SESSION_ID + " TEXT, "
-                + KEY_QUESTIONNAIRE_ID + " TEXT," + KEY_QUESTION_ID + " TEXT,"
+                + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_SESSION_ID + " TEXT NOT NULL, "
+                + KEY_QUESTIONNAIRE_ID + " TEXT NOT NULL," + KEY_QUESTION_ID + " TEXT NOT NULL,"
                 + KEY_ANSWER_ID + " TEXT,"
                 + " PRIMARY KEY(" + KEY_SESSION_ID + ", " + KEY_QUESTIONNAIRE_ID + ", "
                 + KEY_QUESTION_ID + ", " + KEY_ANSWER_ID + "),"

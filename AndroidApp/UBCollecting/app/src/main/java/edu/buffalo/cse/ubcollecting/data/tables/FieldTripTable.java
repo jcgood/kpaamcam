@@ -30,7 +30,7 @@ public class FieldTripTable extends Table<FieldTrip> {
     public String createTable() {
         return "CREATE TABLE "
                 + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_FIELD_TRIP_NAME
-                + " VARCHAR," + KEY_START_DATE + " DATE," + KEY_END_DATE
+                + " VARCHAR NOT NULL," + KEY_START_DATE + " DATE NOT NULL," + KEY_END_DATE
                 + " DATE" + ")";
     }
 

@@ -38,11 +38,11 @@ public class PersonTable extends Table<Person> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "( " + KEY_ID + " TEXT PRIMARY KEY, " + KEY_NAME
-                + " VARCHAR, " + KEY_OTHER_NAMES + " VARCHAR, " + KEY_DOB
-                + " DATETIME, " + KEY_MAIN_ROLE_ID + " TEXT," + KEY_PHOTO + " BLOB, "
+                + TABLE + "( " + KEY_ID + " TEXT PRIMARY KEY NOT NULL, " + KEY_NAME
+                + " VARCHAR NOT NULL, " + KEY_OTHER_NAMES + " VARCHAR, " + KEY_DOB
+                + " DATETIME, " + KEY_MAIN_ROLE_ID + " TEXT NOT NULL," + KEY_PHOTO + " BLOB, "
                 + KEY_PHOTO_DESC + " VARCHAR, " + KEY_INTRO_QUEST_DESC + " VARCHAR, "
-                + KEY_EMAIL + " TEXT, " + KEY_PASSWORD + " TEXT,"
+                + KEY_EMAIL + " TEXT NOT NULL, " + KEY_PASSWORD + " TEXT NOT NULL,"
                 + " FOREIGN KEY (" + KEY_MAIN_ROLE_ID + ") REFERENCES " + RoleTable.TABLE
                 + " (" + RoleTable.KEY_ID + ")" + ")";
     }

@@ -33,8 +33,8 @@ public class SessionPersonTable extends Table<SessionPerson> {
 
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT, " + KEY_SESSION_ID + " TEXT, "
-                + KEY_PERSON_ID + " TEXT," + KEY_ROLE_ID + " TEXT,"
+                + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_SESSION_ID + " TEXT NOT NULL, "
+                + KEY_PERSON_ID + " TEXT NOT NULL," + KEY_ROLE_ID + " TEXT NOT NULL,"
                 + "PRIMARY KEY(" + KEY_SESSION_ID + ", " + KEY_ROLE_ID + ", " + KEY_PERSON_ID + "),"
                 + " FOREIGN KEY(" + KEY_SESSION_ID + ") REFERENCES " + SessionTable.TABLE
                 + " (" + SessionTable.KEY_ID + "),"

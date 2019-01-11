@@ -34,9 +34,9 @@ public class RoleTable extends Table<Role> {
     public String createTable() {
         Log.i("Role TabLe NAME: ", TABLE);
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_NAME
-                + " VARCHAR," + KEY_INTRO_REQUIRED + " INTEGER," + KEY_PHOTO_REQUIRED
-                + " INTEGER," + KEY_ON_CLIENT + " INTEGER" + ")";
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_NAME
+                + " VARCHAR NOT NULL," + KEY_INTRO_REQUIRED + " INTEGER NOT NULL," + KEY_PHOTO_REQUIRED
+                + " INTEGER NOT NULL," + KEY_ON_CLIENT + " INTEGER NOT NULL" + ")";
     }
 
     @Override

@@ -21,6 +21,11 @@ public class FileTable extends Table<File> {
     public static final String KEY_START_TIME = "StartTime";
     public static final String KEY_END_TIME = "EndTime";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
+
     public FileTable() {
         super();
         activityClass = FileActivity.class;
@@ -33,6 +38,8 @@ public class FileTable extends Table<File> {
                 + " VARCHAR NOT NULL," + KEY_ANSWER_ID + " TEXT NOT NULL," + KEY_TYPE
                 + " VARCHAR," + KEY_PATH + " VARCHAR NOT NULL," + KEY_CREATOR_ID
                 + " TEXT NOT NULL," + KEY_START_TIME + " DATETIME," + KEY_END_TIME + " DATETIME,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + " FOREIGN KEY(" + KEY_ANSWER_ID + ") REFERENCES " + AnswerTable.TABLE
                 + " (" + AnswerTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_CREATOR_ID + ") REFERENCES "
                 + PersonTable.TABLE + " (" + PersonTable.KEY_ID + ")" + ")";

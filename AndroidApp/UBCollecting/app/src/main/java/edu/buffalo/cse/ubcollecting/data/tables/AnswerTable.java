@@ -18,6 +18,10 @@ public class AnswerTable extends Table<Answer> {
     public static final String KEY_TEXT = "Text";
     public static final String KEY_SESSION_ID = "SessionId";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
 
     public AnswerTable() {
         super();
@@ -29,6 +33,8 @@ public class AnswerTable extends Table<Answer> {
                 + TABLE + "(" + KEY_ID + " TEXT NOT NULL," + KEY_QUESTIONNAIRE_ID
                 + " TEXT," + KEY_QUESTION_ID + " TEXT," + KEY_LABEL + " VARCHAR,"
                 + KEY_TEXT + " VARCHAR," + KEY_SESSION_ID + " TEXT, "
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + " PRIMARY KEY(" + KEY_QUESTIONNAIRE_ID + ", " + KEY_QUESTION_ID + ", " + KEY_ID + ", "
                 + KEY_SESSION_ID + "),"
                 + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES " + QuestionTable.TABLE

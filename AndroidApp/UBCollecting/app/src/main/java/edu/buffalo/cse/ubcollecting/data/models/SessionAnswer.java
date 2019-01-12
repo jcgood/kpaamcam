@@ -13,6 +13,34 @@ public class SessionAnswer extends Model {
     public String questionId;
     public String answerId;
 
+    public double version;
+    public String notes;
+    public int deleted;
+
+    public double getVersion(){
+        return version;
+    }
+
+    public void setVersion(double version){
+        this.version=version;
+    }
+
+    public int getDeleted(){
+        return deleted;
+    }
+
+    public void setDeleted(int deleted){
+        this.deleted=deleted;
+    }
+
+    public void setNotes(String note){
+        this.notes=note;
+    }
+
+    public String getNotes(){
+        return  notes;
+    }
+
     public String getIdentifier() {
         //TODO
         return "SESSION ANSWER";

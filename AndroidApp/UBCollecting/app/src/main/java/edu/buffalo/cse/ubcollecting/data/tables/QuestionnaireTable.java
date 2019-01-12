@@ -18,6 +18,10 @@ public class QuestionnaireTable extends Table<Questionnaire> {
     public static final String KEY_DESCRIPTION = "Description";
     public static final String KEY_TYPE_ID = "TypeId";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
     public QuestionnaireTable() {
         super();
         activityClass = QuestionnaireActivity.class;
@@ -28,7 +32,10 @@ public class QuestionnaireTable extends Table<Questionnaire> {
 
         return "CREATE TABLE "
                 + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_NAME + " VARCHAR NOT NULL," + KEY_DESCRIPTION
-                + " VARCHAR," + KEY_TYPE_ID + " TEXT," + " FOREIGN KEY(" + KEY_TYPE_ID
+                + " VARCHAR," + KEY_TYPE_ID + " TEXT,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
+                + " FOREIGN KEY(" + KEY_TYPE_ID
                 + ") REFERENCES " + QuestionnaireTypeTable.TABLE + " (" + QuestionnaireTypeTable.KEY_ID + ")"
                 + ")";
 

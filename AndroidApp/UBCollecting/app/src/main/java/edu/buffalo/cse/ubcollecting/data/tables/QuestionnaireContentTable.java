@@ -20,6 +20,11 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
     public static final String KEY_QUESTION_ID = "QuestionId";
     public static final String KEY_QUESTION_ORDER = "QuestionOrder";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
+
     public QuestionnaireContentTable() {
         super();
         activityClass = QuestionnaireContentActivity.class;
@@ -30,6 +35,8 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
         return "CREATE TABLE "
                 + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_QUESTIONNAIRE_ID + " TEXT NOT NULL, "
                 + KEY_QUESTION_ID + " TEXT NOT NULL," + KEY_QUESTION_ORDER + " VARCHAR NOT NULL,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + "PRIMARY KEY(" + KEY_QUESTIONNAIRE_ID + ", " + KEY_QUESTION_ID + "),"
                 + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES " + QuestionTable.TABLE
                 + " (" + QuestionTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_QUESTIONNAIRE_ID

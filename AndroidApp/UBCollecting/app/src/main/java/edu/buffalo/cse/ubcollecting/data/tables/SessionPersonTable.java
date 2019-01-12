@@ -26,6 +26,10 @@ public class SessionPersonTable extends Table<SessionPerson> {
     public static final String KEY_PERSON_ID = "PersonId";
     public static final String KEY_ROLE_ID = "RoleId";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
     public SessionPersonTable() {
         super();
         activityClass = SessionPersonActivity.class;
@@ -35,6 +39,8 @@ public class SessionPersonTable extends Table<SessionPerson> {
         return "CREATE TABLE "
                 + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_SESSION_ID + " TEXT NOT NULL, "
                 + KEY_PERSON_ID + " TEXT NOT NULL," + KEY_ROLE_ID + " TEXT NOT NULL,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + "PRIMARY KEY(" + KEY_SESSION_ID + ", " + KEY_ROLE_ID + ", " + KEY_PERSON_ID + "),"
                 + " FOREIGN KEY(" + KEY_SESSION_ID + ") REFERENCES " + SessionTable.TABLE
                 + " (" + SessionTable.KEY_ID + "),"

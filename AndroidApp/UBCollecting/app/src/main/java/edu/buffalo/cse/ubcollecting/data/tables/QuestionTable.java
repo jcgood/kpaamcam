@@ -16,6 +16,10 @@ public class QuestionTable extends Table<Question> {
     public static final String KEY_TYPE = "Type";
     public static final String KEY_DISPLAY_TEXT = "DisplayText";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
 
     public QuestionTable() {
         super();
@@ -26,7 +30,12 @@ public class QuestionTable extends Table<Question> {
     public String createTable() {
 //        Log.i("QuestionTable", TABLE);
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL, " + KEY_TYPE + " VARCHAR, " + KEY_DISPLAY_TEXT + " VARCHAR" + ")";
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL, "
+                + KEY_TYPE + " VARCHAR, "
+                + KEY_DISPLAY_TEXT + " VARCHAR,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL,"
+                + KEY_NOTES + " VARCHAR DEFAULT '',"
+                + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL"+ ")";
     }
 
     @Override

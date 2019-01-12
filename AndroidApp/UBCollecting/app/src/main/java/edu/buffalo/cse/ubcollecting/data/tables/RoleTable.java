@@ -25,6 +25,10 @@ public class RoleTable extends Table<Role> {
     public static final String KEY_PHOTO_REQUIRED = "PhotoRequired";
     public static final String KEY_ON_CLIENT = "OnClient";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
     public RoleTable() {
         super();
         activityClass = RoleActivity.class;
@@ -34,9 +38,14 @@ public class RoleTable extends Table<Role> {
     public String createTable() {
         Log.i("Role TabLe NAME: ", TABLE);
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_NAME
-                + " VARCHAR NOT NULL," + KEY_INTRO_REQUIRED + " INTEGER NOT NULL," + KEY_PHOTO_REQUIRED
-                + " INTEGER NOT NULL," + KEY_ON_CLIENT + " INTEGER NOT NULL" + ")";
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL,"
+                + KEY_NAME + " VARCHAR NOT NULL,"
+                + KEY_INTRO_REQUIRED + " INTEGER NOT NULL,"
+                + KEY_PHOTO_REQUIRED + " INTEGER NOT NULL,"
+                + KEY_ON_CLIENT + " INTEGER NOT NULL,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL,"
+                + KEY_NOTES + " VARCHAR DEFAULT '',"
+                + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL"+ ")";
     }
 
     @Override

@@ -22,6 +22,11 @@ public class FieldTripTable extends Table<FieldTrip> {
     public static final String KEY_START_DATE = "StartDate";
     public static final String KEY_END_DATE = "EndDate";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
+
     public FieldTripTable() {
         super();
         activityClass = FieldTripActivity.class;
@@ -31,7 +36,8 @@ public class FieldTripTable extends Table<FieldTrip> {
         return "CREATE TABLE "
                 + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_FIELD_TRIP_NAME
                 + " VARCHAR NOT NULL," + KEY_START_DATE + " DATE NOT NULL," + KEY_END_DATE
-                + " DATE" + ")";
+                + " DATE," + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL" + ")";
     }
 
     @Override

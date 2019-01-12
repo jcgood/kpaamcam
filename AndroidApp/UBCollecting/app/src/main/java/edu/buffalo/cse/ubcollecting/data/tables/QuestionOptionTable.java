@@ -17,6 +17,11 @@ public class QuestionOptionTable extends Table<QuestionOption> {
     public static final String KEY_QUESTION_LANGUAGE_ID = "QuestionLanguageId";
     public static final String KEY_OPTION_TEXT = "OptionText";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
+
     public QuestionOptionTable() {
         super();
         activityClass = QuestionOptionActivity.class;
@@ -27,6 +32,8 @@ public class QuestionOptionTable extends Table<QuestionOption> {
         return "CREATE TABLE "
                 + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_QUESTION_ID + " TEXT NOT NULL, "
                 + KEY_QUESTION_LANGUAGE_ID + " TEXT," + KEY_OPTION_TEXT + " VARCHAR,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + "PRIMARY KEY(" + KEY_QUESTION_ID + ", " + KEY_QUESTION_LANGUAGE_ID + "),"
                 + " FOREIGN KEY(" + KEY_QUESTION_LANGUAGE_ID + ") REFERENCES " + LanguageTable.TABLE
                 + " (" + LanguageTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES "

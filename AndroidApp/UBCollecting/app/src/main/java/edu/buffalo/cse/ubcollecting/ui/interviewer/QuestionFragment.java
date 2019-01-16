@@ -112,6 +112,20 @@ public class QuestionFragment extends Fragment{
             }
         }
     }
+    private class SkipQuestionOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view){
+            Toast.makeText(getContext(), "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
+            questionManager.getNextQuestion();
+        }
+    }
+
+    private class quitQuestionnaireOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view){
+            questionManager.saveAndQuitQuestionnaire(questionContent);
+        }
+    }
 
     private void submitTextAnswer(){
         answer.setQuestionId(questionContent.getQuestionId());

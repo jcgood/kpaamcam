@@ -16,6 +16,8 @@ import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
+import edu.buffalo.cse.ubcollecting.data.models.Session;
+import edu.buffalo.cse.ubcollecting.data.models.SessionQuestionnaire;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
@@ -71,8 +73,20 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     }
 
     public boolean isLastQuestion(){
+
         return questionIndex == questionnaire.size()-1;
     }
+
+    public void saveAndQuitQuestionnaire(QuestionnaireContent questionnaireContent){
+        SessionQuestionnaire sessionQuestionnaire = new SessionQuestionnaire();
+        sessionQuestionnaire.setQuestionnaire_id(getQuestionnaire(getIntent()).getId());
+        sessionQuestionnaire.setSessionId(getSession(getIntent()).getId());
+        sessionQuestionnaire.setLastQuestionAnswered(questionnaireContent.getQuestionId());
+        DatabaseHelper.SESSION_QUESTIONNAIRE_TABLE.insert(sessionQuestionnaire);
+        Toast.makeText(this, "The questionnaire has been saved, you may resume it at any point", Toast.LENGTH_LONG).show();
+
+    }
+
 
     /**
      * Helper function to extract a {@link edu.buffalo.cse.ubcollecting.data.models.Questionnaire} extra from and {@link Intent}
@@ -83,6 +97,12 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         Serializable serializableObject = data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
 
         return (Questionnaire) serializableObject;
+    }
+
+    public static Session getSession(Intent data) {
+        Serializable serializableObject = data.getSerializableExtra(SELECTED_SESSION);
+
+        return (Session) serializableObject;
     }
 
     public static Intent newIntent(Context packageContext) {

@@ -43,7 +43,6 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
 
         entryRecyclerView = findViewById(R.id.questionnaire_recycler_view);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         entryAdapter = new UserSelectQuestionnaireActivity.EntryAdapter(DatabaseHelper.QUESTIONNAIRE_TABLE.getAll());
         entryRecyclerView.setAdapter(entryAdapter);
 

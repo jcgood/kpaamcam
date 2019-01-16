@@ -43,6 +43,8 @@ public class QuestionFragment extends Fragment{
     private TextView questionText;
     private EditText answerText;
     private Button nextQuestion;
+    private Button skipQuestion;
+    private Button saveAndExitQuestion;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
@@ -68,12 +70,15 @@ public class QuestionFragment extends Fragment{
         questionLangSpinner.setSelection(getEnglishQuestionIndex());
 
         nextQuestion = view.findViewById(R.id.next_question);
+        skipQuestion = view.findViewById(R.id.skip_question);
+        saveAndExitQuestion = view.findViewById(R.id.saveandexit_question);
 
         if(questionManager.isLastQuestion()){
             nextQuestion.setText("Finish");
         }
         nextQuestion.setOnClickListener(new QuestionFragment.NextQuestionOnClickListener());
-
+        skipQuestion.setOnClickListener(new QuestionFragment.SkipQuestionOnClickListener());
+        saveAndExitQuestion.setOnClickListener(new QuestionFragment.SaveAndExitQuestionOnClickListener());
 
         return view;
     }
@@ -124,6 +129,22 @@ public class QuestionFragment extends Fragment{
         @Override
         public void onClick(View view){
             questionManager.saveAndQuitQuestionnaire(questionContent);
+        }
+    }
+
+    private class SkipQuestionOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+                submitTextAnswer();
+                questionManager.getNextQuestion();
+        }
+    }
+
+    private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            submitTextAnswer();
+            //TODO
         }
     }
 

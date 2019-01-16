@@ -17,7 +17,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/next_question"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="271dp">
 
     </Spinner>
 
@@ -51,12 +53,33 @@
 
     <Button
         android:id="@+id/next_question"
-        android:layout_width="wrap_content"
+        android:layout_width="244dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/question_text"
+        android:layout_marginTop="266dp"
+        android:layout_marginEnd="67dp"
         android:text="Next" />
+
+    <Button
+        android:id="@+id/skip_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/question_text"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="33dp"
+        android:text="Skip " />
+
+    <Button
+        android:id="@+id/saveandexit_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/question_text"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-91dp"
+        android:text="Save and Exit" />
 
 
 </RelativeLayout>

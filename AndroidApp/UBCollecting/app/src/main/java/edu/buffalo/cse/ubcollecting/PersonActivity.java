@@ -23,6 +23,9 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.ParseException;
 
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Person;
@@ -240,10 +243,21 @@ public class PersonActivity extends EntryActivity<Person> {
 
             }
 
+            SimpleDateFormat format = new SimpleDateFormat();
+            format.applyPattern("yyyy-mm-dd");
+            format.setLenient(false);
+
+            try {
+                format.parse(dobField.getText().toString().trim());
+            } catch (ParseException e) {
+                dobField.setError("You must fill out the date in YYYY-MM-DD format.");
+                valid = false;
+            }
+
         }
 
         if (!valid) {
-            Toast.makeText(this, "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Fill in All Required Fields!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

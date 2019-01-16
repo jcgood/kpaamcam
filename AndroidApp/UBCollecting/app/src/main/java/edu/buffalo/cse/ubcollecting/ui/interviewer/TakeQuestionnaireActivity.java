@@ -83,8 +83,13 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         sessionQuestionnaire.setSessionId(getSession(getIntent()).getId());
         sessionQuestionnaire.setLastQuestionAnswered(questionnaireContent.getQuestionId());
         DatabaseHelper.SESSION_QUESTIONNAIRE_TABLE.insert(sessionQuestionnaire);
+
         Toast.makeText(this, "The questionnaire has been saved, you may resume it at any point", Toast.LENGTH_LONG).show();
 
+        Intent i = UserSelectQuestionnaireActivity.newIntent(TakeQuestionnaireActivity.this);
+        i.putExtra(SELECTED_SESSION , getSession(getIntent()));
+        startActivity(i);
+        finish();
     }
 
 

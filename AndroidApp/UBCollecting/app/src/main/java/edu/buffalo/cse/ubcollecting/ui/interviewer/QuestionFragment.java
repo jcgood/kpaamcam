@@ -120,31 +120,19 @@ public class QuestionFragment extends Fragment{
     private class SkipQuestionOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view){
-            Toast.makeText(getContext(), "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Question Skipped", Toast.LENGTH_SHORT).show();
             questionManager.getNextQuestion();
         }
     }
 
-    private class quitQuestionnaireOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view){
-            questionManager.saveAndQuitQuestionnaire(questionContent);
-        }
-    }
 
-    private class SkipQuestionOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-                submitTextAnswer();
-                questionManager.getNextQuestion();
-        }
-    }
+
 
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             submitTextAnswer();
-            //TODO
+            questionManager.saveAndQuitQuestionnaire(questionContent);
         }
     }
 

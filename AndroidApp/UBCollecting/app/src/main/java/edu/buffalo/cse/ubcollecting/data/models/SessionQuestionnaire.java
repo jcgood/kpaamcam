@@ -8,17 +8,14 @@ public class SessionQuestionnaire extends Model {
     private String sessionId;
     private String lastQuestionAnswered;
     private String label;
+    private String version;
+    private String notes;
+    private String date;
+
 
 
     public String getIdentifier(){
         return label;
-    }
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public String getQuestionnaire_id() {
@@ -28,6 +25,14 @@ public class SessionQuestionnaire extends Model {
     public void setQuestionnaire_id(String questionnaire_id) {
         this.questionnaire_id = questionnaire_id;
     }
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
 
     public String getLastQuestionAnswered() {
         return lastQuestionAnswered;
@@ -35,5 +40,29 @@ public class SessionQuestionnaire extends Model {
 
     public void setLastQuestionAnswered(String lastQuestionAnswered) {
         this.lastQuestionAnswered = lastQuestionAnswered;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

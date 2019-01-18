@@ -3,10 +3,8 @@ package edu.buffalo.cse.ubcollecting.ui.interviewer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -22,7 +20,6 @@ import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
-import static edu.buffalo.cse.ubcollecting.SessionActivity.getSession;
 
 
 /**

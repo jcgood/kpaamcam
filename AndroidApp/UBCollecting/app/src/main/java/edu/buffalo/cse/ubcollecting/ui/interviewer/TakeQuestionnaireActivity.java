@@ -33,7 +33,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     private ViewPager questionViewPager;
     private ArrayList<QuestionnaireContent> questionnaire;
     public final static String QUESTIONNAIRE_CONTENT = "Question";
-    private int questionIndex = 0;
+    public static int questionIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +45,6 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         questionViewPager.setAdapter(questionStatePagerAdapter);
         getNextQuestion();
     }
-
-
-
 
     public void getNextQuestion(){
         if (questionIndex<questionnaire.size()){

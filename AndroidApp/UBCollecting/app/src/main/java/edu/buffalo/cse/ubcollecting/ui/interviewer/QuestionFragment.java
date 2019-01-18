@@ -26,12 +26,14 @@ import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
+import edu.buffalo.cse.ubcollecting.data.models.SessionQuestion;
+import edu.buffalo.cse.ubcollecting.data.models.SessionQuestionnaire;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
-
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 /**
  * A fragment to represent a question to be taken in a questionnaire.
  */
@@ -113,6 +115,7 @@ public class QuestionFragment extends Fragment{
         public void onClick(View view) {
             if(validateEntry()){
                 submitTextAnswer();
+                createSessionQuestion(true);
                 questionManager.getNextQuestion();
             }
         }
@@ -121,6 +124,7 @@ public class QuestionFragment extends Fragment{
         @Override
         public void onClick(View view){
             Toast.makeText(getContext(), "Question Skipped", Toast.LENGTH_SHORT).show();
+            createSessionQuestion(false);
             questionManager.getNextQuestion();
         }
     }
@@ -142,6 +146,13 @@ public class QuestionFragment extends Fragment{
         answer.setText(answerText.getText().toString());
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         DatabaseHelper.ANSWER_TABLE.insert(answer);
+    }
+
+    private void createSessionQuestion(Boolean completionStatus){
+        SessionQuestion sessionQuestion = new SessionQuestion();
+        sessionQuestion.setQuestionCompleted(completionStatus);
+        sessionQuestion.setSessionQuestionnaireId( ((SessionQuestionnaire) getArguments().getSerializable(SELECTED_QUESTIONNAIRE)).getId());
+        DatabaseHelper.SESSION_QUESTION_TABLE.insert(sessionQuestion);
     }
 
     protected boolean validateEntry() {

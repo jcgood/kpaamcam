@@ -5,7 +5,7 @@ import edu.buffalo.cse.ubcollecting.data.models.SessionQuestionnaire;
 
 public class SessionQuestionTable extends Table<SessionQuestion>{
 
-    public static final String Table = "SessionQuestion";
+    public static final String TABLE = "SessionQuestion";
 
     public static final  String KEY_ID = "id";
     public static final  String KEY_SESSION_QUESTIONNAIRE_ID = "SessionQuestionnaireid";
@@ -27,6 +27,6 @@ public class SessionQuestionTable extends Table<SessionQuestion>{
 
     @Override
     public String getTableName() {
-        return Table;
+        return TABLE;
     }
 }

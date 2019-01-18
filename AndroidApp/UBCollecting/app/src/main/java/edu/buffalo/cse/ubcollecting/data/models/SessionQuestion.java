@@ -27,11 +27,18 @@ public class SessionQuestion extends Model {
     }
 
     public String getQuestionCompleted() {
+
         return questionCompleted;
     }
 
-    public void setQuestionCompleted(String questionCompleted) {
-        this.questionCompleted = questionCompleted;
+    public void setQuestionCompleted(Boolean questionCompleted) {
+        if(questionCompleted){
+            this.questionCompleted = "1";
+        }
+        else{
+            this.questionCompleted = "0";
+        }
+
     }
     public String getVersion(){return version;}
 

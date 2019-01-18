@@ -56,6 +56,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             QuestionFragment questionFragment = new QuestionFragment();
             Bundle bundle = new Bundle();
             bundle.putSerializable(QUESTIONNAIRE_CONTENT,questionnaire.get(questionIndex));
+            bundle.putSerializable(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()).getId());
             bundle.putSerializable(SELECTED_SESSION, getSession(getIntent()));
             questionFragment.setArguments(bundle);
             questionStatePagerAdapter.addFragement(questionFragment);

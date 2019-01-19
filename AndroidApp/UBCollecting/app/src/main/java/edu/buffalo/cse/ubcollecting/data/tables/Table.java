@@ -157,7 +157,7 @@ public abstract class Table<E extends Model> implements Serializable {
 
             Class theClass = Class.forName(MODEL_PATH + this.getTableName());
 
-            String selectQuery = "SELECT  * FROM " + this.getTableName();
+            String selectQuery = "SELECT  * FROM " + this.getTableName()+" WHERE Deleted!=1";
             SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
             Cursor cursor = db.rawQuery(selectQuery, null);
@@ -363,8 +363,8 @@ public abstract class Table<E extends Model> implements Serializable {
 
         String[] selectionArgs = {id};
 
-        db.delete(this.getTableName(), selection, selectionArgs);
-
+        //db.delete(this.getTableName(), selection, selectionArgs);
+        db.execSQL("UPDATE " + this.getTableName()+ " SET Deleted = 1 WHERE id = "+ id);
         DatabaseManager.getInstance().closeDatabase();
 
     }
@@ -384,6 +384,9 @@ public abstract class Table<E extends Model> implements Serializable {
 
             if (Integer.TYPE.equals(ptype)) {
                 int value = cursor.getInt(cursor.getColumnIndex(key));
+                method.invoke(model, value);
+            } else if (Double.TYPE.equals(ptype)) {
+                double value = cursor.getDouble(cursor.getColumnIndex(key));
                 method.invoke(model, value);
             } else if ("".getClass().equals(ptype)) {
                 String value = cursor.getString(cursor.getColumnIndex(key));

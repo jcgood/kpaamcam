@@ -64,11 +64,10 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
         public void bindEntry(final Questionnaire questionnaire) {
             this.questionnaire = questionnaire;
             selectButton.setText(this.questionnaire.getIdentifier());
-
             selectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = TakeQuestionnaireActivity.newIntent(UserSelectQuestionnaireActivity.this);
+                    Intent i = ViewQuestions.newIntent(UserSelectQuestionnaireActivity.this);
                     i.putExtra(SELECTED_SESSION,getSession(getIntent()));
                     i.putExtra(SELECTED_QUESTIONNAIRE, questionnaire);
                     startActivity(i);

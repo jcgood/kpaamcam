@@ -15,6 +15,11 @@ public class QuestionnaireTypeTable extends Table<QuestionnaireType> {
     public static final String KEY_ID = "id";
     public static final String KEY_NAME = "Name";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
+
     public QuestionnaireTypeTable() {
         super();
         activityClass = QuestionnaireTypeActivity.class;
@@ -24,7 +29,10 @@ public class QuestionnaireTypeTable extends Table<QuestionnaireType> {
     public String createTable() {
         //  Added primary key below unlike in original script
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_NAME + " VARCHAR" + ")";
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_NAME
+                + " VARCHAR NOT NULL," + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL,"
+                + KEY_NOTES + " VARCHAR DEFAULT '',"
+                + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL"+ ")";
     }
 
     @Override

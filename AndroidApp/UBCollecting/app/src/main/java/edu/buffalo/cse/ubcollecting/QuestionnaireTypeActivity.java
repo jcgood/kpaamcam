@@ -1,5 +1,6 @@
 package edu.buffalo.cse.ubcollecting;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +35,7 @@ public class QuestionnaireTypeActivity extends EntryActivity<QuestionnaireType> 
         return true;
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

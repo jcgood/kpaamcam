@@ -25,6 +25,10 @@ public class SessionTable extends Table<Session> {
     public static final String KEY_DESCRIPTION = "Description";
     public static final String KEY_FIELD_TRIP_ID = "FieldTripId";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
     public SessionTable() {
         super();
         activityClass = SessionActivity.class;
@@ -32,10 +36,13 @@ public class SessionTable extends Table<Session> {
 
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY," + KEY_LABEL
-                + " VARCHAR," + KEY_NAME + " VARCHAR," + KEY_START_TIME
-                + " DATETIME," + KEY_LOCATION + " VARCHAR," + KEY_DESCRIPTION
-                + " VARCHAR," + KEY_FIELD_TRIP_ID + " TEXT," + " FOREIGN KEY(" + KEY_FIELD_TRIP_ID
+                + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY NOT NULL," + KEY_LABEL
+                + " VARCHAR," + KEY_NAME + " VARCHAR NOT NULL," + KEY_START_TIME
+                + " DATETIME NOT NULL," + KEY_LOCATION + " VARCHAR," + KEY_DESCRIPTION
+                + " VARCHAR," + KEY_FIELD_TRIP_ID + " TEXT NOT NULL,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
+                + " FOREIGN KEY(" + KEY_FIELD_TRIP_ID
                 + ") REFERENCES " + FieldTripTable.TABLE + " (" + FieldTripTable.KEY_ID + ")" + ")";
     }
 

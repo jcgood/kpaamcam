@@ -17,6 +17,10 @@ public class SessionAnswerTable extends Table<SessionAnswer> {
     public static final String KEY_QUESTION_ID = "QuestionId";
     public static final String KEY_ANSWER_ID = "AnswerId";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
     public SessionAnswerTable() {
         super();
         activityClass = SessionAnswerActivity.class;
@@ -25,9 +29,11 @@ public class SessionAnswerTable extends Table<SessionAnswer> {
     public String createTable() {
 
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT, " + KEY_SESSION_ID + " TEXT, "
-                + KEY_QUESTIONNAIRE_ID + " TEXT," + KEY_QUESTION_ID + " TEXT,"
+                + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_SESSION_ID + " TEXT NOT NULL, "
+                + KEY_QUESTIONNAIRE_ID + " TEXT NOT NULL," + KEY_QUESTION_ID + " TEXT NOT NULL,"
                 + KEY_ANSWER_ID + " TEXT,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + " PRIMARY KEY(" + KEY_SESSION_ID + ", " + KEY_QUESTIONNAIRE_ID + ", "
                 + KEY_QUESTION_ID + ", " + KEY_ANSWER_ID + "),"
                 + " FOREIGN KEY(" + KEY_QUESTIONNAIRE_ID + ") REFERENCES " + QuestionnaireTable.TABLE

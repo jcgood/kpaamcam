@@ -1,7 +1,9 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,16 +15,22 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.FieldTrip;
+import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.SESSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity.SELECTED_FIELD_TRIP;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
+import static edu.buffalo.cse.ubcollecting.ui.LoginActivity.USER_ID_KEY;
+import static edu.buffalo.cse.ubcollecting.ui.LoginActivity.USER_INFO_PREF_KEY;
+
 
 
 public class SessionActivity extends EntryActivity<Session> {
+
 
     private static final String TAG = SessionActivity.class.getSimpleName().toString();
 
@@ -74,7 +82,8 @@ public class SessionActivity extends EntryActivity<Session> {
     @Override
     void setEntryByUI() {
         entry.setName(nameField.getText().toString());
-        entry.setLabel(labelField.getText().toString());
+
+        entry.setLabel(createLabel(nameField.getText().toString(), locationField.getText().toString()));
 
         if (getIntent().getFlags() != Table.FLAG_EDIT_ENTRY) {
             Date currentDate = new Date();
@@ -126,6 +135,22 @@ public class SessionActivity extends EntryActivity<Session> {
         Serializable serializableObject = data.getSerializableExtra(SELECTED_SESSION);
 
         return (Session) serializableObject;
+    }
+
+    private String createLabel(String name, String location){
+        //Get the date for the label
+        Date currentDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String formatDate = formatter.format(currentDate);
+
+        //Get the person for the label
+        SharedPreferences userInfoPreferences =
+                getSharedPreferences(USER_INFO_PREF_KEY, Activity.MODE_PRIVATE);
+        String userId = userInfoPreferences.getString(USER_ID_KEY,"NOTHING FOUND");
+        Person user = DatabaseHelper.PERSON_TABLE.findById(userId);
+        String username = user.getName();
+
+        return username+ "-" + formatDate + "-" + location;
     }
 
 }

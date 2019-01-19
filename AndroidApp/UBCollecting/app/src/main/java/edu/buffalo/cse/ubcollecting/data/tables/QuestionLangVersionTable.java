@@ -26,6 +26,11 @@ public class QuestionLangVersionTable extends Table<QuestionLangVersion> {
     public static final String KEY_QUESTION_LANG_ID = "QuestionLanguageId";
     public static final String KEY_QUESTION_TEXT = "QuestionText";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
+
 
     public QuestionLangVersionTable() {
         super();
@@ -35,8 +40,10 @@ public class QuestionLangVersionTable extends Table<QuestionLangVersion> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT, " + KEY_QUESTION_ID + " TEXT, "
-                + KEY_QUESTION_LANG_ID + " TEXT," + KEY_QUESTION_TEXT + " VARCHAR,"
+                + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_QUESTION_ID + " TEXT NOT NULL, "
+                + KEY_QUESTION_LANG_ID + " TEXT NOT NULL," + KEY_QUESTION_TEXT + " VARCHAR NOT NULL,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + "PRIMARY KEY(" + KEY_QUESTION_ID + ", " + KEY_QUESTION_LANG_ID + "),"
                 + " FOREIGN KEY(" + KEY_QUESTION_LANG_ID + ") REFERENCES " + LanguageTable.TABLE
                 + " (" + LanguageTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES " + QuestionTable.TABLE

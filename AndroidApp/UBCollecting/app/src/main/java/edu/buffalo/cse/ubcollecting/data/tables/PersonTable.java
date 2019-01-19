@@ -7,6 +7,8 @@ package edu.buffalo.cse.ubcollecting.data.tables;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.lang.reflect.Array;
+
 import edu.buffalo.cse.ubcollecting.PersonActivity;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.DatabaseManager;
@@ -30,6 +32,11 @@ public class PersonTable extends Table<Person> {
     public static final String KEY_EMAIL = "Email";
     public static final String KEY_PASSWORD = "Password";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
+
     public PersonTable() {
         super();
         activityClass = PersonActivity.class;
@@ -38,15 +45,16 @@ public class PersonTable extends Table<Person> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "( " + KEY_ID + " TEXT PRIMARY KEY, " + KEY_NAME
-                + " VARCHAR, " + KEY_OTHER_NAMES + " VARCHAR, " + KEY_DOB
-                + " DATETIME, " + KEY_MAIN_ROLE_ID + " TEXT," + KEY_PHOTO + " BLOB, "
+                + TABLE + "( " + KEY_ID + " TEXT PRIMARY KEY NOT NULL, " + KEY_NAME
+                + " VARCHAR NOT NULL, " + KEY_OTHER_NAMES + " VARCHAR, " + KEY_DOB
+                + " DATETIME, " + KEY_MAIN_ROLE_ID + " TEXT NOT NULL," + KEY_PHOTO + " BLOB, "
                 + KEY_PHOTO_DESC + " VARCHAR, " + KEY_INTRO_QUEST_DESC + " VARCHAR, "
-                + KEY_EMAIL + " TEXT, " + KEY_PASSWORD + " TEXT,"
+                + KEY_EMAIL + " TEXT NOT NULL, " + KEY_PASSWORD + " TEXT NOT NULL, "
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL, " + KEY_NOTES
+                + " VARCHAR DEFAULT '', " + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL, "
                 + " FOREIGN KEY (" + KEY_MAIN_ROLE_ID + ") REFERENCES " + RoleTable.TABLE
                 + " (" + RoleTable.KEY_ID + ")" + ")";
     }
-
     @Override
     public String getTableName() {
         return TABLE;

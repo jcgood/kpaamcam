@@ -17,7 +17,7 @@ public class SessionQuestionnaireTable extends Table<SessionQuestionnaire> {
 
     @Override
     public String createTable() {
-        return "CREATE TABLE " + TABLE + "(" + KEY_ID + " TEXT PRIMARY KEY,"+ KEY_QUESTIONNAIRE_ID
+        return "CREATE TABLE " + TABLE + "( " + KEY_ID + " TEXT PRIMARY KEY,"+ KEY_QUESTIONNAIRE_ID
                 + " TEXT NOT NULL, " + KEY_SESSION_ID + " TEXT NOT NULL, "+ KEY_LAST_QUESTION_ANSWERED
                 + " TEXT, " + KEY_VERSION + " NUMERIC NOT NULL DEFAULT 1.0 , " + KEY_NOTES
                 + " TEXT, " + KEY_DATE + " TEXT, " + " FOREIGN KEY ( " + KEY_QUESTIONNAIRE_ID +

@@ -49,7 +49,7 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
 
     }
 
-    private class EntryHolder extends RecyclerView.ViewHolder {
+private class EntryHolder extends RecyclerView.ViewHolder {
 
         private Questionnaire questionnaire;
         private Button selectButton;
@@ -102,6 +102,8 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
             Questionnaire entry = entryList.get(position);
             holder.bindEntry(entry);
         }
+
+        private static final String TAG = "EntryAdapter";
 
         @Override
         public int getItemCount() {

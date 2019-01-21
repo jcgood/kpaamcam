@@ -2,14 +2,21 @@ package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,14 +24,19 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
+import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
+import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
+import edu.buffalo.cse.ubcollecting.data.tables.QuestionTable;
 
 import static edu.buffalo.cse.ubcollecting.SessionActivity.getSession;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.getQuestionnaire;
@@ -33,58 +45,117 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActiv
 
 public class ViewQuestions extends AppCompatActivity {
 
-    private ListView questionsList;
     private TextView questionnaireTitle;
+    private RecyclerView questionView;
+    private EntryAdapter entryAdapter;
 
     private ArrayList<QuestionnaireContent> questionnaire;
     public final static String QUESTIONNAIRE_CONTENT = "Question";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_questions);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        questionnaireTitle = (TextView) findViewById(R.id.questionareName);
-        questionsList=(ListView) findViewById(R.id.qList);
+
+        questionnaireTitle = (TextView) findViewById(R.id.questionnaireName);
+        questionView =(RecyclerView) findViewById(R.id.questionList);
+        questionView.setLayoutManager(new LinearLayoutManager(this));
+
+
 
         questionnaire = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(getQuestionnaire(getIntent()).getId());
         questionnaireTitle.setText("Questionnaire Name: "+getQuestionnaire(getIntent()).name);
 
-        ArrayList<String> listofQ=new ArrayList<>();
 
-        for(int i = 0; i< this.questionnaire.size(); i++) {
+        Log.i("QUESTIONNAIRE", String.valueOf(questionnaire.size()));
+        ArrayList<String> listofQuestions = new ArrayList<>();
 
-            HashMap<Language, QuestionLangVersion> questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(this.questionnaire.get(i).questionId);
-            for(Language l:questionTexts.keySet()) {
-                listofQ.add("Language: "+l.name+"\nQuestion: "+questionTexts.get(l).getQuestionText());
-            }
-        }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                listofQ);
-
-        questionsList.setAdapter(arrayAdapter);
-
-        questionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String sample="The index is: "+i;
-                Toast.makeText(ViewQuestions.this, sample, Toast.LENGTH_SHORT).show();
-                TakeQuestionnaireActivity.questionIndex=i;
-                Intent k = TakeQuestionnaireActivity.newIntent(ViewQuestions.this);
-                k.putExtra(SELECTED_SESSION,getSession(getIntent()));
-                k.putExtra(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()));
-                startActivity(k);
-                finish();
-            }
-        });
-
+        entryAdapter = new ViewQuestions.EntryAdapter(questionnaire);
+        questionView.setAdapter(entryAdapter);
 
     }
+
+    private class EntryHolder extends RecyclerView.ViewHolder {
+
+        private QuestionnaireContent questionnaireContent;
+        private int position;
+        private Button selectButton;
+
+
+        public EntryHolder(View view) {
+            super(view);
+            selectButton = view.findViewById(R.id.entry_list_select_button);
+
+        }
+
+        public void bindEntry(final QuestionnaireContent questionnaireContent, final int position) {
+            this.questionnaireContent = questionnaireContent;
+            this.position = position;
+            String questionId = questionnaireContent.questionId;
+            String questionText = DatabaseHelper.QUESTION_TABLE.findById(questionId).getDisplayText();
+            selectButton.setText(questionText);
+
+            // GET ANSWER IF IT EXISTS
+            String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
+                               +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+            String [] selectionArgs = {questionId, getQuestionnaire(getIntent()).getId()};
+            final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
+            if(answerList.size()!=0){
+
+                selectButton.setTextColor(Color.rgb(22, 135, 14));
+            }
+
+            selectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String sample="The index is: "+ position;
+                    Toast.makeText(ViewQuestions.this, sample, Toast.LENGTH_SHORT).show();
+                    TakeQuestionnaireActivity.questionIndex=position;
+                    Intent k = TakeQuestionnaireActivity.newIntent(ViewQuestions.this);
+                    k.putExtra(SELECTED_SESSION,getSession(getIntent()));
+                    k.putExtra(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()));
+                    startActivity(k);
+                    finish();
+                }
+            });
+        }
+    }
+
+
+    private class EntryAdapter extends RecyclerView.Adapter<ViewQuestions.EntryHolder> {
+
+        private List<QuestionnaireContent> entryList;
+
+        public EntryAdapter(List<QuestionnaireContent> entryList) {
+            this.entryList = entryList;
+        }
+
+        public void setEntryList(List<QuestionnaireContent> entryList) {
+            this.entryList = entryList;
+        }
+
+        @Override
+        public ViewQuestions.EntryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            View view = layoutInflater                    .inflate(R.layout.questionnaire_item_view, parent, false);
+            return new ViewQuestions.EntryHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewQuestions.EntryHolder holder, int position) {
+            QuestionnaireContent entry = entryList.get(position);
+            holder.bindEntry(entry, position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return entryList.size();
+        }
+    }
+
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, ViewQuestions.class);
         return i;

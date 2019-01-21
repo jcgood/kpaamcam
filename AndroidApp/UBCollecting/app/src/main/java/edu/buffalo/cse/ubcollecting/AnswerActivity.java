@@ -1,5 +1,6 @@
 package edu.buffalo.cse.ubcollecting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.ANSWER_TABLE;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELECTED_ANSWER;
 
 /**
  * UNUSED THUS FAR
@@ -47,6 +49,11 @@ public class AnswerActivity extends AppCompatActivity {
                 ANSWER_TABLE.insert(answer);
             }
         });
+    }
+
+    public static Answer getAnswer(Intent intent){
+        Answer answer = (Answer) intent.getSerializableExtra(SELECTED_ANSWER);
+        return answer;
     }
 
     protected boolean validateEntry() {

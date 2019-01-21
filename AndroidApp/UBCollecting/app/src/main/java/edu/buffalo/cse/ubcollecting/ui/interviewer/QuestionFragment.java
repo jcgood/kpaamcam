@@ -2,9 +2,11 @@ package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,21 +28,30 @@ import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
+import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 import edu.buffalo.cse.ubcollecting.data.models.SessionQuestion;
 import edu.buffalo.cse.ubcollecting.data.models.SessionQuestionnaire;
+import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
+import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionnaireTable;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.UpdateAnswerActivity.SELECTED_QUESTION;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELECTED_ANSWER;
+
 /**
  * A fragment to represent a question to be taken in a questionnaire.
  */
 
 public class QuestionFragment extends Fragment{
+
+    public final static String SELECTED_ANSWER = "selected answer";
+
 
     private QuestionnaireContent questionContent;
     private Spinner questionLangSpinner;
@@ -47,6 +60,9 @@ public class QuestionFragment extends Fragment{
     private Button nextQuestion;
     private Button skipQuestion;
     private Button saveAndExitQuestion;
+    private TextView answerListHeading;
+    private ListView previousAnswerList;
+    private ArrayAdapter listAdapter;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
@@ -81,9 +97,66 @@ public class QuestionFragment extends Fragment{
         nextQuestion.setOnClickListener(new QuestionFragment.NextQuestionOnClickListener());
         skipQuestion.setOnClickListener(new QuestionFragment.SkipQuestionOnClickListener());
         saveAndExitQuestion.setOnClickListener(new QuestionFragment.SaveAndExitQuestionOnClickListener());
+        if(getArguments().containsKey(SELECTED_ANSWER)){
+            ArrayList<Answer> answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
+            previousAnswerList = view.findViewById(R.id.previous_answers_list);
+            answerListHeading = view.findViewById(R.id.answer_list_header);
+            answerListHeading.setVisibility(View.VISIBLE);
+            listAdapter = new ListAdapter(getContext(), answerList);
 
+            previousAnswerList.setAdapter(listAdapter);
+        }
         return view;
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        //get any answers this question may have
+        // GET ANSWER IF IT EXISTS
+        String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
+                +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+        String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
+        String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
+        String [] selectionArgs = {questionId, questionnaireId};
+        final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
+        listAdapter.clear();
+        listAdapter.addAll(answerList);
+        listAdapter.notifyDataSetChanged();
+    }
+
+
+    private class ListAdapter extends ArrayAdapter<Answer> {
+        ArrayList<Answer> answerList;
+        private ListAdapter(Context context, ArrayList<Answer> answerList){
+            super(context, 0, answerList);
+            this.answerList = answerList;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            final Answer answer = answerList.get(position);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.questionnaire_item_view, parent, false);
+            }
+            Button previousAnswer = (Button) convertView.findViewById(R.id.entry_list_select_button);
+            previousAnswer.setText(answer.getText());
+
+            previousAnswer.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = UpdateAnswerActivity.newIntent(getActivity());
+                    intent.putExtra(SELECTED_ANSWER, answer);
+                    startActivityForResult(intent,1);
+
+                }
+            });
+
+            return convertView;
+        }
+
+
+    }
+
+
 
 
 
@@ -151,7 +224,7 @@ public class QuestionFragment extends Fragment{
     private void createSessionQuestion(Boolean completionStatus){
         SessionQuestion sessionQuestion = new SessionQuestion();
         sessionQuestion.setQuestionCompleted(completionStatus);
-        sessionQuestion.setSessionQuestionnaireId( ((SessionQuestionnaire) getArguments().getSerializable(SELECTED_QUESTIONNAIRE)).getId());
+        sessionQuestion.setSessionQuestionnaireId( ((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         DatabaseHelper.SESSION_QUESTION_TABLE.insert(sessionQuestion);
     }
 
@@ -171,6 +244,8 @@ public class QuestionFragment extends Fragment{
         return valid;
 
     }
+
+
 
 
 

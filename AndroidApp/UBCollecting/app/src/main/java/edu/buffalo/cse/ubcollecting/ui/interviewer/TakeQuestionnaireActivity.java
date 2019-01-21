@@ -12,12 +12,15 @@ import java.util.ArrayList;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 import edu.buffalo.cse.ubcollecting.data.models.SessionQuestionnaire;
+import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELECTED_ANSWER;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
@@ -52,6 +55,17 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             bundle.putSerializable(QUESTIONNAIRE_CONTENT,questionnaire.get(questionIndex));
             bundle.putSerializable(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()).getId());
             bundle.putSerializable(SELECTED_SESSION, getSession(getIntent()));
+
+            //get any answers this question may have
+            // GET ANSWER IF IT EXISTS
+            String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
+                    +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+            String questionId = questionnaire.get(questionIndex).getQuestionId();
+            String [] selectionArgs = {questionId, getQuestionnaire(getIntent()).getId()};
+            final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
+            if(!answerList.isEmpty()){
+                bundle.putSerializable(SELECTED_ANSWER, answerList);
+            }
             questionFragment.setArguments(bundle);
             questionStatePagerAdapter.addFragement(questionFragment);
             questionStatePagerAdapter.notifyDataSetChanged();
@@ -86,6 +100,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         startActivity(i);
         finish();
     }
+
 
 
     /**

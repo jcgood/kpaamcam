@@ -1,39 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.interviewer.ViewQuestions">
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <ListView
-        android:id="@+id/qList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="120dp" />
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/questionareName"
+        android:id="@+id/questionnaireName"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="70dp"
-        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"
+        android:layout_marginTop="20dp"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp" />
+        android:textSize="24dp"
+        android:textColor="#000000"
+        android:text="@string/choose_questionnnaire"/>
 
-</android.support.design.widget.CoordinatorLayout>
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/questionList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity">
+    </android.support.v7.widget.RecyclerView>
+
+
+</LinearLayout>

@@ -16,13 +16,13 @@ import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
-import edu.buffalo.cse.ubcollecting.data.models.SessionQuestionnaire;
 import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELECTED_ANSWER;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.ViewQuestionsActivity.QUESTION_INDEX;
 
 
 /**
@@ -35,7 +35,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     private ViewPager questionViewPager;
     private ArrayList<QuestionnaireContent> questionnaire;
     public final static String QUESTIONNAIRE_CONTENT = "Question";
-    public static int questionIndex = 0;
+    public int questionIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +45,12 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         questionStatePagerAdapter = new QuestionStatePagerAdapter(getSupportFragmentManager());
         questionViewPager = findViewById(R.id.questionnaire_container);
         questionViewPager.setAdapter(questionStatePagerAdapter);
+        questionIndex = (Integer) getIntent().getSerializableExtra(QUESTION_INDEX);
         getNextQuestion();
     }
 
     public void getNextQuestion(){
-        if (questionIndex<questionnaire.size()){
+         if (questionIndex<questionnaire.size()){
             QuestionFragment questionFragment = new QuestionFragment();
             Bundle bundle = new Bundle();
             bundle.putSerializable(QUESTIONNAIRE_CONTENT,questionnaire.get(questionIndex));
@@ -57,7 +58,6 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             bundle.putSerializable(SELECTED_SESSION, getSession(getIntent()));
 
             //get any answers this question may have
-            // GET ANSWER IF IT EXISTS
             String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
                     +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
             String questionId = questionnaire.get(questionIndex).getQuestionId();
@@ -70,7 +70,6 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             questionStatePagerAdapter.addFragement(questionFragment);
             questionStatePagerAdapter.notifyDataSetChanged();
             questionViewPager.setCurrentItem(questionIndex);
-            questionIndex++;
         }
         else{
             Toast.makeText(this, "You have successfully completed the questionnaire!", Toast.LENGTH_SHORT).show();
@@ -82,19 +81,12 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     }
 
     public boolean isLastQuestion(){
-
-        return questionIndex == questionnaire.size()-1;
+        questionIndex++;
+        return questionIndex-1 == questionnaire.size()-1;
     }
 
     public void saveAndQuitQuestionnaire(QuestionnaireContent questionnaireContent){
-        SessionQuestionnaire sessionQuestionnaire = new SessionQuestionnaire();
-        sessionQuestionnaire.setQuestionnaire_id(getQuestionnaire(getIntent()).getId());
-        sessionQuestionnaire.setSessionId(getSession(getIntent()).getId());
-        sessionQuestionnaire.setLastQuestionAnswered(questionnaireContent.getQuestionId());
-        DatabaseHelper.SESSION_QUESTIONNAIRE_TABLE.insert(sessionQuestionnaire);
-
         Toast.makeText(this, "The questionnaire has been saved, you may resume it at any point", Toast.LENGTH_LONG).show();
-
         Intent i = UserSelectQuestionnaireActivity.newIntent(TakeQuestionnaireActivity.this);
         i.putExtra(SELECTED_SESSION , getSession(getIntent()));
         startActivity(i);

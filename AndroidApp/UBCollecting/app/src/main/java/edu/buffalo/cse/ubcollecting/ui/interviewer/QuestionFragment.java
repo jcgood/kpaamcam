@@ -6,14 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -81,6 +82,9 @@ public class QuestionFragment extends Fragment{
         questionLanguages = new ArrayList<>();
         questionLanguages.addAll(questionTexts.keySet());
 
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+
         questionLangSpinner = view.findViewById(R.id.question_language_spinner);
         questionLanguagesAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, questionLanguages);
         questionLangSpinner.setAdapter(questionLanguagesAdapter);
@@ -90,7 +94,6 @@ public class QuestionFragment extends Fragment{
         nextQuestion = view.findViewById(R.id.next_question);
         skipQuestion = view.findViewById(R.id.skip_question);
         saveAndExitQuestion = view.findViewById(R.id.saveandexit_question);
-
         if(questionManager.isLastQuestion()){
             nextQuestion.setText("Finish");
         }
@@ -110,17 +113,11 @@ public class QuestionFragment extends Fragment{
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
-        //get any answers this question may have
-        // GET ANSWER IF IT EXISTS
-        String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
-                +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
         String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
         String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
-        String [] selectionArgs = {questionId, questionnaireId};
-        final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
-        listAdapter.clear();
-        listAdapter.addAll(answerList);
-        listAdapter.notifyDataSetChanged();
+
+        updateAnswerList(questionId, questionnaireId);
+
     }
 
 
@@ -134,12 +131,13 @@ public class QuestionFragment extends Fragment{
         public View getView(int position, View convertView, ViewGroup parent){
             final Answer answer = answerList.get(position);
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.questionnaire_item_view, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_view, parent, false);
             }
-            Button previousAnswer = (Button) convertView.findViewById(R.id.entry_list_select_button);
-            previousAnswer.setText(answer.getText());
-
-            previousAnswer.setOnClickListener(new View.OnClickListener(){
+            TextView answerContents = (TextView) convertView.findViewById(R.id.entry_list_text_view);
+            answerContents.setText(answer.getText());
+            ImageButton updateAnswer = (ImageButton) convertView.findViewById(R.id.entry_list_edit_button);
+            ImageButton deleteAnswer = (ImageButton) convertView.findViewById(R.id.entry_list_delete_button);
+            updateAnswer.setOnClickListener(new View.OnClickListener(){
 
                 @Override
                 public void onClick(View view) {
@@ -150,6 +148,15 @@ public class QuestionFragment extends Fragment{
                 }
             });
 
+            deleteAnswer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatabaseHelper.ANSWER_TABLE.delete(answer.getId());
+                    updateAnswerList(answer.getQuestionId(), answer.getQuestionnaireId());
+                }
+            });
+
+
             return convertView;
         }
 
@@ -158,7 +165,17 @@ public class QuestionFragment extends Fragment{
 
 
 
+    private void updateAnswerList(String questionId, String questionnaireId){
+        String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
+                +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+        String [] selectionArgs = {questionId, questionnaireId};
+        final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
+        listAdapter.clear();
+        listAdapter.addAll(answerList);
+        listAdapter.notifyDataSetChanged();
 
+
+    }
 
     public void onAttach(Context context){
         super.onAttach(context);
@@ -188,7 +205,6 @@ public class QuestionFragment extends Fragment{
         public void onClick(View view) {
             if(validateEntry()){
                 submitTextAnswer();
-                createSessionQuestion(true);
                 questionManager.getNextQuestion();
             }
         }
@@ -197,7 +213,6 @@ public class QuestionFragment extends Fragment{
         @Override
         public void onClick(View view){
             Toast.makeText(getContext(), "Question Skipped", Toast.LENGTH_SHORT).show();
-            createSessionQuestion(false);
             questionManager.getNextQuestion();
         }
     }
@@ -219,13 +234,6 @@ public class QuestionFragment extends Fragment{
         answer.setText(answerText.getText().toString());
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         DatabaseHelper.ANSWER_TABLE.insert(answer);
-    }
-
-    private void createSessionQuestion(Boolean completionStatus){
-        SessionQuestion sessionQuestion = new SessionQuestion();
-        sessionQuestion.setQuestionCompleted(completionStatus);
-        sessionQuestion.setSessionQuestionnaireId( ((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
-        DatabaseHelper.SESSION_QUESTION_TABLE.insert(sessionQuestion);
     }
 
     protected boolean validateEntry() {

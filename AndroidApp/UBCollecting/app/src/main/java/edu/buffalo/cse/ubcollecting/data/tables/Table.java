@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -157,7 +158,7 @@ public abstract class Table<E extends Model> implements Serializable {
 
             Class theClass = Class.forName(MODEL_PATH + this.getTableName());
 
-            String selectQuery = "SELECT  * FROM " + this.getTableName()+" WHERE Deleted!=1";
+            String selectQuery = "SELECT  * FROM " + this.getTableName()+" WHERE Deleted != 1";
             SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
             Cursor cursor = db.rawQuery(selectQuery, null);
@@ -205,6 +206,7 @@ public abstract class Table<E extends Model> implements Serializable {
     public ArrayList<E> getAll(String selection, String[] selectionArgs, String sortByColumn) {
 
         ArrayList<E> tuples = new ArrayList<>();
+        selection+=" AND Deleted != 1";
 
         try {
 

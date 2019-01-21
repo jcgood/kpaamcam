@@ -4,54 +4,40 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
-import edu.buffalo.cse.ubcollecting.data.models.Language;
-import edu.buffalo.cse.ubcollecting.data.models.Question;
-import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
-import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
-import edu.buffalo.cse.ubcollecting.data.models.Session;
 import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
-import edu.buffalo.cse.ubcollecting.data.tables.QuestionTable;
 
 import static edu.buffalo.cse.ubcollecting.SessionActivity.getSession;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.getQuestionnaire;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
-public class ViewQuestions extends AppCompatActivity {
+public class ViewQuestionsActivity extends AppCompatActivity {
 
     private TextView questionnaireTitle;
     private RecyclerView questionView;
     private EntryAdapter entryAdapter;
 
     private ArrayList<QuestionnaireContent> questionnaire;
-    public final static String QUESTIONNAIRE_CONTENT = "Question";
 
+    public static final String QUESTION_INDEX = "Question Index";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,22 +52,21 @@ public class ViewQuestions extends AppCompatActivity {
 
 
         questionnaire = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(getQuestionnaire(getIntent()).getId());
-        questionnaireTitle.setText("Questionnaire Name: "+getQuestionnaire(getIntent()).name);
+        questionnaireTitle.setText(getQuestionnaire(getIntent()).name);
 
 
-        Log.i("QUESTIONNAIRE", String.valueOf(questionnaire.size()));
+
         ArrayList<String> listofQuestions = new ArrayList<>();
 
 
-        entryAdapter = new ViewQuestions.EntryAdapter(questionnaire);
+        entryAdapter = new ViewQuestionsActivity.EntryAdapter(questionnaire);
         questionView.setAdapter(entryAdapter);
 
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {
 
-        private QuestionnaireContent questionnaireContent;
-        private int position;
+
         private Button selectButton;
 
 
@@ -92,8 +77,6 @@ public class ViewQuestions extends AppCompatActivity {
         }
 
         public void bindEntry(final QuestionnaireContent questionnaireContent, final int position) {
-            this.questionnaireContent = questionnaireContent;
-            this.position = position;
             String questionId = questionnaireContent.questionId;
             String questionText = DatabaseHelper.QUESTION_TABLE.findById(questionId).getDisplayText();
             selectButton.setText(questionText);
@@ -111,12 +94,11 @@ public class ViewQuestions extends AppCompatActivity {
             selectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String sample="The index is: "+ position;
-                    Toast.makeText(ViewQuestions.this, sample, Toast.LENGTH_SHORT).show();
-                    TakeQuestionnaireActivity.questionIndex=position;
-                    Intent k = TakeQuestionnaireActivity.newIntent(ViewQuestions.this);
+
+                    Intent k = TakeQuestionnaireActivity.newIntent(ViewQuestionsActivity.this);
                     k.putExtra(SELECTED_SESSION,getSession(getIntent()));
                     k.putExtra(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()));
+                    k.putExtra(QUESTION_INDEX, position);
                     startActivity(k);
                     finish();
                 }
@@ -125,7 +107,7 @@ public class ViewQuestions extends AppCompatActivity {
     }
 
 
-    private class EntryAdapter extends RecyclerView.Adapter<ViewQuestions.EntryHolder> {
+    private class EntryAdapter extends RecyclerView.Adapter<ViewQuestionsActivity.EntryHolder> {
 
         private List<QuestionnaireContent> entryList;
 
@@ -133,19 +115,16 @@ public class ViewQuestions extends AppCompatActivity {
             this.entryList = entryList;
         }
 
-        public void setEntryList(List<QuestionnaireContent> entryList) {
-            this.entryList = entryList;
-        }
 
         @Override
-        public ViewQuestions.EntryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewQuestionsActivity.EntryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater                    .inflate(R.layout.questionnaire_item_view, parent, false);
-            return new ViewQuestions.EntryHolder(view);
+            return new ViewQuestionsActivity.EntryHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(ViewQuestions.EntryHolder holder, int position) {
+        public void onBindViewHolder(ViewQuestionsActivity.EntryHolder holder, int position) {
             QuestionnaireContent entry = entryList.get(position);
             holder.bindEntry(entry, position);
         }
@@ -157,7 +136,7 @@ public class ViewQuestions extends AppCompatActivity {
     }
 
     public static Intent newIntent(Context packageContext) {
-        Intent i = new Intent(packageContext, ViewQuestions.class);
+        Intent i = new Intent(packageContext, ViewQuestionsActivity.class);
         return i;
     }
 

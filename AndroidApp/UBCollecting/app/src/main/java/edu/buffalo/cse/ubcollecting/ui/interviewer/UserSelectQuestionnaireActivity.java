@@ -67,7 +67,7 @@ private class EntryHolder extends RecyclerView.ViewHolder {
             selectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = ViewQuestions.newIntent(UserSelectQuestionnaireActivity.this);
+                    Intent i = ViewQuestionsActivity.newIntent(UserSelectQuestionnaireActivity.this);
                     i.putExtra(SELECTED_SESSION,getSession(getIntent()));
                     i.putExtra(SELECTED_QUESTIONNAIRE, questionnaire);
                     startActivity(i);

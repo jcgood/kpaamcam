@@ -117,7 +117,7 @@
             android:name=".ui.interviewer.TakeQuestionnaireActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.interviewer.ViewQuestions"
+            android:name=".ui.interviewer.ViewQuestionsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.interviewer.UpdateAnswerActivity"

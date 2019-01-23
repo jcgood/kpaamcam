@@ -58,6 +58,7 @@ public class PersonActivity extends EntryActivity<Person> {
     private EditText questionnaireDescriptionField;
     private EditText emailField;
     private EditText passwordField;
+    private EditText confirmPasswordField;
     private Button updateButton;
     private Button submitButton;
 
@@ -151,6 +152,7 @@ public class PersonActivity extends EntryActivity<Person> {
         questionnaireDescriptionField = this.findViewById(R.id.person_questionnaire_description_field);
         emailField = this.findViewById(R.id.person_email_field);
         passwordField = this.findViewById(R.id.person_password_field);
+        confirmPasswordField = this.findViewById(R.id.person_confirm_password_field);
 
         updateButton = this.findViewById(R.id.person_update_button);
         updateButton.setOnClickListener(new UpdateButtonOnClickListener(PERSON_TABLE));
@@ -202,10 +204,23 @@ public class PersonActivity extends EntryActivity<Person> {
         }
     }
 
+    private boolean confirmPasswordsMatch(String password, String confirmPassword){
+        if(password.equals(confirmPassword)) {
+            return true;
+        }
+        return false;
+    }
+
 
     protected boolean isValidEntry() {
         boolean valid = true;
+        boolean passwordsDontMatch = false;
 
+        if(!confirmPasswordsMatch(passwordField.getText().toString(), confirmPasswordField.getText().toString())){
+            valid = false;
+            passwordsDontMatch = true;
+            passwordField.setError("Passwords do not match");
+        }
         if (nameField.getText().toString().trim().isEmpty()) {
             nameField.setError("This field is required");
             valid = false;
@@ -258,6 +273,7 @@ public class PersonActivity extends EntryActivity<Person> {
 
         if (!valid) {
             Toast.makeText(this, "Please Fill in All Required Fields!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -272,13 +288,17 @@ public class PersonActivity extends EntryActivity<Person> {
             if (role != null && (role.getName().equals("Interviewer") || role.getName().equals("Admin"))) {
                 emailField.setVisibility(View.VISIBLE);
                 passwordField.setVisibility(View.VISIBLE);
+                confirmPasswordField.setVisibility(View.VISIBLE);
                 findViewById(R.id.person_email_label).setVisibility(View.VISIBLE);
                 findViewById(R.id.person_password_label).setVisibility(View.VISIBLE);
+                findViewById(R.id.person_confirm_password_label).setVisibility(View.VISIBLE);
             } else {
                 emailField.setVisibility(View.GONE);
                 passwordField.setVisibility(View.GONE);
+                confirmPasswordField.setVisibility(View.GONE);
                 findViewById(R.id.person_email_label).setVisibility(View.GONE);
                 findViewById(R.id.person_password_label).setVisibility(View.GONE);
+                findViewById(R.id.person_confirm_password_label).setVisibility(View.GONE);
             }
         }
     }

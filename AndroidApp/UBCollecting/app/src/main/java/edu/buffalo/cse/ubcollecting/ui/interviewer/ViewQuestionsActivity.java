@@ -58,11 +58,12 @@ public class ViewQuestionsActivity extends AppCompatActivity {
 
         ArrayList<String> listofQuestions = new ArrayList<>();
 
-
         entryAdapter = new ViewQuestionsActivity.EntryAdapter(questionnaire);
         questionView.setAdapter(entryAdapter);
 
+
     }
+
 
     private class EntryHolder extends RecyclerView.ViewHolder {
 

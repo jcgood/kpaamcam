@@ -93,8 +93,6 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         finish();
     }
 
-
-
     /**
      * Helper function to extract a {@link edu.buffalo.cse.ubcollecting.data.models.Questionnaire} extra from and {@link Intent}
      * @param data {@link Intent} holding the extra

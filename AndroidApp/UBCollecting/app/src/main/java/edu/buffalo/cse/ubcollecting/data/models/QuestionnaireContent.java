@@ -12,6 +12,35 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
     public String questionId;
     public int questionOrder;
 
+    public double version;
+    public String notes;
+    public int deleted;
+    public char wf;
+
+    public double getVersion(){
+        return version;
+    }
+
+    public void setVersion(double version){
+        this.version=version;
+    }
+
+    public int getDeleted(){
+        return deleted;
+    }
+
+    public void setDeleted(int deleted){
+        this.deleted=deleted;
+    }
+
+    public void setNotes(String note){
+        this.notes=note;
+    }
+
+    public String getNotes(){
+        return  notes;
+    }
+
     public String getIdentifier() {
         return "Questionnaire: " + questionnaireId + "  Question: " + questionId + "  Order: " + Integer.toString(questionOrder);
     }
@@ -40,6 +69,15 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
         this.questionOrder = questionOrder;
     }
 
+    public void setWorkFloow(char c){
+        this.wf=c;
+    }
+
+    public char getWorkFlow()
+    {
+        return this.wf;
+    }
+
     @Override
     public int compareTo(QuestionnaireContent other) {
         return Integer.compare(questionOrder, other.getQuestionOrder());
@@ -54,4 +92,5 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
         return content.getQuestionId().equals(questionId) &&
                 content.getQuestionnaireId().equals(questionnaireId);
     }
+
 }

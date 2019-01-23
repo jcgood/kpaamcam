@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -157,7 +158,7 @@ public abstract class Table<E extends Model> implements Serializable {
 
             Class theClass = Class.forName(MODEL_PATH + this.getTableName());
 
-            String selectQuery = "SELECT  * FROM " + this.getTableName();
+            String selectQuery = "SELECT  * FROM " + this.getTableName()+" WHERE Deleted != 1";
             SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
             Cursor cursor = db.rawQuery(selectQuery, null);
@@ -205,6 +206,7 @@ public abstract class Table<E extends Model> implements Serializable {
     public ArrayList<E> getAll(String selection, String[] selectionArgs, String sortByColumn) {
 
         ArrayList<E> tuples = new ArrayList<>();
+        selection+=" AND Deleted != 1";
 
         try {
 
@@ -363,8 +365,8 @@ public abstract class Table<E extends Model> implements Serializable {
 
         String[] selectionArgs = {id};
 
-        db.delete(this.getTableName(), selection, selectionArgs);
-
+        //db.delete(this.getTableName(), selection, selectionArgs);
+        db.execSQL("UPDATE " + this.getTableName()+ " SET Deleted = 1 WHERE id = "+ id);
         DatabaseManager.getInstance().closeDatabase();
 
     }
@@ -384,6 +386,9 @@ public abstract class Table<E extends Model> implements Serializable {
 
             if (Integer.TYPE.equals(ptype)) {
                 int value = cursor.getInt(cursor.getColumnIndex(key));
+                method.invoke(model, value);
+            } else if (Double.TYPE.equals(ptype)) {
+                double value = cursor.getDouble(cursor.getColumnIndex(key));
                 method.invoke(model, value);
             } else if ("".getClass().equals(ptype)) {
                 String value = cursor.getString(cursor.getColumnIndex(key));

@@ -49,7 +49,7 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
 
     }
 
-    private class EntryHolder extends RecyclerView.ViewHolder {
+private class EntryHolder extends RecyclerView.ViewHolder {
 
         private Questionnaire questionnaire;
         private Button selectButton;
@@ -64,11 +64,10 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
         public void bindEntry(final Questionnaire questionnaire) {
             this.questionnaire = questionnaire;
             selectButton.setText(this.questionnaire.getIdentifier());
-
             selectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = TakeQuestionnaireActivity.newIntent(UserSelectQuestionnaireActivity.this);
+                    Intent i = ViewQuestionsActivity.newIntent(UserSelectQuestionnaireActivity.this);
                     i.putExtra(SELECTED_SESSION,getSession(getIntent()));
                     i.putExtra(SELECTED_QUESTIONNAIRE, questionnaire);
                     startActivity(i);
@@ -103,6 +102,8 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
             Questionnaire entry = entryList.get(position);
             holder.bindEntry(entry);
         }
+
+        private static final String TAG = "EntryAdapter";
 
         @Override
         public int getItemCount() {

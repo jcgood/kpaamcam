@@ -25,6 +25,11 @@ public class QuestionPropertyTable extends Table<QuestionProperty> {
     public static final String KEY_PROPERTY_ID = "PropertyId";
     public static final String KEY_VALUE = "Value";
 
+    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_NOTES ="Notes";
+    public static final String KEY_DELETED ="Deleted";
+
+
     public QuestionPropertyTable() {
         super();
         activityClass = QuestionPropertyActivity.class;
@@ -33,8 +38,10 @@ public class QuestionPropertyTable extends Table<QuestionProperty> {
     @Override
     public String createTable() {
         return "CREATE TABLE "
-                + TABLE + "(" + KEY_ID + " TEXT, " + KEY_QUESTION_ID + " TEXT,"
-                + KEY_PROPERTY_ID + " TEXT," + KEY_VALUE + " INTEGER,"
+                + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_QUESTION_ID + " TEXT NOT NULL,"
+                + KEY_PROPERTY_ID + " TEXT NOT NULL," + KEY_VALUE + " INTEGER NOT NULL,"
+                + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
+                + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL, "
                 + "PRIMARY KEY(" + KEY_QUESTION_ID + ", " + KEY_PROPERTY_ID + "),"
                 + " FOREIGN KEY(" + KEY_PROPERTY_ID + ") REFERENCES " + QuestionPropertyDefTable.TABLE
                 + " (" + QuestionPropertyDefTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES "

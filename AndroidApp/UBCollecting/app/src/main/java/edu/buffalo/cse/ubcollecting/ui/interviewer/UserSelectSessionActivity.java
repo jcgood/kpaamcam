@@ -60,8 +60,8 @@ public class UserSelectSessionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = DatabaseHelper.SESSION_TABLE.insertActivityIntent(UserSelectSessionActivity.this);
-                i.putExtra(SELECTED_FIELD_TRIP,getFieldTrip(getIntent()));
-                startActivityForResult(i,REQUEST_CODE_ADD_ENTRY);
+                i.putExtra(SELECTED_FIELD_TRIP, getFieldTrip(getIntent()));
+                startActivityForResult(i, REQUEST_CODE_ADD_ENTRY);
             }
         });
     }
@@ -103,7 +103,7 @@ public class UserSelectSessionActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent i = AddSessionRolesActivity.newIntent(UserSelectSessionActivity.this);
-                    i.putExtra(SELECTED_FIELD_TRIP,getFieldTrip(getIntent()));
+                    i.putExtra(SELECTED_FIELD_TRIP, getFieldTrip(getIntent()));
                     i.putExtra(SELECTED_SESSION, session);
                     Log.i(session.getId(), "SESSION ID SELECTED");
                     startActivity(i);
@@ -115,7 +115,7 @@ public class UserSelectSessionActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent i = DatabaseHelper.SESSION_TABLE.editActivityIntent(UserSelectSessionActivity.this, EntryHolder.this.session);
-                    i.putExtra(SELECTED_FIELD_TRIP,getFieldTrip(getIntent()));
+                    i.putExtra(SELECTED_FIELD_TRIP, getFieldTrip(getIntent()));
                     i.putExtra(SELECTED_SESSION, session);
                     startActivityForResult(i, REQUEST_CODE_EDIT_ENTRY);
                 }
@@ -135,7 +135,7 @@ public class UserSelectSessionActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Entry Deleted", Toast.LENGTH_SHORT).show();
                                 }
                             })
-                            .setNegativeButton("Cancel",null);
+                            .setNegativeButton("Cancel", null);
                     AlertDialog alert = confirmDelete.create();
                     alert.setTitle("Confirm Selection");
                     alert.show();
@@ -181,6 +181,5 @@ public class UserSelectSessionActivity extends AppCompatActivity {
         Intent i = new Intent(packageContext, UserSelectSessionActivity.class);
         return i;
     }
-
-
 }
+

@@ -34,6 +34,8 @@ import edu.buffalo.cse.ubcollecting.data.tables.QuestionnaireTypeTable;
 import edu.buffalo.cse.ubcollecting.data.tables.RoleTable;
 import edu.buffalo.cse.ubcollecting.data.tables.SessionAnswerTable;
 import edu.buffalo.cse.ubcollecting.data.tables.SessionPersonTable;
+import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionTable;
+import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionnaireTable;
 import edu.buffalo.cse.ubcollecting.data.tables.SessionTable;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
@@ -60,6 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final SessionAnswerTable SESSION_ANSWER_TABLE = new SessionAnswerTable();
     public static final SessionPersonTable SESSION_PERSON_TABLE = new SessionPersonTable();
     public static final QuestionPropertyDefTable QUESTION_PROPERTY_DEF_TABLE = new QuestionPropertyDefTable();
+    public static final SessionQuestionnaireTable SESSION_QUESTIONNAIRE_TABLE = new SessionQuestionnaireTable();
+    public static final SessionQuestionTable SESSION_QUESTION_TABLE = new SessionQuestionTable();
     public static final List<Table<?>> TABLES = Arrays.asList(
             ANSWER_TABLE,
             FIELD_TRIP_TABLE,
@@ -78,7 +82,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             SESSION_TABLE,
             SESSION_ANSWER_TABLE,
             SESSION_PERSON_TABLE,
-            QUESTION_PROPERTY_DEF_TABLE
+            QUESTION_PROPERTY_DEF_TABLE,
+            SESSION_QUESTIONNAIRE_TABLE,
+            SESSION_QUESTION_TABLE
     );
 
     private static final String TAG = DatabaseHelper.class.getSimpleName().toString();
@@ -234,7 +240,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SESSION_TABLE.createTable());
         db.execSQL(SESSION_ANSWER_TABLE.createTable());
         db.execSQL(SESSION_PERSON_TABLE.createTable());
+        db.execSQL(SESSION_QUESTIONNAIRE_TABLE.createTable());
+        db.execSQL((SESSION_QUESTION_TABLE.createTable()));
         db.execSQL(ANSWER_TABLE.createTable());
+
     }
 
     @Override
@@ -260,6 +269,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SessionTable.TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SessionAnswerTable.TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SessionPersonTable.TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SessionQuestionnaireTable.TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SessionQuestionTable.TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + AnswerTable.TABLE);
 
         // create new tables

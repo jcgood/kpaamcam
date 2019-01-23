@@ -12,6 +12,34 @@ public class SessionPerson extends Model {
     public String personId;
     public String roleId;
 
+    public double version;
+    public String notes;
+    public int deleted;
+
+    public double getVersion(){
+        return version;
+    }
+
+    public void setVersion(double version){
+        this.version=version;
+    }
+
+    public int getDeleted(){
+        return deleted;
+    }
+
+    public void setDeleted(int deleted){
+        this.deleted=deleted;
+    }
+
+    public void setNotes(String note){
+        this.notes=note;
+    }
+
+    public String getNotes(){
+        return  notes;
+    }
+
     public String getIdentifier() {
         //TODO
         return "SESSION PERSON";

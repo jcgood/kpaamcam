@@ -2,20 +2,25 @@ package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,13 +29,21 @@ import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
+import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
+import edu.buffalo.cse.ubcollecting.data.models.SessionQuestion;
+import edu.buffalo.cse.ubcollecting.data.models.SessionQuestionnaire;
+import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
+import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionnaireTable;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.UpdateAnswerActivity.SELECTED_QUESTION;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELECTED_ANSWER;
 
 /**
  * A fragment to represent a question to be taken in a questionnaire.
@@ -38,11 +51,19 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActiv
 
 public class QuestionFragment extends Fragment{
 
+    public final static String SELECTED_ANSWER = "selected answer";
+
+
     private QuestionnaireContent questionContent;
     private Spinner questionLangSpinner;
     private TextView questionText;
     private EditText answerText;
     private Button nextQuestion;
+    private Button skipQuestion;
+    private Button saveAndExitQuestion;
+    private TextView answerListHeading;
+    private ListView previousAnswerList;
+    private ArrayAdapter listAdapter;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
@@ -61,6 +82,9 @@ public class QuestionFragment extends Fragment{
         questionLanguages = new ArrayList<>();
         questionLanguages.addAll(questionTexts.keySet());
 
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+
         questionLangSpinner = view.findViewById(R.id.question_language_spinner);
         questionLanguagesAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, questionLanguages);
         questionLangSpinner.setAdapter(questionLanguagesAdapter);
@@ -68,17 +92,90 @@ public class QuestionFragment extends Fragment{
         questionLangSpinner.setSelection(getEnglishQuestionIndex());
 
         nextQuestion = view.findViewById(R.id.next_question);
-
+        skipQuestion = view.findViewById(R.id.skip_question);
+        saveAndExitQuestion = view.findViewById(R.id.saveandexit_question);
         if(questionManager.isLastQuestion()){
             nextQuestion.setText("Finish");
         }
         nextQuestion.setOnClickListener(new QuestionFragment.NextQuestionOnClickListener());
+        skipQuestion.setOnClickListener(new QuestionFragment.SkipQuestionOnClickListener());
+        saveAndExitQuestion.setOnClickListener(new QuestionFragment.SaveAndExitQuestionOnClickListener());
+        if(getArguments().containsKey(SELECTED_ANSWER)){
+            ArrayList<Answer> answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
+            previousAnswerList = view.findViewById(R.id.previous_answers_list);
+            answerListHeading = view.findViewById(R.id.answer_list_header);
+            answerListHeading.setVisibility(View.VISIBLE);
+            listAdapter = new ListAdapter(getContext(), answerList);
 
-
+            previousAnswerList.setAdapter(listAdapter);
+        }
         return view;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
+        String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
+
+        updateAnswerList(questionId, questionnaireId);
+
     }
 
 
+    private class ListAdapter extends ArrayAdapter<Answer> {
+        ArrayList<Answer> answerList;
+        private ListAdapter(Context context, ArrayList<Answer> answerList){
+            super(context, 0, answerList);
+            this.answerList = answerList;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            final Answer answer = answerList.get(position);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_view, parent, false);
+            }
+            TextView answerContents = (TextView) convertView.findViewById(R.id.entry_list_text_view);
+            answerContents.setText(answer.getText());
+            ImageButton updateAnswer = (ImageButton) convertView.findViewById(R.id.entry_list_edit_button);
+            ImageButton deleteAnswer = (ImageButton) convertView.findViewById(R.id.entry_list_delete_button);
+            updateAnswer.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = UpdateAnswerActivity.newIntent(getActivity());
+                    intent.putExtra(SELECTED_ANSWER, answer);
+                    startActivityForResult(intent,1);
+
+                }
+            });
+
+            deleteAnswer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatabaseHelper.ANSWER_TABLE.delete(answer.getId());
+                    updateAnswerList(answer.getQuestionId(), answer.getQuestionnaireId());
+                }
+            });
+
+
+            return convertView;
+        }
+
+
+    }
+
+
+
+    private void updateAnswerList(String questionId, String questionnaireId){
+        String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
+                +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+        String [] selectionArgs = {questionId, questionnaireId};
+        final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
+        listAdapter.clear();
+        listAdapter.addAll(answerList);
+        listAdapter.notifyDataSetChanged();
+
+
+    }
 
     public void onAttach(Context context){
         super.onAttach(context);
@@ -112,6 +209,24 @@ public class QuestionFragment extends Fragment{
             }
         }
     }
+    private class SkipQuestionOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view){
+            Toast.makeText(getContext(), "Question Skipped", Toast.LENGTH_SHORT).show();
+            questionManager.getNextQuestion();
+        }
+    }
+
+
+
+
+    private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            submitTextAnswer();
+            questionManager.saveAndQuitQuestionnaire(questionContent);
+        }
+    }
 
     private void submitTextAnswer(){
         answer.setQuestionId(questionContent.getQuestionId());
@@ -137,6 +252,8 @@ public class QuestionFragment extends Fragment{
         return valid;
 
     }
+
+
 
 
 

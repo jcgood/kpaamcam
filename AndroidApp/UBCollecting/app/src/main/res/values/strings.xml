@@ -10,6 +10,7 @@
     <string name="select_question_properties">Please Select All Desired Properties: </string>
     <string name="select_question_languages">Please Select All Question Languages: </string>
     <string name="languages">Languages</string>
+    <string name="title_activity_view_questions">ViewQuestions</string>
 
 
 </resources>

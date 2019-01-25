@@ -123,6 +123,22 @@
             android:inputType="textPassword"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/person_confirm_password_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"
+            android:text="Confirm Password"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/person_confirm_password_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:visibility="gone" />
+
+
         <Button
             android:id="@+id/person_update_button"
             android:layout_width="match_parent"

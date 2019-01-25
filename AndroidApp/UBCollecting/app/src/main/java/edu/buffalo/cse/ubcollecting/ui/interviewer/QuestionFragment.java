@@ -223,7 +223,6 @@ public class QuestionFragment extends Fragment{
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            submitTextAnswer();
             questionManager.saveAndQuitQuestionnaire(questionContent);
         }
     }

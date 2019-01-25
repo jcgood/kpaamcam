@@ -29,12 +29,16 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActiv
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
+/**
+ * Activity that displays the status of all the questions in a questionnaire selected from UserSelectQuestionnaireActivity.
+ * Green indicates that the question was answered at least once.
+ */
+
 public class ViewQuestionsActivity extends AppCompatActivity {
 
     private TextView questionnaireTitle;
     private RecyclerView questionView;
     private EntryAdapter entryAdapter;
-
     private ArrayList<QuestionnaireContent> questionnaire;
 
     public static final String QUESTION_INDEX = "Question Index";
@@ -44,36 +48,24 @@ public class ViewQuestionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_questions);
 
-
         questionnaireTitle = (TextView) findViewById(R.id.questionnaireName);
         questionView =(RecyclerView) findViewById(R.id.questionList);
         questionView.setLayoutManager(new LinearLayoutManager(this));
 
-
-
         questionnaire = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(getQuestionnaire(getIntent()).getId());
         questionnaireTitle.setText(getQuestionnaire(getIntent()).name);
 
-
-
-        ArrayList<String> listofQuestions = new ArrayList<>();
-
-
         entryAdapter = new ViewQuestionsActivity.EntryAdapter(questionnaire);
         questionView.setAdapter(entryAdapter);
-
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {
 
-
         private Button selectButton;
-
 
         public EntryHolder(View view) {
             super(view);
             selectButton = view.findViewById(R.id.entry_list_select_button);
-
         }
 
         public void bindEntry(final QuestionnaireContent questionnaireContent, final int position) {
@@ -86,15 +78,14 @@ public class ViewQuestionsActivity extends AppCompatActivity {
                                +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
             String [] selectionArgs = {questionId, getQuestionnaire(getIntent()).getId()};
             final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
-            if(answerList.size()!=0){
 
+            if(answerList.size()!=0){
                 selectButton.setTextColor(Color.rgb(22, 135, 14));
             }
 
             selectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     Intent k = TakeQuestionnaireActivity.newIntent(ViewQuestionsActivity.this);
                     k.putExtra(SELECTED_SESSION,getSession(getIntent()));
                     k.putExtra(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()));
@@ -105,7 +96,6 @@ public class ViewQuestionsActivity extends AppCompatActivity {
             });
         }
     }
-
 
     private class EntryAdapter extends RecyclerView.Adapter<ViewQuestionsActivity.EntryHolder> {
 

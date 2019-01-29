@@ -38,7 +38,6 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
      * can be populated appropriately
      */
     abstract void setEntryByUI();
-
     /**
      * Helper function that validates user submission
      * @return {@link Boolean}

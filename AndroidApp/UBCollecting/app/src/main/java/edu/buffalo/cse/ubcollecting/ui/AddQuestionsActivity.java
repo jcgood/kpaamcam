@@ -79,6 +79,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_questions);
 
         questionnaireId = getIntent().getExtras().getString(EXTRA_QUESTIONNAIRE_ID);
+        Log.i("QUESTIONNIARE_ID", questionnaireId);
 
         selections = (ArrayList<QuestionnaireContent>) getIntent().getExtras().getSerializable(EXTRA_QUESTIONNAIRE_CONTENT);
         selectionsSet = new HashSet<>();

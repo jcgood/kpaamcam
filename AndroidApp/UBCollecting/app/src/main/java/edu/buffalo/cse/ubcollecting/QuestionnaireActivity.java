@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +34,11 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireType;
 import edu.buffalo.cse.ubcollecting.data.tables.QuestionnaireContentTable;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 import edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity;
+import edu.buffalo.cse.ubcollecting.ui.CreateQuestionnaireAdapter;
+import edu.buffalo.cse.ubcollecting.ui.CreateQuestionnaireFragment;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
+import edu.buffalo.cse.ubcollecting.ui.QuestionnaireManager;
+import edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment;
 import edu.buffalo.cse.ubcollecting.ui.UiUtils;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
@@ -39,48 +46,51 @@ import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_TAB
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_TYPE_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_CONTENT;
+import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.RESULT_ADD_QUESTIONS;
 
 /**
  * Activity for creating a questionnaire
  */
-public class QuestionnaireActivity extends EntryActivity<Questionnaire> {
+public class QuestionnaireActivity extends EntryActivity<Questionnaire> implements QuestionnaireManager {
 
     private static final String TAG = QuestionnaireActivity.class.getSimpleName();
-    public static final int RESULT_ADD_QUESTIONS = 1;
 
-    private EditText nameField;
-    private EditText descriptionField;
-    private Spinner typeSpinner;
-    private ArrayAdapter<QuestionnaireType> typeAdapter;
-    private DragSortListView questionnaireDragView;
-    private QuestionnaireContentAdapter questionnaireContentAdapter;
-    private Button addQuestionsButton;
     private Button updateButton;
     private Button submitButton;
-    private ArrayList<QuestionnaireContent> questionnaireContent;
+    private ViewPager viewPager;
+    private QuestionnaireQuestionsFragment questionsFragment;
+    private CreateQuestionnaireFragment createQuestionnaireFragment;
 
-
-    void setUI(Questionnaire entry) {
-        nameField.setText(entry.getName());
-        descriptionField.setText(entry.getDescription());
-
-        int i = 0;
-        for (i = 0; i < typeAdapter.getCount(); i++) {
-            QuestionnaireType type = typeAdapter.getItem(i);
-            if (type.getId().equals(entry.getTypeId())) {
-                break;
-            }
+    @SuppressLint("WrongConstant")
+    private void setupViewPager(ViewPager viewPager){
+        CreateQuestionnaireAdapter createQuestionnaireAdapter = new CreateQuestionnaireAdapter(getSupportFragmentManager());
+        createQuestionnaireFragment = new CreateQuestionnaireFragment();
+        questionsFragment = new QuestionnaireQuestionsFragment();
+        createQuestionnaireAdapter.addFragment(createQuestionnaireFragment, "Questionnaire Details ");
+        createQuestionnaireAdapter.addFragment(questionsFragment, "Add or edit Questions");
+        viewPager.setAdapter(createQuestionnaireAdapter);
+        Bundle args = new Bundle();
+        if(getIntent().getFlags() == Table.FLAG_EDIT_ENTRY){
+            args.putBoolean("Update", true);
         }
-        typeSpinner.setSelection(0);
+        else{
+            args.putBoolean("Update", false);
+        }
+        createQuestionnaireFragment.setArguments(args);
+    }
+
+
+    @Override
+    void setUI(Questionnaire entry) {
+
     }
 
     @Override
     void setEntryByUI() {
-        QuestionnaireType type = (QuestionnaireType) typeSpinner.getSelectedItem();
 
-        entry.setName(nameField.getText().toString());
-        entry.setDescription(descriptionField.getText().toString());
-        entry.setTypeId(type.getId());
+        entry.setName(createQuestionnaireFragment.getName());
+        entry.setDescription(createQuestionnaireFragment.getDescription());
+        entry.setTypeId(createQuestionnaireFragment.getType());
     }
 
     @SuppressLint("WrongConstant")
@@ -89,122 +99,43 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);
 
-        nameField = this.findViewById(R.id.questionnaire_name_field);
-        descriptionField = this.findViewById(R.id.questionnaire_description_field);
-        typeSpinner = this.findViewById(R.id.questionnaire_type_spinner);
-
-        List<QuestionnaireType> types = QUESTIONNAIRE_TYPE_TABLE.getAll();
-        typeAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item,
-                types);
-        typeSpinner.setAdapter(typeAdapter);
-        typeSpinner.setSelected(false);
-        typeSpinner.setOnItemSelectedListener(new EntryOnItemSelectedListener<QuestionnaireType>());
-
-        addQuestionsButton = findViewById(R.id.questionnaire_add_questions_button);
-        addQuestionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = AddQuestionsActivity.newIntent(QuestionnaireActivity.this, entry, questionnaireContent);
-                startActivityForResult(i, RESULT_ADD_QUESTIONS);
-            }
-        });
-
         updateButton = this.findViewById(R.id.questionnaire_update_button);
         updateButton.setOnClickListener(new QuestionnaireUpdateOnClickListener());
 
         submitButton = this.findViewById(R.id.questionnaire_submit_button);
         submitButton.setOnClickListener(new QuestionnaireSubmitOnClickListener());
 
-        questionnaireDragView = this.findViewById(R.id.questionnaire_question_list_view);
-
-        if (getIntent().getFlags() == Table.FLAG_EDIT_ENTRY) {
+        if(getIntent().getFlags() == Table.FLAG_EDIT_ENTRY){
             entry = getEntry(getIntent());
-            setUI(entry);
             updateButton.setVisibility(View.VISIBLE);
             submitButton.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             entry = new Questionnaire();
             updateButton.setVisibility(View.GONE);
             submitButton.setVisibility(View.VISIBLE);
         }
+        viewPager = (ViewPager) findViewById(R.id.questionnaire_view_pager);
+        setupViewPager(viewPager);
 
-        questionnaireContent = QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(entry.getId());
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.questionnaire_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
-        for (QuestionnaireContent qc: questionnaireContent){
-            Log.i(qc.getQuestionId(),"QUESTION ID");
-            Log.i(qc.getQuestionnaireId(),"QUESTIONNAIRE ID");
-            Log.i(Integer.toString(qc.getQuestionOrder()),"QUESTIONNAIRE ID");
-            Log.i("--","--");
-        }
-
-        questionnaireContentAdapter =
-                new QuestionnaireContentAdapter(QuestionnaireActivity.this, questionnaireContent);
-        questionnaireDragView.setAdapter(questionnaireContentAdapter);
-        questionnaireDragView.setDropListener(new DragSortListView.DropListener() {
-            @Override
-            public void drop(int from, int to) {
-                if (from > to) {
-                    int temp = from;
-                    from = to;
-                    to = temp;
-                }
-                QuestionnaireContent fromContent = questionnaireContent.get(from);
-                QuestionnaireContent toContent = questionnaireContent.get(to);
-
-                toContent.setQuestionOrder(from + 1);
-                fromContent.setQuestionOrder(to + 1);
-                Collections.sort(questionnaireContent);
-                Log.i(TAG, Arrays.toString(questionnaireContent.toArray()));
-
-                questionnaireContentAdapter.notifyDataSetChanged();
-            }
-        });
-        handleQuestionnaireContentUi();
     }
 
-    private void handleQuestionnaireContentUi() {
-        questionnaireContentAdapter.notifyDataSetChanged();
 
-        UiUtils.setDynamicHeight(questionnaireDragView);
 
-        if (questionnaireContent.size() > 0) {
-            questionnaireDragView.setVisibility(View.VISIBLE);
-            addQuestionsButton.setText("Edit Questions");
-        } else {
-            questionnaireDragView.setVisibility(View.GONE);
-        }
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-
-        if (requestCode == RESULT_ADD_QUESTIONS) {
-            ArrayList<QuestionnaireContent> serializableObject =
-                    (ArrayList<QuestionnaireContent>) data.getSerializableExtra(EXTRA_QUESTIONNAIRE_CONTENT);
-
-            Log.i(TAG, "REC: " + Integer.toString(serializableObject.size()));
-            questionnaireContent.clear();
-            questionnaireContent.addAll(serializableObject);
-
-            handleQuestionnaireContentUi();
-        }
-    }
 
     protected boolean isValidEntry() {
         boolean valid = true;
 
-        if (nameField.getText().toString().trim().isEmpty()) {
-            nameField.setError("This field is required");
+        if (createQuestionnaireFragment.getName().trim().isEmpty()) {
+//            nameField.setError("This field is required");
             valid = false;
         }
-        if (typeSpinner.getSelectedItem() == null) {
-            nameField.setError("This field is required");
+        if (createQuestionnaireFragment.getType() == null) {
+//            nameField.setError("This field is required");
             valid = false;
         }
 
@@ -213,6 +144,11 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Questionnaire getQuestionnaireEntry() {
+        return entry;
     }
 
     private class QuestionnaireSubmitOnClickListener extends SubmitButtonOnClickListener {
@@ -226,7 +162,7 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> {
             if (isValidEntry()) {
                 table.insert(entry);
                 setEntryResult(entry);
-                for (QuestionnaireContent content : questionnaireContent) {
+                for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 finish();
@@ -246,14 +182,14 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> {
             ArrayList<QuestionnaireContent> prevQuestionnaireContent = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs,null);
 
             for (QuestionnaireContent content : prevQuestionnaireContent) {
-                QUESTIONNAIRE_CONTENT_TABLE.delete(content.getId());
+                QUESTIONNAIRE_CONTENT_TABLE.permanentlyDelete(content.getId());
             }
 
             setEntryByUI();
             if (isValidEntry()) {
                 table.update(entry);
                 setEntryResult(entry);
-                for (QuestionnaireContent content : questionnaireContent) {
+                for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 finish();
@@ -261,29 +197,5 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> {
         }
     }
 
-    private class QuestionnaireContentAdapter extends ArrayAdapter<QuestionnaireContent> {
-        public QuestionnaireContentAdapter(Context context, ArrayList<QuestionnaireContent> questionnaireContent) {
-            super(context, 0, questionnaireContent);
-        }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            QuestionnaireContent content = questionnaireContent.get(position);
-
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.numbered_list_item_view, parent, false);
-            }
-            TextView numberView = convertView.findViewById(R.id.numbered_list_item_number_view);
-
-            numberView.setText(Integer.toString(position+1));
-            content.setQuestionOrder(position+1);
-
-            TextView textView = convertView.findViewById(R.id.numbered_list_item_text_view);
-            QuestionLangVersion question = QUESTION_LANG_VERSION_TABLE.getQuestionTextInEnglish(content.getQuestionId());
-            textView.setText(question.getIdentifier());
-
-
-            return convertView;
-        }
-    }
 }

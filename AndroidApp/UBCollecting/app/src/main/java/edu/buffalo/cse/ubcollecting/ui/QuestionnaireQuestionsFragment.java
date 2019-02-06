@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobeta.android.dslv.DragSortListView;
@@ -21,9 +22,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import edu.buffalo.cse.ubcollecting.LoopActivity;
 import edu.buffalo.cse.ubcollecting.QuestionnaireActivity;
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
+import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
@@ -37,6 +40,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
     private Button addQuestionsButton;
     private ArrayList<QuestionnaireContent> questionnaireContent;
     public static final int RESULT_ADD_QUESTIONS = 1;
+    public static final String QUESTIONNAIRE_CONTENT_ID = "questionnaire content id";
     public static final String TAG = QuestionnaireQuestionsFragment.class.getSimpleName();
 
 
@@ -143,7 +147,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             QuestionnaireContent content = questionnaireContent.get(position);
 
             if (convertView == null) {
@@ -157,6 +161,16 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             TextView textView = convertView.findViewById(R.id.numbered_list_item_text_view);
             QuestionLangVersion question = QUESTION_LANG_VERSION_TABLE.getQuestionTextInEnglish(content.getQuestionId());
             textView.setText(question.getIdentifier());
+
+            ImageView imageView = convertView.findViewById(R.id.numbered_list_item_loop_button);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = LoopActivity.newIntent(getContext());
+                    intent.putExtra(QUESTIONNAIRE_CONTENT_ID, position);
+                    startActivity(intent);
+                }
+            });
 
 
 

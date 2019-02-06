@@ -23,21 +23,7 @@ public class Person extends Model {
     public String notes;
     public int deleted;
 
-    public double getVersion(){
-        return version;
-    }
 
-    public void setVersion(double version){
-        this.version=version;
-    }
-
-    public int getDeleted(){
-        return deleted;
-    }
-
-    public void setDeleted(int deleted){
-        this.deleted=deleted;
-    }
 
     public void setNotes(String note){
         this.notes=note;
@@ -121,5 +107,21 @@ public class Person extends Model {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public double getVersion(){
+        return version;
+    }
+
+    public void setVersion(double version){
+        this.version=version;
+    }
+
+    public int getDeleted(){
+        return deleted;
+    }
+
+    public void setDeleted(int deleted){
+        this.deleted=deleted;
     }
 }

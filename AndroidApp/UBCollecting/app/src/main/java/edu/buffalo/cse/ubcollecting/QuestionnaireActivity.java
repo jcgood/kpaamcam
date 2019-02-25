@@ -49,7 +49,7 @@ import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIO
 import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.RESULT_ADD_QUESTIONS;
 
 /**
- * Activity for creating a questionnaire
+ * Activity0 for creating a questionnaire
  */
 public class QuestionnaireActivity extends EntryActivity<Questionnaire> implements QuestionnaireManager {
 

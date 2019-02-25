@@ -6,8 +6,10 @@ public class Loop extends Model {
 
     private static final String TAG = Loop.class.getSimpleName().toString();
 
-    public String questionnaireContentId;
+    public String questionnaireId;
     public String iterations;
+    public String startIndex;
+    public String endIndex;
     public String version;
     public String notes;
     public String deleted;
@@ -18,11 +20,11 @@ public class Loop extends Model {
 
 
     public String getQuestionnaireContentId() {
-        return questionnaireContentId;
+        return questionnaireId;
     }
 
-    public void setQuestionnaireContentId(String questionnaireContentId){
-        this.questionnaireContentId = questionnaireContentId;
+    public void setQuestionnaireId(String questionnaireId){
+        this.questionnaireId = questionnaireId;
     }
 
     public String getIterations(){
@@ -33,6 +35,20 @@ public class Loop extends Model {
         this.iterations = iterations;
     }
 
+    public String getStartIndex(){
+        return this.startIndex;
+    }
+
+    public void setStartIndex(String startIndex){
+        this.startIndex = startIndex;
+    }
+
+    public String getEndIndex() {
+        return this.endIndex;
+    }
+    public void setEndIndex(String endIndex){
+        this.endIndex = endIndex;
+    }
     public String getVersion() {
         return version;
     }

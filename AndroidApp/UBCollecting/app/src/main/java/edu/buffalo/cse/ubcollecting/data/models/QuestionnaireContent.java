@@ -11,6 +11,7 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
     public String questionnaireId;
     public String questionId;
     public int questionOrder;
+    public String loopId;
 
     public double version;
     public String notes;
@@ -68,6 +69,17 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
     public void setQuestionOrder(int questionOrder) {
         this.questionOrder = questionOrder;
     }
+
+
+    public String getLoopId() {
+        return loopId;
+    }
+
+    public void setLoopId(String loopId){
+        this.loopId = loopId;
+    }
+
+
 
     public void setWorkFloow(char c){
         this.wf=c;

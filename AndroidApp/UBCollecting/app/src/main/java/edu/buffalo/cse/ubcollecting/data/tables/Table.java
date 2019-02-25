@@ -73,7 +73,6 @@ public abstract class Table<E extends Model> implements Serializable {
         List<Method> getters = model.getGetters();
 
         Collections.sort(getters, new MethodComparator());
-        Log.i("INSERT", model.getId());
         for (int i = 0; i < tableColumns.size(); i++) {
 
             try {

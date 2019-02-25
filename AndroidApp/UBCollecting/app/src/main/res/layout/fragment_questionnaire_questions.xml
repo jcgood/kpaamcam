@@ -17,8 +17,8 @@
         android:layout_height="266dp"
         android:visibility="gone"
         dslv:float_background_color="@color/white"
-        dslv:drag_handle_id="@id/numbered_list_item_drag_handle"/>
-
+        dslv:drag_handle_id="@id/numbered_list_item_drag_handle"
+        />
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"

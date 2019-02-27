@@ -1,6 +1,10 @@
 package com.likhith.myapplication2;
 
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -25,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Uri videoUri;
     private Button record;
-    private Button play;
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private static HashMap<Integer,String> map=new HashMap<>();
@@ -41,19 +44,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         record=(Button) findViewById(R.id.recordVideo);
-        play=(Button) findViewById(R.id.playVideo);
         listView=(ListView) findViewById(R.id.listofrecording);
 
         //videoUri=Uri.fromFile(getFile());
 
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent playIntent=new Intent(MainActivity.this,VideoPlay.class);
-                playIntent.putExtra("videoUri",videoUri.toString());
-                startActivity(playIntent);
-            }
-        });
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, recordings);
         listView.setAdapter(adapter);
@@ -114,5 +108,40 @@ public class MainActivity extends AppCompatActivity {
     public File getFile(){
         File video_file=new File("sdcard/myfolder/myvideo2.mp4");
         return video_file;
+    }
+
+    public void recordAudio(String fileName) {
+        final MediaRecorder recorder = new MediaRecorder();
+        ContentValues values = new ContentValues(3);
+        values.put(MediaStore.MediaColumns.TITLE, fileName);
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+        recorder.setOutputFile("/sdcard/sound/" + fileName);
+        try {
+            recorder.prepare();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        final ProgressDialog mProgressDialog = new ProgressDialog(MainActivity.this);
+        mProgressDialog.setTitle(R.string.app_name);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setButton("Stop recording", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mProgressDialog.dismiss();
+                recorder.stop();
+                recorder.release();
+            }
+        });
+
+        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+            public void onCancel(DialogInterface p1) {
+                recorder.stop();
+                recorder.release();
+            }
+        });
+        recorder.start();
+        mProgressDialog.show();
     }
 }

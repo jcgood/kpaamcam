@@ -50,6 +50,7 @@ public class LoopActivity extends EntryActivity<Loop> {
     private SubQuestionAdapter subQuestionAdapter;
     private  QuestionnaireContent questionnaireContent;
     private Button submitButton;
+    private Button updateButton;
     private ArrayList<QuestionnaireContent> loopContent;
 
     @SuppressLint("WrongConstant")
@@ -117,6 +118,8 @@ public class LoopActivity extends EntryActivity<Loop> {
         });
         submitButton = findViewById(R.id.loop_submit_button);
         submitButton.setOnClickListener(new LoopSubmitOnClickListener());
+        updateButton = findViewById(R.id.loop_update_button);
+        updateButton.setOnClickListener(new LoopUpdateOnClickListener());
 
     }
     @Override
@@ -204,7 +207,13 @@ public class LoopActivity extends EntryActivity<Loop> {
             subQuestionsListView.setVisibility(View.GONE);
         }
     }
+    private class LoopUpdateOnClickListener extends UpdateButtonOnClickListener{
 
+        public LoopUpdateOnClickListener() {
+            super(LOOP_TABLE);
+        }
+
+    }
     private class LoopSubmitOnClickListener extends SubmitButtonOnClickListener{
 
 

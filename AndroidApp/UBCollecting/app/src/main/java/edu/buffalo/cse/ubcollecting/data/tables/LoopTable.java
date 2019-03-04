@@ -20,8 +20,8 @@ public class LoopTable extends Table<Loop> {
     public String createTable() {
         return "CREATE TABLE "
                 + TABLE + "( " + KEY_ID + " TEXT PRIMARY KEY, " + KEY_QUESTIONNAIRE_ID + " TEXT NOT NULL, "
-                + KEY_ITERATIONS + " TEXT NOT NULL, " + KEY_START_INDEX + " STRING NOT NULL, "
-                + KEY_END_INDEX + " STRING NOT NULL, " + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL, "
+                + KEY_ITERATIONS + " TEXT NOT NULL, " + KEY_START_INDEX + " TEXT NOT NULL, "
+                + KEY_END_INDEX + " TEXT NOT NULL, " + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL, "
                 + KEY_NOTES + " VARCHAR DEFAULT '', " + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL, " + "FOREIGN KEY( "
                 + KEY_QUESTIONNAIRE_ID + ") " + " REFERENCES " +  QuestionnaireTable.TABLE
                 + "( " + QuestionnaireContentTable.KEY_ID + ") )";

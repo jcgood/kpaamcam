@@ -40,6 +40,12 @@
             android:layout_height="wrap_content"
             android:text = "Submit Loop"
             android:id="@+id/loop_submit_button"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text = "Update  Loop"
+            android:id="@+id/loop_update_button"
+            android:visibility="gone"/>
 
 
     </LinearLayout>

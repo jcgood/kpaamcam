@@ -31,6 +31,7 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 
+import static edu.buffalo.cse.ubcollecting.LoopActivity.EXTRA_QUESTIONNAIRE_START_INDEX;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.LANGUAGE_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.LanguageTable.ENGLISH_LANG_NAME;
@@ -41,13 +42,14 @@ import static edu.buffalo.cse.ubcollecting.data.tables.LanguageTable.ENGLISH_LAN
 public class AddQuestionsActivity extends AppCompatActivity {
 
     private static final String TAG = AddQuestionsActivity.class.getSimpleName();
-    private static final String EXTRA_QUESTIONNAIRE_ID = "edu.buffalo.cse.ubcollecting.ui.questionnaire_id";
+    public static final String EXTRA_QUESTIONNAIRE_ID = "edu.buffalo.cse.ubcollecting.ui.questionnaire_id";
     public static final String EXTRA_QUESTIONNAIRE_CONTENT = "edu.buffalo.cse.ubcollecting.ui.questionnaire_content";
 
     private ArrayList<QuestionnaireContent> selections;
     private HashSet<QuestionnaireContent> selectionsSet;
     private ArrayList<Language> selectedLanguages;
     private String questionnaireId;
+    private int questionnaireStartIndex = 0;
 
     private RecyclerView entryRecyclerView;
     private QuestionLangAdapter entryAdapter;
@@ -56,6 +58,8 @@ public class AddQuestionsActivity extends AppCompatActivity {
     private ImageButton clearSearchButton;
     private ImageButton searchButton;
     private Button doneButton;
+
+
 
 
     /**
@@ -79,7 +83,10 @@ public class AddQuestionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_questions);
 
         questionnaireId = getIntent().getExtras().getString(EXTRA_QUESTIONNAIRE_ID);
-        Log.i("QUESTIONNIARE_ID", questionnaireId);
+        if(getIntent().hasExtra(EXTRA_QUESTIONNAIRE_START_INDEX)){
+            questionnaireStartIndex = getIntent().getExtras().getInt(EXTRA_QUESTIONNAIRE_START_INDEX);
+            Log.i("LOGARITHM", "QUESTIONNAIRE INDEX PASSED TO ADD QUESTIONS IS "+ questionnaireStartIndex);
+        }
 
         selections = (ArrayList<QuestionnaireContent>) getIntent().getExtras().getSerializable(EXTRA_QUESTIONNAIRE_CONTENT);
         selectionsSet = new HashSet<>();
@@ -186,7 +193,8 @@ public class AddQuestionsActivity extends AppCompatActivity {
 
         private ArrayList<QuestionnaireContent> onSelectionDone(ArrayList<QuestionnaireContent> selections) {
             for (int i = 0; i < selections.size(); i++) {
-                selections.get(i).setQuestionOrder(i + 1);
+                selections.get(i).setQuestionOrder(i + 1+questionnaireStartIndex);
+                Log.i("SELECTIONS", String.valueOf(questionnaireStartIndex));
             }
             Log.i(TAG, "SELECTIONS: " + Integer.toString(selections.size()));
             return selections;

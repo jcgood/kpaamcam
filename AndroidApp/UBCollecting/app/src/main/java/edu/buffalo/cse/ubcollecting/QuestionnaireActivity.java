@@ -180,7 +180,7 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
             String selection = QuestionnaireContentTable.KEY_QUESTIONNAIRE_ID+ " = ?";
             String[] selectionArgs = {entry.getId()};
             ArrayList<QuestionnaireContent> prevQuestionnaireContent = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs,null);
-
+            
             for (QuestionnaireContent content : prevQuestionnaireContent) {
                 QUESTIONNAIRE_CONTENT_TABLE.permanentlyDelete(content.getId());
             }

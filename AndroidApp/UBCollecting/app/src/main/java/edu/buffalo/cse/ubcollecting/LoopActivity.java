@@ -21,6 +21,7 @@ import com.mobeta.android.dslv.DragSortListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Loop;
@@ -40,6 +41,7 @@ import static edu.buffalo.cse.ubcollecting.data.tables.QuestionnaireTable.KEY_ID
 import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_CONTENT;
 import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.QUESTIONNAIRE_CONTENT;
 import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.RESULT_ADD_QUESTIONS;
+import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_ID;
 
 public class LoopActivity extends EntryActivity<Loop> {
     private static final String TAG = PersonActivity.class.getSimpleName().toString();
@@ -52,6 +54,7 @@ public class LoopActivity extends EntryActivity<Loop> {
     private Button submitButton;
     private Button updateButton;
     private ArrayList<QuestionnaireContent> loopContent;
+    public static final String EXTRA_QUESTIONNAIRE_START_INDEX= "questionnaireStartIndexExtra";
 
     @SuppressLint("WrongConstant")
     protected  void onCreate(Bundle savedInstanceState){
@@ -67,10 +70,18 @@ public class LoopActivity extends EntryActivity<Loop> {
         if(getIntent().getFlags() == Table.FLAG_EDIT_ENTRY){
             entry = getEntry(getIntent());
             setUI(entry);
-             selection = QUESTIONNAIRE_CONTENT_TABLE.KEY_QUESTIONNAIRE_ID + " =? and  " + QUESTIONNAIRE_CONTENT_TABLE.KEY_QUESTION_ORDER + " BETWEEN ? AND ? ";
-             selectionArgs = new String[]{questionnaireContent.getQuestionnaireId(), String.valueOf(entry.getStartIndex()), String.valueOf(entry.getEndIndex())};
-            Log.i("LOGARITHM", entry.getStartIndex()+" "+entry.getEndIndex());
+            selection =  QUESTIONNAIRE_CONTENT_TABLE.KEY_QUESTIONNAIRE_ID + " =? ";
+            selectionArgs = new String [] {questionnaireContent.getQuestionnaireId()};
+//             selection = QUESTIONNAIRE_CONTENT_TABLE.KEY_QUESTIONNAIRE_ID + " =? and  " + QUESTIONNAIRE_CONTENT_TABLE.KEY_QUESTION_ORDER + " BETWEEN ? AND ? ";
+//             selectionArgs = new String[]{questionnaireContent.getQuestionnaireId(),entry.getStartIndex(), entry.getEndIndex()};
+            Log.i("SOGGY", "SIZE" + entry.getStartIndex()+" "+entry.getEndIndex());
+            Log.i("SOGGY", "QUESTIONNAIRE ID ON LOOP RETRIEVAL: "+ questionnaireContent.questionnaireId);
             loopContent = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll(selection,selectionArgs, null );
+
+            for(QuestionnaireContent content: loopContent){
+                Log.i("SOGGY", "ORDER "+ content.getQuestionOrder());
+            }
+            Log.i("SOGGY", "HOW MANY FIT "+ loopContent.size());
         }
         else{
             entry = new Loop();
@@ -91,6 +102,8 @@ public class LoopActivity extends EntryActivity<Loop> {
             @Override
             public void onClick(View view) {
                 Intent i = AddQuestionsActivity.newIntent(view.getContext(), questionnaire, loopContent);
+                i.putExtra(EXTRA_QUESTIONNAIRE_START_INDEX, questionnaireContent.getQuestionOrder()+1);
+                i.putExtra(EXTRA_QUESTIONNAIRE_ID, questionnaireContent.getQuestionnaireId());
                 startActivityForResult(i, RESULT_ADD_QUESTIONS);
             }
         });
@@ -124,7 +137,7 @@ public class LoopActivity extends EntryActivity<Loop> {
     }
     @Override
     void setUI(Loop entry) {
-        Log.i("LOGARITHM", "UI SHOULD BE BEING SET");
+        Log.i("SOGGY", "UI SHOULD BE BEING SET");
         iterationsField.setText(entry.getIterations());
 
     }
@@ -132,10 +145,10 @@ public class LoopActivity extends EntryActivity<Loop> {
     @Override
     void setEntryByUI() {
         entry.setIterations(iterationsField.getText().toString());
-        entry.setStartIndex(String.valueOf(questionnaireContent.getQuestionOrder()));
-        Log.i("LOGARITHM", entry.getStartIndex());
+        entry.setStartIndex(String.valueOf(1+ questionnaireContent.getQuestionOrder()));
+        Log.i("SOGGY", "THE START INDEX WILL BE" +entry.getStartIndex());
         entry.setQuestionnaireId(questionnaireContent.getQuestionnaireId());
-        entry.setEndIndex(String.valueOf(entry.getStartIndex())+ loopContent.size());
+        entry.setEndIndex(String.valueOf(Integer.valueOf(entry.getStartIndex())+ loopContent.size()));
 
 
     }
@@ -223,16 +236,41 @@ public class LoopActivity extends EntryActivity<Loop> {
 
         @Override
         public void onClick(View view) {
+            Log.i("SOGGY", "ONCLICKISRUNNING");
             setEntryByUI();
+            Log.i("SOGGY", "is the entry valid "+isValidEntry());
             if (isValidEntry()) {
+                Log.i("SOGGY", "start index "+ entry.startIndex +  " end index "+entry.endIndex);
                 table.insert(entry);
                 setEntryResult(entry);
-                for (QuestionnaireContent content : loopContent) {
+                for(QuestionnaireContent content : loopContent){
+                    content.setQuestionOrder(-1+content.getQuestionOrder()+Integer.valueOf(entry.getStartIndex()));
+                    Log.i("SOGGY", "QUESTIONNAIRE ID ON INSERTION "+ content.getQuestionnaireId());
+                    Log.i("SOGGY", "ORDER UPON INSERTION "+ content.getQuestionOrder());
+                    content.setWorkFlow("s");
+                    Log.i("SOGGY", "WORK FLOW "+ content.getWorkFlow());
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
+//                    QUESTIONNAIRE_CONTENT_TABLE.update(content);
+
                 }
+//                adjustCurrentQuestionnaire();
                 finish();
             }
 
+        }
+        public void adjustCurrentQuestionnaire(){
+            Log.i("SOGGY", "INSIDE ADJUSTMENT");
+            String selection =  QUESTIONNAIRE_CONTENT_TABLE.KEY_QUESTIONNAIRE_ID + " =? ";
+            String [] selectionArgs = new String [] {questionnaireContent.getQuestionnaireId()};
+//            String selection = QUESTIONNAIRE_CONTENT_TABLE.KEY_QUESTIONNAIRE_ID + " =? and  " + QUESTIONNAIRE_CONTENT_TABLE.KEY_QUESTION_ORDER + " > ? ";
+//            String[] selectionArgs = new String[]{questionnaireContent.getQuestionnaireId(), String.valueOf(entry.getStartIndex()), String.valueOf(entry.getEndIndex())};
+            List<QuestionnaireContent> contentToBeAdjusted = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll( selection, selectionArgs,null);
+
+            for(QuestionnaireContent content : contentToBeAdjusted){
+                content.setQuestionOrder(-1+content.getQuestionOrder()+Integer.valueOf(entry.getStartIndex()));
+                QUESTIONNAIRE_CONTENT_TABLE.update(content);
+
+            }
         }
     }
 

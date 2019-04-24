@@ -48,8 +48,6 @@ public class QuestionnaireQuestionsFragment extends Fragment {
     private QuestionnaireQuestionsFragment.QuestionnaireContentAdapter questionnaireContentAdapter;
     private Button addQuestionsButton;
     private ArrayList<QuestionnaireContent> questionnaireContent;
-    private int loopStartIndexHolder=0;
-    private int loopEndIndexHolder=0;
     public static final int RESULT_ADD_QUESTIONS = 1;
     public static final String QUESTIONNAIRE_CONTENT = "questionnaire content id";
     public static final String TAG = QuestionnaireQuestionsFragment.class.getSimpleName();
@@ -161,7 +159,6 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final QuestionnaireContent content = questionnaireContent.get(position);
-            Log.i("POSITION", String.valueOf(position));
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.numbered_list_item_view, parent, false);
@@ -169,11 +166,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             TextView numberView = convertView.findViewById(R.id.numbered_list_item_number_view);
 
             numberView.setText(Integer.toString(position+1));
-//            if(position+1<=loopEndIndexHolder&& position+1>loopStartIndexHolder){
-//                convertView.setPadding(200,0,0,0);
-//                setMargins(convertView, 200, 0,0,0);
-//                Log.i("LOGARITHM", "Margins being set");
-//            }
+
 
 
             content.setQuestionOrder(position+1);
@@ -183,13 +176,10 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             textView.setText(question.getIdentifier());
 
             String selection = LOOP_TABLE.KEY_QUESTIONNAIRE_ID+ " = ?  AND " + LOOP_TABLE.KEY_START_INDEX + "= ?";
-            final String [] selectionArguments = {content.getQuestionnaireId(), String.valueOf(content.getQuestionOrder()+1)};
+            final String [] selectionArguments = {content.getQuestionnaireId(), String.valueOf(content.getQuestionOrder())};
 
-            final ArrayList<Loop> loopList = DatabaseHelper.LOOP_TABLE.getAll(selection, selectionArguments, null);
-            if(loopList.size()>0){
-                Loop loop = loopList.get(0);
-                loopStartIndexHolder = Integer.valueOf(loop.getStartIndex());
-                loopEndIndexHolder = Integer.valueOf(loop.getEndIndex());
+            final ArrayList<Loop> loop = DatabaseHelper.LOOP_TABLE.getAll(selection, selectionArguments, null);
+            if(loop.size()>0){
                 textView.setTextColor(Color.GREEN);
             }
             final ImageView imageView = convertView.findViewById(R.id.numbered_list_item_loop_button);
@@ -201,17 +191,15 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 
                     Log.i("LOGARITHM", String.valueOf(content.getQuestionOrder()));
 
-                    if(loopList.size()>0){
+                    if(loop.size()>0){
                         Log.i("LOGARITHM", "LOOP HAS BEEN FOUND");
-                        intent.putExtra(EXTRA_MODEL,  loopList.get(0));
+                        intent.putExtra(EXTRA_MODEL,  loop.get(0));
                         intent.setFlags(Table.FLAG_EDIT_ENTRY);
                     }
                     else{
                         Log.i("LOGARITHM", "LOOP HAS NOT  BEEN FOUND");
                     }
-
-
-                    startActivityForResult(intent, RESULT_ADD_QUESTIONS);
+                    startActivity(intent);
                 }
             });
 
@@ -219,14 +207,6 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 
 
             return convertView;
-        }
-
-        private void setMargins (View v, int l, int t, int r, int b) {
-            if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-                p.setMargins(l, t, r, b);
-                v.requestLayout();
-            }
         }
     }
 

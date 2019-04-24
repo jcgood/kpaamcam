@@ -44,10 +44,11 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private Question question;
     private TextView selectQuestionProperties;
     private TextView selectQuestionLanguages;
-
+    private boolean checkSelected=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        checkSelected=false;
 
         super.onCreate(savedInstanceState);
 
@@ -138,10 +139,15 @@ public class CreateQuestionActivity extends AppCompatActivity {
             propertySelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if (isChecked) {
+                    if (isChecked && !checkSelected) {
                         questionProperites.add(quesPropDef);
-                    } else {
+                        checkSelected=true;
+                    } else if(!isChecked && checkSelected){
                         questionProperites.remove(quesPropDef);
+                        checkSelected=false;
+                    }
+                    else {
+                        compoundButton.setChecked(false);
                     }
                 }
             });
@@ -205,7 +211,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     }
 
     /**
-     * Helper function that validates user submission
+     * Helper function that validates user su//bmission
      * @return {@link Boolean}
      */
 
@@ -230,5 +236,4 @@ public class CreateQuestionActivity extends AppCompatActivity {
         return true;
 
     }
-
 }

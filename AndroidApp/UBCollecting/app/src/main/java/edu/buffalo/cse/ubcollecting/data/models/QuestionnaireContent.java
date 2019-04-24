@@ -16,7 +16,7 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
     public double version;
     public String notes;
     public int deleted;
-    public String wf;
+    public char wf;
 
     public double getVersion(){
         return version;
@@ -81,11 +81,11 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
 
 
 
-    public void setWorkFlow(String c){
+    public void setWorkFloow(char c){
         this.wf=c;
     }
 
-    public String getWorkFlow()
+    public char getWorkFlow()
     {
         return this.wf;
     }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/question_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:paddingStart="5dp"
+        android:text="Language:"
+        android:textSize="15sp" />
+
+    <Spinner
+        android:id="@+id/question_language_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/next_question"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="271dp">
+
+    </Spinner>
+
+    <TextView
+        android:id="@+id/question_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:textSize="18sp"
+        android:text="Question Text Goes Here"/>
+
+    <Button
+        android:id="@+id/answer_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textSize="12sp"
+        android:text="Take Video"/>
+
+    <EditText
+        android:id="@+id/answer_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/answer_instructions"
+        android:layout_marginTop="60dp" />
+
+
+    <Button
+        android:id="@+id/next_question"
+        android:layout_width="244dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="266dp"
+        android:layout_marginEnd="67dp"
+        android:text="Next" />
+
+    <Button
+        android:id="@+id/skip_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/question_text"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="33dp"
+        android:text="Skip " />
+
+    <Button
+        android:id="@+id/saveandexit_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/question_text"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-91dp"
+        android:text="Save and Exit" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/answer_list_header"
+        android:layout_below="@+id/next_question"
+        android:textSize="25dp"
+        android:text="Previous Answers"
+        android:layout_centerHorizontal="true"
+        android:textColor="#000000"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/previous_answers_list"
+        android:layout_below="@+id/answer_list_header"/>
+
+</RelativeLayout>

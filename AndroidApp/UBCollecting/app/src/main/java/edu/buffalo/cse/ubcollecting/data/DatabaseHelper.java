@@ -277,7 +277,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SessionQuestionnaireTable.TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SessionQuestionTable.TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + AnswerTable.TABLE);
-        db.execSQL("DROP TABLE IF EXISTS "+ LoopTable.TABLE);
 
         // create new tables
         onCreate(db);

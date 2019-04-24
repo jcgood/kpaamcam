@@ -1,6 +1,5 @@
 package edu.buffalo.cse.ubcollecting.data.tables;
 
-import edu.buffalo.cse.ubcollecting.LoopActivity;
 import edu.buffalo.cse.ubcollecting.data.models.Loop;
 
 public class LoopTable extends Table<Loop> {
@@ -16,10 +15,6 @@ public class LoopTable extends Table<Loop> {
     public static final String KEY_NOTES = "notes";
     public static final String KEY_DELETED = "deleted";
 
-    public LoopTable(){
-        super();
-        activityClass = LoopActivity.class;
-    }
 
     @Override
     public String createTable() {

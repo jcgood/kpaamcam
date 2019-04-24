@@ -50,10 +50,8 @@ public class ViewQuestionsActivity extends AppCompatActivity {
         questionView.setLayoutManager(new LinearLayoutManager(this));
 
 
-
         questionnaire = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(getQuestionnaire(getIntent()).getId());
         questionnaireTitle.setText(getQuestionnaire(getIntent()).name);
-
 
 
         ArrayList<String> listofQuestions = new ArrayList<>();

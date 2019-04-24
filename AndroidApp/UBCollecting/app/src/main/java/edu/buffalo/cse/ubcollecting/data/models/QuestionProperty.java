@@ -68,5 +68,4 @@ public class QuestionProperty extends Model {
         this.value = value;
     }
 
-
 }

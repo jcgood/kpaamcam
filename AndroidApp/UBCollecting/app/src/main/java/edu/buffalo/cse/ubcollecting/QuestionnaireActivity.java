@@ -106,11 +106,13 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
         submitButton.setOnClickListener(new QuestionnaireSubmitOnClickListener());
 
         if(getIntent().getFlags() == Table.FLAG_EDIT_ENTRY){
+            Log.d("QA","Flg set of updateButton to VISIBLE");
             entry = getEntry(getIntent());
             updateButton.setVisibility(View.VISIBLE);
             submitButton.setVisibility(View.GONE);
         }
         else {
+            Log.d("QA","Flg set of submitButton to VISIBLE");
             entry = new Questionnaire();
             updateButton.setVisibility(View.GONE);
             submitButton.setVisibility(View.VISIBLE);
@@ -180,7 +182,7 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
             String selection = QuestionnaireContentTable.KEY_QUESTIONNAIRE_ID+ " = ?";
             String[] selectionArgs = {entry.getId()};
             ArrayList<QuestionnaireContent> prevQuestionnaireContent = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs,null);
-            
+
             for (QuestionnaireContent content : prevQuestionnaireContent) {
                 QUESTIONNAIRE_CONTENT_TABLE.permanentlyDelete(content.getId());
             }

@@ -88,7 +88,8 @@ public abstract class Table<E extends Model> implements Serializable {
             }
 
         }
-        rowId = db.insertOrThrow(this.getTableName(), null, values);
+        rowId = db.insert(this.getTableName(), null, values);
+
         DatabaseManager.getInstance().closeDatabase();
 
         return rowId;

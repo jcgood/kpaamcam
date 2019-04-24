@@ -4,6 +4,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
     <android.support.design.widget.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +14,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/questionnaire_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="500dp">
+        android:layout_height="350dp"
+        >
 
     </android.support.v4.view.ViewPager>
     <Button
@@ -21,11 +23,13 @@
         android:layout_height="wrap_content"
         android:text = "Update Questionnaire"
         android:id="@+id/questionnaire_update_button"/>
+
     <Button
+        android:id="@+id/questionnaire_submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text= "Submit Questionnaire"
-        android:id="@+id/questionnaire_submit_button"/>
+        android:text="Submit Questionnaire"
+        android:visibility="visible" />
 
 </LinearLayout>
 

@@ -1,6 +1,5 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,10 +48,9 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELEC
  * A fragment to represent a question to be taken in a questionnaire.
  */
 
-public class QuestionFragment extends Fragment{
+public class VideoFragment extends Fragment{
 
     public final static String SELECTED_ANSWER = "selected answer";
-
 
     private QuestionnaireContent questionContent;
     private Spinner questionLangSpinner;
@@ -74,7 +72,7 @@ public class QuestionFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_question, container, false);
+        View view = inflater.inflate(R.layout.fragment_photo, container, false);
         answer = new Answer();
         questionText = view.findViewById(R.id.question_text);
         answerText = view.findViewById(R.id.answer_text);
@@ -88,7 +86,7 @@ public class QuestionFragment extends Fragment{
         questionLangSpinner = view.findViewById(R.id.question_language_spinner);
         questionLanguagesAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, questionLanguages);
         questionLangSpinner.setAdapter(questionLanguagesAdapter);
-        questionLangSpinner.setOnItemSelectedListener(new QuestionFragment.LanguageOnItemSelectedListener());
+        questionLangSpinner.setOnItemSelectedListener(new VideoFragment.LanguageOnItemSelectedListener());
         questionLangSpinner.setSelection(getEnglishQuestionIndex());
 
         nextQuestion = view.findViewById(R.id.next_question);
@@ -97,9 +95,9 @@ public class QuestionFragment extends Fragment{
         if(questionManager.isLastQuestion()){
             nextQuestion.setText("Finish");
         }
-        nextQuestion.setOnClickListener(new QuestionFragment.NextQuestionOnClickListener());
-        skipQuestion.setOnClickListener(new QuestionFragment.SkipQuestionOnClickListener());
-        saveAndExitQuestion.setOnClickListener(new QuestionFragment.SaveAndExitQuestionOnClickListener());
+        nextQuestion.setOnClickListener(new VideoFragment.NextQuestionOnClickListener());
+        skipQuestion.setOnClickListener(new VideoFragment.SkipQuestionOnClickListener());
+        saveAndExitQuestion.setOnClickListener(new VideoFragment.SaveAndExitQuestionOnClickListener());
         if(getArguments().containsKey(SELECTED_ANSWER)){
             ArrayList<Answer> answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
             previousAnswerList = view.findViewById(R.id.previous_answers_list);
@@ -114,10 +112,8 @@ public class QuestionFragment extends Fragment{
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
         String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
-
         updateAnswerList(questionId, questionnaireId);
     }
-
 
     private class ListAdapter extends ArrayAdapter<Answer> {
         ArrayList<Answer> answerList;
@@ -154,12 +150,9 @@ public class QuestionFragment extends Fragment{
                 }
             });
 
-
             return convertView;
         }
-
     }
-
 
     private void updateAnswerList(String questionId, String questionnaireId){
         String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
@@ -169,8 +162,6 @@ public class QuestionFragment extends Fragment{
         listAdapter.clear();
         listAdapter.addAll(answerList);
         listAdapter.notifyDataSetChanged();
-
-
     }
 
     public void onAttach(Context context){
@@ -205,6 +196,7 @@ public class QuestionFragment extends Fragment{
             }
         }
     }
+
     private class SkipQuestionOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view){
@@ -212,9 +204,6 @@ public class QuestionFragment extends Fragment{
             questionManager.getNextQuestion();
         }
     }
-
-
-
 
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
@@ -247,9 +236,5 @@ public class QuestionFragment extends Fragment{
         return valid;
 
     }
-
-
-
-
 
 }

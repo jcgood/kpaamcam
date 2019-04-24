@@ -11,11 +11,12 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
     public String questionnaireId;
     public String questionId;
     public int questionOrder;
+    public String loopId;
 
     public double version;
     public String notes;
     public int deleted;
-    public char wf;
+    public String wf;
 
     public double getVersion(){
         return version;
@@ -69,11 +70,22 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
         this.questionOrder = questionOrder;
     }
 
-    public void setWorkFloow(char c){
+
+    public String getLoopId() {
+        return loopId;
+    }
+
+    public void setLoopId(String loopId){
+        this.loopId = loopId;
+    }
+
+
+
+    public void setWorkFlow(String c){
         this.wf=c;
     }
 
-    public char getWorkFlow()
+    public String getWorkFlow()
     {
         return this.wf;
     }

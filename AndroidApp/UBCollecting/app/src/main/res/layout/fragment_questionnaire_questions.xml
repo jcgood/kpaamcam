@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:dslv="http://schemas.android.com/apk/res-auto"
+    tools:context="edu.buffalo.cse.ubcollecting.QuestionnaireActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <com.mobeta.android.dslv.DragSortListView
+        android:id="@+id/questionnaire_question_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="266dp"
+        android:visibility="gone"
+        dslv:float_background_color="@color/white"
+        dslv:drag_handle_id="@id/numbered_list_item_drag_handle"
+        />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Add Questions"
+            android:id="@+id/add_questions_button"/>
+    </LinearLayout>
+</ScrollView>

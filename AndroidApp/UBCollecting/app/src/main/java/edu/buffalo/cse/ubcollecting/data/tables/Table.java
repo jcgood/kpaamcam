@@ -73,7 +73,6 @@ public abstract class Table<E extends Model> implements Serializable {
         List<Method> getters = model.getGetters();
 
         Collections.sort(getters, new MethodComparator());
-
         for (int i = 0; i < tableColumns.size(); i++) {
 
             try {
@@ -89,9 +88,7 @@ public abstract class Table<E extends Model> implements Serializable {
             }
 
         }
-
-        rowId = db.insert(this.getTableName(), null, values);
-
+        rowId = db.insertOrThrow(this.getTableName(), null, values);
         DatabaseManager.getInstance().closeDatabase();
 
         return rowId;
@@ -367,6 +364,17 @@ public abstract class Table<E extends Model> implements Serializable {
 
         //db.delete(this.getTableName(), selection, selectionArgs);
         db.execSQL("UPDATE " + this.getTableName()+ " SET Deleted = 1 WHERE id = "+ id);
+        DatabaseManager.getInstance().closeDatabase();
+
+    }
+
+    public void permanentlyDelete(String id){
+        SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
+        String selection = "id = ?";
+
+        String[] selectionArgs = {id};
+
+        db.delete(this.getTableName(), selection, selectionArgs);
         DatabaseManager.getInstance().closeDatabase();
 
     }

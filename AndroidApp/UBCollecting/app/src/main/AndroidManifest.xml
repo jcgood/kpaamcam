@@ -122,6 +122,9 @@
         <activity
             android:name=".ui.interviewer.UpdateAnswerActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoopActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -12,5 +12,8 @@
     <string name="languages">Languages</string>
     <string name="title_activity_view_questions">ViewQuestions</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

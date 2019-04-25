@@ -42,7 +42,7 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
                 + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
                 + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + KEY_IS_PARENT + "BOOLEAN DEFAULT false NOT NULL, " + KEY_PARENT_QUESTIONNAIRE_CONTENT
-                + "TEXT, "+ "PRIMARY KEY(" + KEY_ID +"),"
+                + " TEXT, "+ "PRIMARY KEY(" + KEY_ID +"),"
                 + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES " + QuestionTable.TABLE
                 + " (" + QuestionTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_QUESTIONNAIRE_ID
                 + ") REFERENCES " + QuestionnaireTable.TABLE + " (" + QuestionnaireTable.KEY_ID + "), "

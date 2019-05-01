@@ -114,10 +114,8 @@ public class QuestionFragment extends Fragment{
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
         String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
-
         updateAnswerList(questionId, questionnaireId);
     }
-
 
     private class ListAdapter extends ArrayAdapter<Answer> {
         ArrayList<Answer> answerList;

@@ -42,14 +42,6 @@
         android:textSize="12sp"
         android:text="Take Audio"/>
 
-    <EditText
-        android:id="@+id/answer_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/answer_instructions"
-        android:layout_marginTop="60dp" />
-
 
     <Button
         android:id="@+id/next_question"

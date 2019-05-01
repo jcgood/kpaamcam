@@ -1,5 +1,6 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,7 +56,6 @@ public class VideoFragment extends Fragment{
     private QuestionnaireContent questionContent;
     private Spinner questionLangSpinner;
     private TextView questionText;
-    private EditText answerText;
     private Button nextQuestion;
     private Button skipQuestion;
     private Button saveAndExitQuestion;
@@ -68,14 +68,15 @@ public class VideoFragment extends Fragment{
     private QuestionManager questionManager;
     private Answer answer;
     private String type;
+    private Button takeVideo;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_photo, container, false);
+        View view = inflater.inflate(R.layout.fragment_video, container, false);
         answer = new Answer();
+        takeVideo=view.findViewById(R.id.answer_instructions);
         questionText = view.findViewById(R.id.question_text);
-        answerText = view.findViewById(R.id.answer_text);
         questionContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
         questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(questionContent.getQuestionId());
         questionLanguages = new ArrayList<>();
@@ -167,6 +168,7 @@ public class VideoFragment extends Fragment{
     public void onAttach(Context context){
         super.onAttach(context);
         questionManager = (QuestionManager) context;
+        int x=0;
     }
 
     private int getEnglishQuestionIndex(){
@@ -215,7 +217,7 @@ public class VideoFragment extends Fragment{
     private void submitTextAnswer(){
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());
-        answer.setText(answerText.getText().toString());
+        //answer.setText(answerText.getText().toString());
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         DatabaseHelper.ANSWER_TABLE.insert(answer);
     }
@@ -223,11 +225,6 @@ public class VideoFragment extends Fragment{
     protected boolean validateEntry() {
 
         boolean valid = true;
-
-        if (answerText.getText().toString().isEmpty()){
-            valid = false;
-            answerText.setError("A Text Answer is Required");
-        }
 
         if (!valid){
             Toast.makeText(this.getActivity(), "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();

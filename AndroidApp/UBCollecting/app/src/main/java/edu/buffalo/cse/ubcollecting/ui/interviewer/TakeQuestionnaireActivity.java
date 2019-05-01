@@ -57,13 +57,10 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
 
     public void getNextQuestion(){
          if (questionIndex<questionnaire.size()){
-
-
             Bundle bundle = new Bundle();
             bundle.putSerializable(QUESTIONNAIRE_CONTENT,questionnaire.get(questionIndex));
             bundle.putSerializable(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()).getId());
             bundle.putSerializable(SELECTED_SESSION, getSession(getIntent()));
-
 
             //get any answers this question may have
             String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
@@ -83,6 +80,8 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
 
              ArrayList<QuestionPropertyDef> all1 = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.getAll(selction2, selectionArgs2, null);
              String typeOfQuestion=all1.get(0).name;
+             Log.d("TakeQuestion","Type of question: "+typeOfQuestion);
+
              bundle.putSerializable(QUESTION_TYPE,typeOfQuestion);
 
             final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
@@ -92,25 +91,28 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             }
 
             if(typeOfQuestion.equals("Audio")){
+                Log.d("TakeQuestion","Audio Frag started");
                 AudioFragment audioFragment = new AudioFragment();
                 audioFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(audioFragment);
                 questionStatePagerAdapter.notifyDataSetChanged();
-
             }
             else if(typeOfQuestion.equals("Video")){
+                Log.d("TakeQuestion","Video Frag started");
                 VideoFragment videoFragment = new VideoFragment();
                 videoFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(videoFragment);
                 questionStatePagerAdapter.notifyDataSetChanged();
             }
             else if(typeOfQuestion.equals("Photo")){
+                Log.d("TakeQuestion","Photo Frag started");
                 PhotoFragment photoFragment = new PhotoFragment();
                 photoFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(photoFragment);
                 questionStatePagerAdapter.notifyDataSetChanged();
             }
             else{
+                Log.d("TakeQuestion","Text Frag started");
                 QuestionFragment questionFragment = new QuestionFragment();
                 questionFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(questionFragment);

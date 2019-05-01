@@ -10,8 +10,10 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
 
     public String questionnaireId;
     public String questionId;
+    public String parentQCId;
+    public Boolean isParent;
     public int questionOrder;
-    public String loopId;
+
 
     public double version;
     public String notes;
@@ -71,15 +73,21 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
     }
 
 
-    public String getLoopId() {
-        return loopId;
+    public String getParentQCId(){
+        return this.parentQCId;
     }
 
-    public void setLoopId(String loopId){
-        this.loopId = loopId;
+    public void setParentQCId(String qcId){
+        this.parentQCId = qcId;
     }
 
 
+    public boolean getIsParent(){
+        return this.isParent;
+    }
+    public void setIsParent(boolean isParent){
+        this.isParent = isParent;
+    }
 
     public void setWorkFloow(char c){
         this.wf=c;

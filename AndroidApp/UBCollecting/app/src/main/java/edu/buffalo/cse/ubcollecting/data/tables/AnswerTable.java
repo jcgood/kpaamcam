@@ -17,6 +17,7 @@ public class AnswerTable extends Table<Answer> {
     public static final String KEY_LABEL = "Label";
     public static final String KEY_TEXT = "Text";
     public static final String KEY_SESSION_ID = "SessionId";
+    public static final String KEY_PARENT_ANSWER = "parentAnswer";
 
     public static final String KEY_VERSION ="VersionNumber";
     public static final String KEY_NOTES ="Notes";
@@ -36,10 +37,13 @@ public class AnswerTable extends Table<Answer> {
                 + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
                 + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + " PRIMARY KEY(" + KEY_QUESTIONNAIRE_ID + ", " + KEY_QUESTION_ID + ", " + KEY_ID + ", "
-                + KEY_SESSION_ID + "),"
+                + KEY_SESSION_ID + "), "+ KEY_PARENT_ANSWER + " TEXT , "
                 + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES " + QuestionTable.TABLE
-                + " (" + QuestionTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_QUESTIONNAIRE_ID + ") REFERENCES "
+                + " (" + QuestionTable.KEY_ID + ")," + " " +
+                "FOREIGN KEY(" + KEY_QUESTIONNAIRE_ID + ") REFERENCES "
                 + QuestionnaireTable.TABLE + " (" + QuestionnaireTable.KEY_ID + ")"
+                + " FOREIGN KEY (" + KEY_PARENT_ANSWER + ") REFERENCES " + this.TABLE
+                + "( " + this.KEY_ID + ") "
                 + " FOREIGN KEY(" + KEY_SESSION_ID + ") REFERENCES " + SessionTable.TABLE
                 + " (" + SessionTable.KEY_ID + ")"
                 + ")";

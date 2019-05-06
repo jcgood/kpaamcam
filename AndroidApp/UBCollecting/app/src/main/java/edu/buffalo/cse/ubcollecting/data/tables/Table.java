@@ -402,7 +402,8 @@ public abstract class Table<E extends Model> implements Serializable {
             } else if ("".getClass().equals(ptype)) {
                 String value = cursor.getString(cursor.getColumnIndex(key));
                 method.invoke(model, value);
-            } else {
+            }
+            else {
                 byte[] value = cursor.getBlob(cursor.getColumnIndex(key));
                 method.invoke(model, value);
             }

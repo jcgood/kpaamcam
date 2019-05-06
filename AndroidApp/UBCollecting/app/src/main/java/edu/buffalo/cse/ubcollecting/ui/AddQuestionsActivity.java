@@ -173,10 +173,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
         entryAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * {@link android.view.View.OnClickListener} to pass an {@link ArrayList} of
-     * the selected questions back to the parent Activity.
-     */
+
     private class DoneOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -184,6 +181,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
             Intent data = new Intent();
             data.putExtra(EXTRA_QUESTIONNAIRE_CONTENT, contentList);
             if(getIntent().getBooleanExtra(IS_LOOP_QUESTION, false)){
+                Log.i("LOOP IT", "TRUE");
                 QuestionnaireContent parentQC = (QuestionnaireContent) getIntent().getExtras().getSerializable(EXTRA_MODEL);
                 data.putExtra(EXTRA_PARENT_QC_ID, parentQC.getId());
             }

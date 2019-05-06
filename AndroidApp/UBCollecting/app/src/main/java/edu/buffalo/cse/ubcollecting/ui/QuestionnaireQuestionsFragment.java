@@ -45,7 +45,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
     private QuestionnaireQuestionsFragment.QuestionnaireContentAdapter questionnaireContentAdapter;
     private Button addQuestionsButton;
     private ArrayList<QuestionnaireContent> questionnaireContent;
-    private Hashtable<Integer, ArrayList<QuestionnaireContent>> tentativeLoopQuestions;
+    private Hashtable<String, ArrayList<QuestionnaireContent>> tentativeLoopQuestions;
     public static final int RESULT_ADD_QUESTIONS = 1;
     public static final int RESULT_ADD_LOOP_QUESTIONS = 2;
     public static final String IS_LOOP_QUESTION = "isLoopQuestion";
@@ -66,7 +66,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_questionnaire_questions, container, false);
 
-        tentativeLoopQuestions = new Hashtable<Integer, ArrayList<QuestionnaireContent>>();
+        tentativeLoopQuestions = new Hashtable<String, ArrayList<QuestionnaireContent>>();
         addQuestionsButton = view.findViewById(R.id.add_questions_button);
         addQuestionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +78,8 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 
         questionnaireDragView = view.findViewById(R.id.questionnaire_question_list_view);
         Log.i("INNATEINNABLE", String.valueOf(questionnaireManager.getQuestionnaireEntry().getId()));
+        Log.i("ANID", questionnaireManager.getQuestionnaireEntry().getId());
         questionnaireContent = QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(questionnaireManager.getQuestionnaireEntry().getId());
-
         for (QuestionnaireContent qc: questionnaireContent){
             Log.i(qc.getQuestionId(),"QUESTION ID");
             Log.i(qc.getQuestionnaireId(),"QUESTIONNAIRE ID");
@@ -136,7 +136,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         if (requestCode ==RESULT_ADD_LOOP_QUESTIONS){
             ArrayList<QuestionnaireContent> loopContent =
                     (ArrayList<QuestionnaireContent>) data.getSerializableExtra(EXTRA_QUESTIONNAIRE_CONTENT);
-            int parentId = (int) data.getSerializableExtra(EXTRA_PARENT_QC_ID);
+            String parentId = (String) data.getSerializableExtra(EXTRA_PARENT_QC_ID);
             tentativeLoopQuestions.put(parentId, loopContent);
 
         }
@@ -159,7 +159,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         return questionnaireContent;
     }
 
-    public Hashtable<Integer, ArrayList<QuestionnaireContent>> getLoopContent(){
+    public Hashtable<String, ArrayList<QuestionnaireContent>> getLoopContent(){
         return tentativeLoopQuestions;
 
     }
@@ -202,11 +202,10 @@ public class QuestionnaireQuestionsFragment extends Fragment {
                     Intent intent = AddQuestionsActivity.newIntent(getContext(),questionnaireManager.getQuestionnaireEntry(), currentLoopContent ) ;
                     intent.putExtra(QUESTIONNAIRE_CONTENT, content);
 
-                    if(content.getIsParent()){
-                        intent.putExtra(EXTRA_MODEL, content);
-                        intent.putExtra(IS_LOOP_QUESTION, true);
-                    }
+                    intent.putExtra(EXTRA_MODEL, content);
 
+
+                    intent.putExtra(IS_LOOP_QUESTION, true);
                     startActivityForResult(intent, RESULT_ADD_LOOP_QUESTIONS);
                 }
             });

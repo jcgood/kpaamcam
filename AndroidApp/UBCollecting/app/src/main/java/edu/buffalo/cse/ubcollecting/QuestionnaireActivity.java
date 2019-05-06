@@ -169,8 +169,8 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                 for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
-                Hashtable<Integer, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
-                for(int qcId: loopContentTable.keySet()){
+                Hashtable<String, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
+                for(String qcId: loopContentTable.keySet()){
                     ArrayList <QuestionnaireContent> loopContent = loopContentTable.get(qcId);
                     for(QuestionnaireContent qcEntry: loopContent){
                         QUESTIONNAIRE_CONTENT_TABLE.insert(qcEntry);
@@ -201,9 +201,8 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                 table.update(entry);
                 setEntryResult(entry);
                 for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
-                    content.setIsParent(false);
+                    content.setIsParent(0);
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
-
                 }
                 finish();
             }

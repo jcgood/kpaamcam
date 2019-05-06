@@ -65,14 +65,14 @@ public class AddQuestionsActivity extends AppCompatActivity {
     /**
      * Returns {@link Intent} to start this Activity from a {@link edu.buffalo.cse.ubcollecting.QuestionnaireActivity}
      * @param packageContext Context to start this Intent from
-     * @param questionnaire {@link Questionnaire} to add Questions to
+     * @param questionnaireId {@link Questionnaire} to add Questions to
      * @return {@link Intent} to add questions to a {@link Questionnaire}
      */
     public static Intent newIntent(Context packageContext,
-                                   Questionnaire questionnaire,
+                                   String questionnaireId,
                                    ArrayList<QuestionnaireContent> selectedContent) {
         Intent i = new Intent(packageContext, AddQuestionsActivity.class);
-        i.putExtra(EXTRA_QUESTIONNAIRE_ID, questionnaire.getId());
+        i.putExtra(EXTRA_QUESTIONNAIRE_ID, questionnaireId);
         i.putExtra(EXTRA_QUESTIONNAIRE_CONTENT, selectedContent);
         return i;
     }
@@ -181,7 +181,6 @@ public class AddQuestionsActivity extends AppCompatActivity {
             Intent data = new Intent();
             data.putExtra(EXTRA_QUESTIONNAIRE_CONTENT, contentList);
             if(getIntent().getBooleanExtra(IS_LOOP_QUESTION, false)){
-                Log.i("LOOP IT", "TRUE");
                 QuestionnaireContent parentQC = (QuestionnaireContent) getIntent().getExtras().getSerializable(EXTRA_MODEL);
                 data.putExtra(EXTRA_PARENT_QC_ID, parentQC.getId());
             }

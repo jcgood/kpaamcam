@@ -32,6 +32,7 @@ import edu.buffalo.cse.ubcollecting.data.models.Loop;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
+import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
@@ -51,6 +52,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
     public static final String IS_LOOP_QUESTION = "isLoopQuestion";
     public static final String QUESTIONNAIRE_CONTENT = "questionnaire content id";
     public static final String EXTRA_PARENT_QC_ID = "extraParentQCId";
+    public static final String EXTRA_PARENT_QC = "extraParentQC";
     public static final String TAG = QuestionnaireQuestionsFragment.class.getSimpleName();
 
 
@@ -71,7 +73,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         addQuestionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = AddQuestionsActivity.newIntent(getContext(), questionnaireManager.getQuestionnaireEntry(), questionnaireContent);
+                Intent i = AddQuestionsActivity.newIntent(getContext(), questionnaireManager.getQuestionnaireEntry().getId(), questionnaireContent);
                 startActivityForResult(i, RESULT_ADD_QUESTIONS);
             }
         });
@@ -198,14 +200,16 @@ public class QuestionnaireQuestionsFragment extends Fragment {
                 public void onClick(View view) {
                     String selection = QUESTIONNAIRE_CONTENT_TABLE.KEY_PARENT_QUESTIONNAIRE_CONTENT + "= ?";
                     String [] selectionArgs = {content.getId()};
-                    ArrayList<QuestionnaireContent> currentLoopContent = QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs, null);
-                    Intent intent = AddQuestionsActivity.newIntent(getContext(),questionnaireManager.getQuestionnaireEntry(), currentLoopContent ) ;
-                    intent.putExtra(QUESTIONNAIRE_CONTENT, content);
-
-                    intent.putExtra(EXTRA_MODEL, content);
-
-
-                    intent.putExtra(IS_LOOP_QUESTION, true);
+                    ArrayList<QuestionnaireContent> currentLoopContent;
+                    if(tentativeLoopQuestions.containsKey(content.getId())) {
+                        currentLoopContent = tentativeLoopQuestions.get(content.getId());
+                    }
+                    else {
+                        currentLoopContent = QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs, null);
+                    }
+                    Intent intent= LoopActivity.newIntent(getContext());
+                    intent.putExtra(EXTRA_QUESTIONNAIRE_CONTENT, currentLoopContent);
+                    intent.putExtra(EXTRA_PARENT_QC, content);
                     startActivityForResult(intent, RESULT_ADD_LOOP_QUESTIONS);
                 }
             });

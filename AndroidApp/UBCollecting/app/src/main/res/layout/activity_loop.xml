@@ -13,15 +13,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" Number of Times loop should run"/>
-        <EditText
-            android:id = "@+id/loop_iterations_field"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text=" Add Questions to the loop"/>
 
         <com.mobeta.android.dslv.DragSortListView

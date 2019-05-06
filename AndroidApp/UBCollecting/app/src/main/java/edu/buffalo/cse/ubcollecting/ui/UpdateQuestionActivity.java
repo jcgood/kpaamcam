@@ -3,6 +3,7 @@ package edu.buffalo.cse.ubcollecting.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -171,6 +172,7 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                 newQuestionProperties.add(quesPropDef);
             }
 
+            propertySelect.setEnabled(false);
 
             propertySelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -216,6 +218,7 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
             if (originalQuestionTexts.containsKey(language)){
                 languageSelect.setChecked(true);
+                languageSelect.setEnabled(false);
                 questionText.setText(originalQuestionTexts.get(language).getQuestionText());
                 linearView.addView(questionText,params);
                 newQuestionTexts.put(language,questionText);
@@ -251,24 +254,30 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
     private boolean validateEntry() {
 
-        boolean valid = true;
-
         if (newQuestionProperties.isEmpty()) {
             selectQuestionProperties.setError("A question property must be selected");
-            valid = false;
+            Toast.makeText(this, "At least one question property and one language must be selected", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
         if (newQuestionTexts.isEmpty()) {
             selectQuestionLanguages.setError("You must select at least one language for the question text");
-            valid = false;
-        }
-
-        if (!valid){
             Toast.makeText(this, "At least one question property and one language must be selected", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            for (EditText text: newQuestionTexts.values()) {
+                String questionText = text.getText().toString();
+                Log.i("question text", questionText);
+                if (questionText.trim().length() < 5) {
+                    selectQuestionLanguages.setError("You must select at least one language for the question text");
+                    Toast.makeText(this, "Each selected question text must have at least 5 characters", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+
         }
 
-        return valid;
-
+        return true;
     }
 
 

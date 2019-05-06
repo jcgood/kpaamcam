@@ -7,7 +7,7 @@
     <string name="login_button_label">Login</string>
     <string name="done_button_label">Done</string>
     <string name="login_error">Incorrect Email or Password</string>
-    <string name="select_question_properties">Please Select All Desired Properties: </string>
+    <string name="select_question_property">Please Select Desired Question Property: </string>
     <string name="select_question_languages">Please Select All Question Languages: </string>
     <string name="languages">Languages</string>
     <string name="title_activity_view_questions">ViewQuestions</string>

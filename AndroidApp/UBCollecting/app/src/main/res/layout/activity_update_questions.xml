@@ -12,12 +12,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/select_question_properties"
+            android:id="@+id/chosen_question_property"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_question_properties"/>
+            android:text="Chosen Question Property:"/>
 
         <ListView
             android:id="@+id/question_properties_list_view"
@@ -31,7 +31,7 @@
             android:paddingBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_question_languages"/>
+            android:text="Chosen Question Languages:"/>
 
         <ListView
             android:id="@+id/question_languages_list_view"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -217,23 +218,25 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     private boolean validateEntry() {
 
-        boolean valid = true;
-
         if (questionProperites.isEmpty()) {
             selectQuestionProperties.setError("You must select a question property");
-            valid = false;
+            Toast.makeText(this, "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
         if (questionTexts.isEmpty()) {
             selectQuestionLanguages.setError("You must select at least one language for the question text");
-            valid = false;
-        }
-
-        if (!valid) {
             Toast.makeText(this, "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
             return false;
+        } else {
+            for (EditText text: questionTexts.values()) {
+                String questionText = text.getText().toString();
+                if (questionText.trim().length() < 5) {
+                    Toast.makeText(this, "Each Selected Question Text Must Have At Least 5 Characters", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
         }
         return true;
-
     }
 }

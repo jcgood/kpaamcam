@@ -267,10 +267,8 @@ public class UpdateQuestionActivity extends AppCompatActivity {
         } else {
             for (EditText text: newQuestionTexts.values()) {
                 String questionText = text.getText().toString();
-                Log.i("question text", questionText);
                 if (questionText.trim().length() < 5) {
-                    selectQuestionLanguages.setError("You must select at least one language for the question text");
-                    Toast.makeText(this, "Each selected question text must have at least 5 characters", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Each Selected Question Text Must Have At Least 5 Characters", Toast.LENGTH_SHORT).show();
                     return false;
                 }
             }

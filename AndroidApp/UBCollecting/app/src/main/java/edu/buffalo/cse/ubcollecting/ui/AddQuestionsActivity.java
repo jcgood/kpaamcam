@@ -1,4 +1,7 @@
 package edu.buffalo.cse.ubcollecting.ui;
+import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
+import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.EXTRA_PARENT_QC_ID;
+import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.IS_LOOP_QUESTION;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +37,7 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.LANGUAGE_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.LanguageTable.ENGLISH_LANG_NAME;
+import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.QUESTIONNAIRE_CONTENT;
 
 /**
  * Activity for adding questions to a Questionnaire
@@ -79,7 +83,6 @@ public class AddQuestionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_questions);
 
         questionnaireId = getIntent().getExtras().getString(EXTRA_QUESTIONNAIRE_ID);
-        Log.i("QUESTIONNIARE_ID", questionnaireId);
 
         selections = (ArrayList<QuestionnaireContent>) getIntent().getExtras().getSerializable(EXTRA_QUESTIONNAIRE_CONTENT);
         selectionsSet = new HashSet<>();
@@ -170,25 +173,37 @@ public class AddQuestionsActivity extends AppCompatActivity {
         entryAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * {@link android.view.View.OnClickListener} to pass an {@link ArrayList} of
-     * the selected questions back to the parent Activity.
-     */
+
     private class DoneOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             ArrayList<QuestionnaireContent> contentList = onSelectionDone(selections);
             Intent data = new Intent();
             data.putExtra(EXTRA_QUESTIONNAIRE_CONTENT, contentList);
+            if(getIntent().getBooleanExtra(IS_LOOP_QUESTION, false)){
+                Log.i("LOOP IT", "TRUE");
+                QuestionnaireContent parentQC = (QuestionnaireContent) getIntent().getExtras().getSerializable(EXTRA_MODEL);
+                data.putExtra(EXTRA_PARENT_QC_ID, parentQC.getId());
+            }
             setResult(RESULT_OK, data);
             finish();
         }
 
         private ArrayList<QuestionnaireContent> onSelectionDone(ArrayList<QuestionnaireContent> selections) {
             for (int i = 0; i < selections.size(); i++) {
-                selections.get(i).setQuestionOrder(i + 1);
+                QuestionnaireContent questionnaireContent = selections.get(i);
+                questionnaireContent.setQuestionOrder(i + 1);
+                QuestionnaireContent parentQC = (QuestionnaireContent) getIntent().getExtras().getSerializable(EXTRA_MODEL);
+                if(getIntent().getBooleanExtra(IS_LOOP_QUESTION, false)){
+
+                    selections.get(i).setParentQCId(parentQC.getId());
+
+                }
+
+
+
             }
-            Log.i(TAG, "SELECTIONS: " + Integer.toString(selections.size()));
+
             return selections;
         }
     }

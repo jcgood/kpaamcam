@@ -32,18 +32,18 @@ public class AnswerTable extends Table<Answer> {
     public String createTable() {
         return "CREATE TABLE "
                 + TABLE + "(" + KEY_ID + " TEXT NOT NULL," + KEY_QUESTIONNAIRE_ID
-                + " TEXT," + KEY_QUESTION_ID + " TEXT," + KEY_LABEL + " VARCHAR,"
+                + " TEXT," + KEY_QUESTION_ID + " TEXT, " + KEY_PARENT_ANSWER + " TEXT , "+KEY_LABEL + " VARCHAR,"
                 + KEY_TEXT + " VARCHAR," + KEY_SESSION_ID + " TEXT, "
                 + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
                 + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + " PRIMARY KEY(" + KEY_QUESTIONNAIRE_ID + ", " + KEY_QUESTION_ID + ", " + KEY_ID + ", "
-                + KEY_SESSION_ID + "), "+ KEY_PARENT_ANSWER + " TEXT , "
+                + KEY_SESSION_ID + "), "
                 + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES " + QuestionTable.TABLE
                 + " (" + QuestionTable.KEY_ID + ")," + " " +
                 "FOREIGN KEY(" + KEY_QUESTIONNAIRE_ID + ") REFERENCES "
-                + QuestionnaireTable.TABLE + " (" + QuestionnaireTable.KEY_ID + ")"
-                + " FOREIGN KEY (" + KEY_PARENT_ANSWER + ") REFERENCES " + this.TABLE
-                + "( " + this.KEY_ID + ") "
+                + QuestionnaireTable.TABLE + " (" + QuestionnaireTable.KEY_ID + "),"
+                + " FOREIGN KEY(" + KEY_PARENT_ANSWER + ") REFERENCES " + this.TABLE
+                + " (" + this.KEY_ID + "), "
                 + " FOREIGN KEY(" + KEY_SESSION_ID + ") REFERENCES " + SessionTable.TABLE
                 + " (" + SessionTable.KEY_ID + ")"
                 + ")";

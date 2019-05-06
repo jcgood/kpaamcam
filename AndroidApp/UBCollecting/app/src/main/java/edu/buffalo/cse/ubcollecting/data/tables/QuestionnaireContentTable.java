@@ -25,7 +25,6 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
     public static final String KEY_VERSION ="VersionNumber";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
-    public static final String KEY_WORK_FLOW ="WorkFlow";
 
 
     public QuestionnaireContentTable() {
@@ -38,10 +37,9 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
         return "CREATE TABLE "
                 + TABLE + "(" + KEY_ID + " TEXT NOT NULL, " + KEY_QUESTIONNAIRE_ID + " TEXT NOT NULL, "
                 + KEY_QUESTION_ID + " TEXT NOT NULL," + KEY_QUESTION_ORDER + " VARCHAR NOT NULL,"
-                + KEY_WORK_FLOW + " CHARACTER DEFAULT 's' NOT NULL, "
                 + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL," + KEY_NOTES
                 + " VARCHAR DEFAULT ''," + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
-                + KEY_IS_PARENT + "BOOLEAN DEFAULT false NOT NULL, " + KEY_PARENT_QUESTIONNAIRE_CONTENT
+                + KEY_IS_PARENT + " INTEGER DEFAULT 0 NOT NULL, " + KEY_PARENT_QUESTIONNAIRE_CONTENT
                 + " TEXT, "+ "PRIMARY KEY(" + KEY_ID +"),"
                 + " FOREIGN KEY(" + KEY_QUESTION_ID + ") REFERENCES " + QuestionTable.TABLE
                 + " (" + QuestionTable.KEY_ID + ")," + " FOREIGN KEY(" + KEY_QUESTIONNAIRE_ID
@@ -63,7 +61,7 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
      * @return {@link ArrayList} of {@link QuestionnaireContent}
      */
     public ArrayList<QuestionnaireContent> getAllQuestions(String questionnaireId){
-        String selection = KEY_QUESTIONNAIRE_ID + " = ?";
+        String selection = KEY_QUESTIONNAIRE_ID + " = ? and "+ KEY_PARENT_QUESTIONNAIRE_CONTENT + " IS NULL";
 
         String[] selectionArgs = {questionnaireId};
 

@@ -1,5 +1,7 @@
 package edu.buffalo.cse.ubcollecting.data.models;
 
+import android.util.Log;
+
 /**
  * Created by aamel786 on 2/17/18.
  */
@@ -8,16 +10,17 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
 
     private static final String TAG = QuestionnaireContent.class.getSimpleName().toString();
 
-    public String questionnaireId;
-    public String questionId;
-    public String parentQCId;
-    public Boolean isParent;
-    public int questionOrder;
-
-
     public double version;
     public String notes;
     public int deleted;
+    public String questionnaireId;
+    public String questionId;
+    public int questionOrder;
+    public String parentQCId;
+    public int  isParent;
+
+
+
     public char wf;
 
     public double getVersion(){
@@ -72,7 +75,6 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
         this.questionOrder = questionOrder;
     }
 
-
     public String getParentQCId(){
         return this.parentQCId;
     }
@@ -81,22 +83,14 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
         this.parentQCId = qcId;
     }
 
+    public int getIsParent(){
 
-    public boolean getIsParent(){
         return this.isParent;
     }
-    public void setIsParent(boolean isParent){
+    public void setIsParent(int isParent){
         this.isParent = isParent;
     }
 
-    public void setWorkFloow(char c){
-        this.wf=c;
-    }
-
-    public char getWorkFlow()
-    {
-        return this.wf;
-    }
 
     @Override
     public int compareTo(QuestionnaireContent other) {

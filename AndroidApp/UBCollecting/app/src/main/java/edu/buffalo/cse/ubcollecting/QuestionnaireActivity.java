@@ -21,9 +21,11 @@ import android.widget.Toast;
 
 import com.mobeta.android.dslv.DragSortListView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
@@ -167,6 +169,13 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                 for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
+                Hashtable<String, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
+                for(String qcId: loopContentTable.keySet()){
+                    ArrayList <QuestionnaireContent> loopContent = loopContentTable.get(qcId);
+                    for(QuestionnaireContent qcEntry: loopContent){
+                        QUESTIONNAIRE_CONTENT_TABLE.insert(qcEntry);
+                    }
+                }
                 finish();
             }
         }
@@ -192,6 +201,7 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                 table.update(entry);
                 setEntryResult(entry);
                 for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
+                    content.setIsParent(0);
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 finish();

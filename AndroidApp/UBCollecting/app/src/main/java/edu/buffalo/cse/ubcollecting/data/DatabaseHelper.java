@@ -22,7 +22,6 @@ import edu.buffalo.cse.ubcollecting.data.tables.FieldTripTable;
 import edu.buffalo.cse.ubcollecting.data.tables.FileTable;
 import edu.buffalo.cse.ubcollecting.data.tables.LanguageTable;
 import edu.buffalo.cse.ubcollecting.data.tables.LanguageTypeTable;
-import edu.buffalo.cse.ubcollecting.data.tables.LoopTable;
 import edu.buffalo.cse.ubcollecting.data.tables.PersonTable;
 import edu.buffalo.cse.ubcollecting.data.tables.QuestionLangVersionTable;
 import edu.buffalo.cse.ubcollecting.data.tables.QuestionOptionTable;
@@ -65,7 +64,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final QuestionPropertyDefTable QUESTION_PROPERTY_DEF_TABLE = new QuestionPropertyDefTable();
     public static final SessionQuestionnaireTable SESSION_QUESTIONNAIRE_TABLE = new SessionQuestionnaireTable();
     public static final SessionQuestionTable SESSION_QUESTION_TABLE = new SessionQuestionTable();
-    public static final LoopTable LOOP_TABLE = new LoopTable();
     public static final List<Table<?>> TABLES = Arrays.asList(
             ANSWER_TABLE,
             FIELD_TRIP_TABLE,
@@ -86,9 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             SESSION_PERSON_TABLE,
             QUESTION_PROPERTY_DEF_TABLE,
             SESSION_QUESTIONNAIRE_TABLE,
-            SESSION_QUESTION_TABLE,
-            LOOP_TABLE
-
+            SESSION_QUESTION_TABLE
     );
 
     private static final String TAG = DatabaseHelper.class.getSimpleName().toString();
@@ -247,8 +243,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SESSION_QUESTIONNAIRE_TABLE.createTable());
         db.execSQL((SESSION_QUESTION_TABLE.createTable()));
         db.execSQL(ANSWER_TABLE.createTable());
-        db.execSQL(LOOP_TABLE.createTable());
-
     }
 
     @Override

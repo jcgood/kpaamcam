@@ -111,6 +111,12 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 questionStatePagerAdapter.addFragement(photoFragment);
                 questionStatePagerAdapter.notifyDataSetChanged();
             }
+            else if(typeOfQuestion.equals("List")){
+                ListFragment listFragment = new ListFragment();
+                listFragment.setArguments(bundle);
+                questionStatePagerAdapter.addFragement(listFragment);
+                questionStatePagerAdapter.notifyDataSetChanged();
+            }
             else{
                 Log.d("TakeQuestion","Text Frag started");
                 QuestionFragment questionFragment = new QuestionFragment();

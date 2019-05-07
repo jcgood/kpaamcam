@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireType;
 
 /**
  * Activity for creating a Question.
@@ -35,58 +37,51 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 
 public class CreateQuestionActivity extends AppCompatActivity {
 
-    private ListView questionPropertiesListView;
-    private QuestionPropertyAdapter questionPropertyAdapter;
     private ListView questionLanguagesListView;
     private QuestionLanguageAdapter questionLanguageAdapter;
-    private ArrayList<QuestionPropertyDef> questionProperites;
     private HashMap<Language, EditText> questionTexts;
     private Button submit;
     private Question question;
     private TextView selectQuestionProperties;
     private TextView selectQuestionLanguages;
+    private Spinner propertySpinner;
+    private ArrayAdapter<QuestionPropertyDef> propertyAdapter;
+
+
     private boolean checkSelected=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkSelected=false;
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_create_questions);
 
         question = new Question();
 
-        questionPropertiesListView = findViewById(R.id.question_properties_list_view);
-
         questionLanguagesListView = findViewById(R.id.question_languages_list_view);
-
         selectQuestionProperties = findViewById(R.id.select_question_properties);
-
         selectQuestionLanguages = findViewById(R.id.select_question_languages);
 
         ArrayList<QuestionPropertyDef> quesPropDefs = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.getAll();
 
-        questionPropertyAdapter = new QuestionPropertyAdapter(this, quesPropDefs);
+        propertySpinner =  findViewById(R.id.question_property_spinner);
+        propertyAdapter = new ArrayAdapter<QuestionPropertyDef>(this,
+                android.R.layout.simple_spinner_item,
+                quesPropDefs);
+        propertySpinner.setAdapter(propertyAdapter);
+        propertySpinner.setSelected(false);
+        propertySpinner.setOnItemSelectedListener(new EntryOnItemSelectedListener<QuestionnaireType>());
 
-        questionPropertiesListView.setAdapter(questionPropertyAdapter);
 
         ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getResearchLanguages();
-
         questionLanguageAdapter = new QuestionLanguageAdapter(this, quesLangs);
-
         questionLanguagesListView.setAdapter(questionLanguageAdapter);
-
-        UiUtils.setListViewHeightBasedOnItems(questionPropertiesListView);
-
+//        UiUtils.setListViewHeightBasedOnItems(questionPropertiesListView);
         UiUtils.setListViewHeightBasedOnItems(questionLanguagesListView);
-
-        questionProperites = new ArrayList<>();
 
         questionTexts = new HashMap<>();
 
         submit = findViewById(R.id.create_question_submit_button);
-
         submit.setOnClickListener(new View.OnClickListener() {
 
 
@@ -97,12 +92,11 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
                     DatabaseHelper.QUESTION_TABLE.insert(question);
 
-                    for (QuestionPropertyDef quesPropDef : questionProperites) {
-                        QuestionProperty quesProp = new QuestionProperty();
-                        quesProp.setQuestionId(question.getId());
-                        quesProp.setPropertyId(quesPropDef.getId());
-                        DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
-                    }
+                    QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
+                    QuestionProperty quesProp = new QuestionProperty();
+                    quesProp.setQuestionId(question.getId());
+                    quesProp.setPropertyId(propertyDef.getId());
+                    DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
 
                     for (Language lang : questionTexts.keySet()) {
                         if (lang.getName().equals("English")) {
@@ -121,45 +115,6 @@ public class CreateQuestionActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private class QuestionPropertyAdapter extends ArrayAdapter<QuestionPropertyDef> {
-        public QuestionPropertyAdapter(Context context, ArrayList<QuestionPropertyDef> quesPropDefs) {
-            super(context, 0, quesPropDefs);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final QuestionPropertyDef quesPropDef = getItem(position);
-
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_select, parent, false);
-            }
-            final CheckBox propertySelect = (CheckBox) convertView.findViewById(R.id.entry_list_select_box);
-
-            propertySelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if (isChecked && !checkSelected) {
-                        questionProperites.add(quesPropDef);
-                        checkSelected=true;
-                    } else if(!isChecked && checkSelected){
-                        questionProperites.remove(quesPropDef);
-                        checkSelected=false;
-                    }
-                    else {
-                        compoundButton.setChecked(false);
-                    }
-                }
-            });
-
-            TextView propertyText = (TextView) convertView.findViewById(R.id.entry_list_select_text_view);
-
-            propertyText.setText(quesPropDef.getName());
-
-            return convertView;
-
-        }
     }
 
     private class QuestionLanguageAdapter extends ArrayAdapter<Language> {
@@ -217,12 +172,6 @@ public class CreateQuestionActivity extends AppCompatActivity {
      */
 
     private boolean validateEntry() {
-
-        if (questionProperites.isEmpty()) {
-            selectQuestionProperties.setError("You must select a question property");
-            Toast.makeText(this, "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
-            return false;
-        }
 
         if (questionTexts.isEmpty()) {
             selectQuestionLanguages.setError("You must select at least one language for the question text");

@@ -13,6 +13,7 @@ public class Answer extends Model {
     public String label;
     public String text;
     public String sessionId;
+    public String parentAnswer;
 
     public double version;
     public String notes;
@@ -32,6 +33,14 @@ public class Answer extends Model {
 
     public void setDeleted(int deleted){
         this.deleted=deleted;
+    }
+
+    public String getParentAnswer(){
+        return parentAnswer;
+    }
+
+    public void setParentAnswer(String parent){
+        this.parentAnswer=parent;
     }
 
     public void setNotes(String note){

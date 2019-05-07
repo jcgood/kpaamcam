@@ -88,6 +88,10 @@ public class TableViewActivity extends AppCompatActivity {
             entryNameView = view.findViewById(R.id.entry_list_text_view);
             editButton = view.findViewById(R.id.entry_list_edit_button);
             deleteButton = view.findViewById(R.id.entry_list_delete_button);
+
+            if(table.getTableName()=="Question"){
+                deleteButton.setVisibility(View.INVISIBLE);
+            }
         }
 
         public void bindEntry(Model entry1) {

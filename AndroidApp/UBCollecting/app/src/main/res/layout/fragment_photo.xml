@@ -38,9 +38,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/question_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:textSize="12sp"
-        android:text="Take Photo"/>
+        android:layout_marginTop="30dp"
+        android:text="Take Photo"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:text="View Photo"
+        android:visibility="invisible"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/next_question"

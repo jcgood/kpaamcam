@@ -112,6 +112,9 @@ public class QuestionFragment extends Fragment{
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(data==null){
+            return;
+        }
         String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
         String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
         updateAnswerList(questionId, questionnaireId);

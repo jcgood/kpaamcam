@@ -3,7 +3,6 @@ package edu.buffalo.cse.ubcollecting.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,7 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
 
 
@@ -39,10 +39,9 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
     private ListView questionPropertiesListView;
     private QuestionPropertyAdapter questionPropertyAdapter;
+    private QuestionPropertyDef chosenQuestionProperty;
     private ListView questionLanguagesListView;
     private QuestionLanguageAdapter questionLanguageAdapter;
-    private HashSet<QuestionPropertyDef> originalQuestionProperties;
-    private HashSet<QuestionPropertyDef> newQuestionProperties;
     private HashMap<Language,QuestionLangVersion> originalQuestionTexts;
     private HashMap<Language,EditText> newQuestionTexts;
     private Button update;
@@ -61,10 +60,6 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
         question = (Question) getIntent().getSerializableExtra(EXTRA_MODEL);
 
-        originalQuestionProperties =  DatabaseHelper.QUESTION_PROPERTY_TABLE.getQuestionProperties(question.getId());
-
-        newQuestionProperties = new HashSet<>();
-
         originalQuestionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(question.getId());
 
         newQuestionTexts = new HashMap<>();
@@ -72,6 +67,8 @@ public class UpdateQuestionActivity extends AppCompatActivity {
         questionPropertiesListView = findViewById(R.id.question_properties_list_view);
 
         questionLanguagesListView = findViewById(R.id.question_languages_list_view);
+
+        chosenQuestionProperty = QUESTION_PROPERTY_TABLE.getQuestionProperty(question.getId());
 
         ArrayList<QuestionPropertyDef> quesPropDefs = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.getAll();
 
@@ -101,24 +98,6 @@ public class UpdateQuestionActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (validateEntry()) {
-
-                    for (QuestionPropertyDef quesPropDef : newQuestionProperties) {
-                        if (!originalQuestionProperties.contains(quesPropDef)){
-                            QuestionProperty quesProp = new QuestionProperty();
-                            quesProp.setQuestionId(question.getId());
-                            quesProp.setPropertyId(quesPropDef.getId());
-                            DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
-                        }
-                    }
-
-                    originalQuestionProperties.removeAll(newQuestionProperties);
-
-                    for (QuestionPropertyDef quesPropDef : originalQuestionProperties) {
-
-                        DatabaseHelper.QUESTION_PROPERTY_TABLE.deleteByPropertyId(quesPropDef.getId());
-
-                    }
-
 
                     for (Language lang : newQuestionTexts.keySet()) {
                         if (lang.getName().equals("English")) {
@@ -167,24 +146,11 @@ public class UpdateQuestionActivity extends AppCompatActivity {
             }
             final CheckBox propertySelect = (CheckBox) convertView.findViewById(R.id.entry_list_select_box);
 
-            if (originalQuestionProperties.contains(quesPropDef)){
+            if (chosenQuestionProperty.equals(quesPropDef)) {
                 propertySelect.setChecked(true);
-                newQuestionProperties.add(quesPropDef);
             }
 
             propertySelect.setEnabled(false);
-
-            propertySelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if (isChecked){
-                        newQuestionProperties.add(quesPropDef);
-                    }
-                    else {
-                        newQuestionProperties.remove(quesPropDef);
-                    }
-                }
-            });
 
             TextView propertyText = (TextView) convertView.findViewById(R.id.entry_list_select_text_view);
 
@@ -254,12 +220,6 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
     private boolean validateEntry() {
 
-        if (newQuestionProperties.isEmpty()) {
-            selectQuestionProperties.setError("A question property must be selected");
-            Toast.makeText(this, "At least one question property and one language must be selected", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
         if (newQuestionTexts.isEmpty()) {
             selectQuestionLanguages.setError("You must select at least one language for the question text");
             Toast.makeText(this, "At least one question property and one language must be selected", Toast.LENGTH_SHORT).show();
@@ -272,7 +232,6 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                     return false;
                 }
             }
-
         }
 
         return true;

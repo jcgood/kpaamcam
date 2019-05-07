@@ -60,7 +60,7 @@ public class QuestionPropertyTable extends Table<QuestionProperty> {
      * @return a {@link HashSet} of {@link QuestionPropertyDef}
      */
 
-    public HashSet<QuestionPropertyDef> getQuestionProperties(String quesId){
+    public QuestionPropertyDef getQuestionProperty(String quesId) {
 
         String selection = KEY_QUESTION_ID + " = ?";
 
@@ -68,17 +68,13 @@ public class QuestionPropertyTable extends Table<QuestionProperty> {
 
         ArrayList<QuestionProperty> questionProperties = DatabaseHelper.QUESTION_PROPERTY_TABLE.getAll(selection, selectionArgs,null);
 
-        HashSet<QuestionPropertyDef> quesPropertyDefs = new HashSet<>();
-
-        for (QuestionProperty quesProperty: questionProperties){
-
-            QuestionPropertyDef quesPropDef = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.findById(quesProperty.getPropertyId());
-
-            quesPropertyDefs.add(quesPropDef);
+        if (questionProperties.isEmpty()) {
+           return null;
         }
 
-        return quesPropertyDefs;
+        QuestionProperty questionProperty = questionProperties.get(0);
 
+        return DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.findById(questionProperty.getPropertyId());
     }
 
 

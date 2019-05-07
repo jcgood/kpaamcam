@@ -3,7 +3,6 @@ package edu.buffalo.cse.ubcollecting.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,23 +20,19 @@ import com.mobeta.android.dslv.DragSortListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.LoopActivity;
-import edu.buffalo.cse.ubcollecting.QuestionnaireActivity;
 import edu.buffalo.cse.ubcollecting.R;
-import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
-import edu.buffalo.cse.ubcollecting.data.models.Loop;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
-import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
-import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
-import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_CONTENT;
 
 public class QuestionnaireQuestionsFragment extends Fragment {
@@ -176,8 +171,6 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             final QuestionnaireContent content = questionnaireContent.get(position);
 
-
-
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.numbered_list_item_view, parent, false);
             }
@@ -185,16 +178,21 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 
             numberView.setText(Integer.toString(position+1));
 
-
-
             content.setQuestionOrder(position+1);
 
             final TextView textView = convertView.findViewById(R.id.numbered_list_item_text_view);
             QuestionLangVersion question = QUESTION_LANG_VERSION_TABLE.getQuestionTextInEnglish(content.getQuestionId());
             textView.setText(question.getIdentifier());
 
-
             final ImageView imageView = convertView.findViewById(R.id.numbered_list_item_loop_button);
+
+            QuestionPropertyDef questionProperty = QUESTION_PROPERTY_TABLE.getQuestionProperty(content.getQuestionId());
+
+            // TODO: For some reason when rearrange order, all the looping buttons become invisible
+            if (!questionProperty.getName().equals("List")) {
+                imageView.setVisibility(View.INVISIBLE);
+            }
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -213,9 +211,6 @@ public class QuestionnaireQuestionsFragment extends Fragment {
                     startActivityForResult(intent, RESULT_ADD_LOOP_QUESTIONS);
                 }
             });
-
-
-
 
             return convertView;
         }

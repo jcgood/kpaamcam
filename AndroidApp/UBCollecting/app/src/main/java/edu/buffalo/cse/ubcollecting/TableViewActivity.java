@@ -92,6 +92,11 @@ public class TableViewActivity extends AppCompatActivity {
             if(table.getTableName()=="Question"){
                 deleteButton.setVisibility(View.INVISIBLE);
             }
+
+            if(table.getTableName()=="Answer"){
+
+            }
+
         }
 
         public void bindEntry(Model entry1) {

@@ -84,9 +84,7 @@ public class PhotoFragment extends Fragment{
     private String type;
     private Button takePhoto;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    private Bitmap mImageBitmap;
-    private String mCurrentPhotoPath;
-    private ImageView mImageView;
+    private String mCurrentPath;
     private Button viewPhoto;
 
 
@@ -128,17 +126,17 @@ public class PhotoFragment extends Fragment{
             answerListHeading.setVisibility(View.VISIBLE);
             listAdapter = new ListAdapter(getContext(), answerList);
 
-            previousAnswerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    String item = (String) adapterView.getItemAtPosition(i);
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_VIEW);
-                    Log.d(TAG,"Item pressed is "+item);
-                    intent.setDataAndType(Uri.parse(item), "image/*");
-                    startActivity(intent);
-                }
-            });
+//            previousAnswerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                    String item = (String) adapterView.getItemAtPosition(i);
+//                    Intent intent = new Intent();
+//                    intent.setAction(Intent.ACTION_VIEW);
+//                    Log.d(TAG,"Item pressed is "+item);
+//                    intent.setDataAndType(Uri.parse(item), "image/*");
+//                    startActivity(intent);
+//                }
+//            });
 
             previousAnswerList.setAdapter(listAdapter);
 
@@ -152,6 +150,7 @@ public class PhotoFragment extends Fragment{
                 Log.d(TAG,"enetred take photo");
 
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
                 if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                     // Create the File where the photo should go
                     File photoFile = null;
@@ -177,7 +176,7 @@ public class PhotoFragment extends Fragment{
                 try{
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse(mCurrentPhotoPath), "image/*");
+                    intent.setDataAndType(Uri.parse(mCurrentPath), "image/*");
                     startActivity(intent);
                 }
                 catch(Exception e){
@@ -200,8 +199,8 @@ public class PhotoFragment extends Fragment{
         File image = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(), imageFileName);
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        Log.d("PhotoFrag","file location: "+mCurrentPhotoPath);
+        mCurrentPath = "file:" + image.getAbsolutePath();
+        Log.d("PhotoFrag","file location: "+mCurrentPath);
         return image;
     }
 
@@ -331,7 +330,7 @@ public class PhotoFragment extends Fragment{
     private void submitTextAnswer(){
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());
-        answer.setText(mCurrentPhotoPath);
+        answer.setText(mCurrentPath);
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         DatabaseHelper.ANSWER_TABLE.insert(answer);
     }
@@ -340,7 +339,7 @@ public class PhotoFragment extends Fragment{
 
         boolean valid = true;
 
-        if (mCurrentPhotoPath.isEmpty()){
+        if (mCurrentPath.isEmpty()){
             Toast.makeText(this.getActivity(), "Please Take a Photo", Toast.LENGTH_SHORT).show();
             valid=false;
         }

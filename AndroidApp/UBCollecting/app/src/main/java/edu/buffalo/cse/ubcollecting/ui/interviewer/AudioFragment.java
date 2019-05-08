@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -74,6 +75,7 @@ public class AudioFragment extends Fragment{
     private Button saveAndExitQuestion;
     private TextView answerListHeading;
     private ListView previousAnswerList;
+    private ArrayList<Answer> answerList;
     private ArrayAdapter listAdapter;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
@@ -93,6 +95,8 @@ public class AudioFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        StrictMode.VmPolicy.Builder newBuilder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(newBuilder.build());
         View view = inflater.inflate(R.layout.fragment_audio, container, false);
         answer = new Answer();
         takeAudio=view.findViewById(R.id.answer_instructions);
@@ -191,7 +195,7 @@ public class AudioFragment extends Fragment{
         skipQuestion.setOnClickListener(new AudioFragment.SkipQuestionOnClickListener());
         saveAndExitQuestion.setOnClickListener(new AudioFragment.SaveAndExitQuestionOnClickListener());
         if(getArguments().containsKey(SELECTED_ANSWER)){
-            ArrayList<Answer> answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
+            answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
             previousAnswerList = view.findViewById(R.id.previous_answers_list);
             answerListHeading = view.findViewById(R.id.answer_list_header);
             answerListHeading.setVisibility(View.VISIBLE);
@@ -305,11 +309,17 @@ public class AudioFragment extends Fragment{
         }
     }
 
-    private void submitTextAnswer(){
+    private void submitTextAnswer() {
+        double version = 0;
+        if (!answerList.isEmpty()) {
+            Answer recentAnswer = answerList.get(0);
+            version = recentAnswer.getVersion();
+        }
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());
         answer.setText(outputFile);
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
+        answer.setVersion(version+1);
         DatabaseHelper.ANSWER_TABLE.insert(answer);
     }
 

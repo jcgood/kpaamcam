@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,7 @@ public class PhotoFragment extends Fragment{
     private Button saveAndExitQuestion;
     private TextView answerListHeading;
     private ListView previousAnswerList;
+    private ArrayList<Answer> answerList;
     private ArrayAdapter listAdapter;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
@@ -91,6 +93,8 @@ public class PhotoFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        StrictMode.VmPolicy.Builder newBuilder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(newBuilder.build());
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
         viewPhoto=view.findViewById(R.id.view);
         viewPhoto.setVisibility(View.INVISIBLE);
@@ -120,7 +124,7 @@ public class PhotoFragment extends Fragment{
         skipQuestion.setOnClickListener(new PhotoFragment.SkipQuestionOnClickListener());
         saveAndExitQuestion.setOnClickListener(new PhotoFragment.SaveAndExitQuestionOnClickListener());
         if(getArguments().containsKey(SELECTED_ANSWER)){
-            ArrayList<Answer> answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
+            answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
             previousAnswerList = view.findViewById(R.id.previous_answers_list);
             answerListHeading = view.findViewById(R.id.answer_list_header);
             answerListHeading.setVisibility(View.VISIBLE);
@@ -139,8 +143,8 @@ public class PhotoFragment extends Fragment{
 //            });
 
             previousAnswerList.setAdapter(listAdapter);
-
-
+        } else {
+            answerList = new ArrayList<>();
         }
 
         takePhoto.setOnClickListener(new View.OnClickListener() {
@@ -327,11 +331,17 @@ public class PhotoFragment extends Fragment{
         }
     }
 
-    private void submitTextAnswer(){
+    private void submitTextAnswer() {
+        double version = 0;
+        if (!answerList.isEmpty()) {
+            Answer recentAnswer = answerList.get(0);
+            version = recentAnswer.getVersion();
+        }
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());
         answer.setText(mCurrentPath);
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
+        answer.setVersion(version+1);
         DatabaseHelper.ANSWER_TABLE.insert(answer);
     }
 

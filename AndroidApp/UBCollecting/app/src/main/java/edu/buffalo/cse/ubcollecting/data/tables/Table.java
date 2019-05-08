@@ -140,6 +140,8 @@ public abstract class Table<E extends Model> implements Serializable {
             values.put(key, (String) value);
         } else if (value instanceof byte[]) {
             values.put(key, (byte[]) value);
+        } else if (value instanceof Double) {
+            values.put(key, (Double) value);
         }
     }
 

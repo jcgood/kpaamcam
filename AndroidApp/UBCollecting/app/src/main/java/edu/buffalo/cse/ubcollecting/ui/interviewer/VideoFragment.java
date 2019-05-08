@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,7 @@ public class VideoFragment extends Fragment{
     private Button saveAndExitQuestion;
     private TextView answerListHeading;
     private ListView previousAnswerList;
+    private ArrayList<Answer> answerList;
     private ArrayAdapter listAdapter;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
@@ -91,6 +93,8 @@ public class VideoFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        StrictMode.VmPolicy.Builder newBuilder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(newBuilder.build());
         View view = inflater.inflate(R.layout.fragment_video, container, false);
         viewVideo=view.findViewById(R.id.view);
         viewVideo.setVisibility(View.INVISIBLE);
@@ -113,19 +117,19 @@ public class VideoFragment extends Fragment{
         nextQuestion = view.findViewById(R.id.next_question);
         skipQuestion = view.findViewById(R.id.skip_question);
         saveAndExitQuestion = view.findViewById(R.id.saveandexit_question);
-        if(questionManager.isLastQuestion()){
+        if (questionManager.isLastQuestion()) {
             nextQuestion.setText("Finish");
         }
         nextQuestion.setOnClickListener(new VideoFragment.NextQuestionOnClickListener());
         skipQuestion.setOnClickListener(new VideoFragment.SkipQuestionOnClickListener());
         saveAndExitQuestion.setOnClickListener(new VideoFragment.SaveAndExitQuestionOnClickListener());
-        if(getArguments().containsKey(SELECTED_ANSWER)){
-            ArrayList<Answer> answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
+
+        if (getArguments().containsKey(SELECTED_ANSWER)) {
+            answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
             previousAnswerList = view.findViewById(R.id.previous_answers_list);
             answerListHeading = view.findViewById(R.id.answer_list_header);
             answerListHeading.setVisibility(View.VISIBLE);
             listAdapter = new ListAdapter(getContext(), answerList);
-
 //            previousAnswerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                @Override
 //                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -137,10 +141,9 @@ public class VideoFragment extends Fragment{
 //                    startActivity(intent);
 //                }
 //            });
-
             previousAnswerList.setAdapter(listAdapter);
-
-
+        } else {
+            answerList = new ArrayList<>();
         }
 
         takeVideo.setOnClickListener(new View.OnClickListener() {
@@ -328,10 +331,16 @@ public class VideoFragment extends Fragment{
     }
 
     private void submitTextAnswer(){
+        double version = 0;
+        if (!answerList.isEmpty()) {
+            Answer recentAnswer = answerList.get(0);
+            version = recentAnswer.getVersion();
+        }
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());
         answer.setText(mCurrentPath);
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
+        answer.setVersion(version+1);
         DatabaseHelper.ANSWER_TABLE.insert(answer);
     }
 

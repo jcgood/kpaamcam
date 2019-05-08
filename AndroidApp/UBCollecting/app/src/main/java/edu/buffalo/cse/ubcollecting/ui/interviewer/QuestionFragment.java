@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,8 +64,7 @@ public class QuestionFragment extends Fragment{
     private Button skipQuestion;
     private Button saveAndExitQuestion;
     private TextView answerListHeading;
-    private ListView previousAnswerList;
-    private ArrayAdapter listAdapter;
+    private ArrayList<Answer> answerList;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
@@ -101,12 +102,11 @@ public class QuestionFragment extends Fragment{
         skipQuestion.setOnClickListener(new QuestionFragment.SkipQuestionOnClickListener());
         saveAndExitQuestion.setOnClickListener(new QuestionFragment.SaveAndExitQuestionOnClickListener());
         if(getArguments().containsKey(SELECTED_ANSWER)){
-            ArrayList<Answer> answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
-            previousAnswerList = view.findViewById(R.id.previous_answers_list);
-            answerListHeading = view.findViewById(R.id.answer_list_header);
-            answerListHeading.setVisibility(View.VISIBLE);
-            listAdapter = new ListAdapter(getContext(), answerList);
-            previousAnswerList.setAdapter(listAdapter);
+            answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
+            Answer mostRecentAnswer = answerList.get(0);
+            answerText.setText(mostRecentAnswer.getText());
+        } else {
+            answerList = new ArrayList<>();
         }
         return view;
     }
@@ -117,61 +117,6 @@ public class QuestionFragment extends Fragment{
         }
         String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
         String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
-        updateAnswerList(questionId, questionnaireId);
-    }
-
-    private class ListAdapter extends ArrayAdapter<Answer> {
-        ArrayList<Answer> answerList;
-        private ListAdapter(Context context, ArrayList<Answer> answerList){
-            super(context, 0, answerList);
-            this.answerList = answerList;
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            final Answer answer = answerList.get(position);
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_view, parent, false);
-            }
-            TextView answerContents = (TextView) convertView.findViewById(R.id.entry_list_text_view);
-            answerContents.setText(answer.getText());
-            ImageButton updateAnswer = (ImageButton) convertView.findViewById(R.id.entry_list_edit_button);
-            ImageButton deleteAnswer = (ImageButton) convertView.findViewById(R.id.entry_list_delete_button);
-            updateAnswer.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View view) {
-                    Intent intent = UpdateAnswerActivity.newIntent(getActivity());
-                    intent.putExtra(SELECTED_ANSWER, answer);
-                    startActivityForResult(intent,1);
-
-                }
-            });
-
-            deleteAnswer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DatabaseHelper.ANSWER_TABLE.delete(answer.getId());
-                    updateAnswerList(answer.getQuestionId(), answer.getQuestionnaireId());
-                }
-            });
-
-
-            return convertView;
-        }
-
-    }
-
-
-    private void updateAnswerList(String questionId, String questionnaireId){
-        String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
-                +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
-        String [] selectionArgs = {questionId, questionnaireId};
-        final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
-        listAdapter.clear();
-        listAdapter.addAll(answerList);
-        listAdapter.notifyDataSetChanged();
-
-
     }
 
     public void onAttach(Context context){
@@ -200,7 +145,7 @@ public class QuestionFragment extends Fragment{
     private class NextQuestionOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
-            if(validateEntry()){
+            if (validateEntry()) {
                 submitTextAnswer();
                 questionManager.getNextQuestion();
             }
@@ -224,11 +169,17 @@ public class QuestionFragment extends Fragment{
         }
     }
 
-    private void submitTextAnswer(){
+    private void submitTextAnswer() {
+        double version = 0;
+        if (!answerList.isEmpty()) {
+            Answer recentAnswer = answerList.get(0);
+            version = recentAnswer.getVersion();
+        }
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());
         answer.setText(answerText.getText().toString());
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
+        answer.setVersion(version+1);
         DatabaseHelper.ANSWER_TABLE.insert(answer);
     }
 

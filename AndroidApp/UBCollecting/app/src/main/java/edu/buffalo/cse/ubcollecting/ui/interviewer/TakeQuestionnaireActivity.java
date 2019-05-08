@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.DatabaseManager;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
@@ -62,29 +63,21 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             bundle.putSerializable(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()).getId());
             bundle.putSerializable(SELECTED_SESSION, getSession(getIntent()));
 
-            //get any answers this question may have
-            String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
-                    +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+            // get most recent answer(s)
             String questionId = questionnaire.get(questionIndex).getQuestionId();
-            String [] selectionArgs = {questionId, getQuestionnaire(getIntent()).getId()};
+            ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getMostRecentAnswer(questionId, getQuestionnaire(getIntent()).getId());
 
-            String selection1 = QuestionPropertyTable.KEY_QUESTION_ID +  " = ? ";
-            String [] selectionArgs1 = {questionId};
+//            Log.i("Previous Answers", "----------");
+//             for (Answer answer: answerList) {
+//                 Log.i("ANSWER TEXT: ", answer.getText());
+//                 Log.i("ANSWER VERSION: ", Double.toString(answer.getVersion()));
+//             }
 
-            //get type of question
-             ArrayList<QuestionProperty> all = DatabaseHelper.QUESTION_PROPERTY_TABLE.getAll(selection1, selectionArgs1, null);
-             String prop_id= all.get(0).getPropertyId();
-
-             String selction2=QuestionPropertyDefTable.KEY_ID+" = ?";
-             String [] selectionArgs2 = {prop_id};
-
-             ArrayList<QuestionPropertyDef> all1 = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.getAll(selction2, selectionArgs2, null);
-             String typeOfQuestion=all1.get(0).name;
-             Log.d("TakeQuestion","Type of question: "+typeOfQuestion);
+            // get type of question
+             QuestionPropertyDef questionProperty = DatabaseHelper.QUESTION_PROPERTY_TABLE.getQuestionProperty(questionId);
+             String typeOfQuestion = questionProperty.getName();
 
              bundle.putSerializable(QUESTION_TYPE,typeOfQuestion);
-
-            final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
 
             if(!answerList.isEmpty()){
                 bundle.putSerializable(SELECTED_ANSWER, answerList);

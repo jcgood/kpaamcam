@@ -1,7 +1,14 @@
 package edu.buffalo.cse.ubcollecting.data.tables;
 
+import android.util.Log;
+
+import java.util.ArrayList;
+
 import edu.buffalo.cse.ubcollecting.AnswerActivity;
+import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 
 /**
  * Created by aamel786 on 2/17/18.
@@ -47,6 +54,42 @@ public class AnswerTable extends Table<Answer> {
                 + " FOREIGN KEY(" + KEY_SESSION_ID + ") REFERENCES " + SessionTable.TABLE
                 + " (" + SessionTable.KEY_ID + ")"
                 + ")";
+    }
+
+    /**
+     * Function that returns the most recent answer for a question (answer(s) with highest version #)
+     * @param questionId
+     * @param questionnaireId
+     * @return a {@link ArrayList} of {@link Answer}
+     */
+
+    public ArrayList<Answer> getMostRecentAnswer(String questionId, String questionnaireId) {
+        String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
+                + AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+
+        String [] selectionArgs = {questionId, questionnaireId};
+
+        ArrayList<Answer> answers = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, KEY_VERSION + " DESC");
+
+        double max = 1.0;
+        int startIndex = 0;
+        int endIndex = 0;
+
+        for (int i=0; i<answers.size(); i++) {
+            Answer answer = answers.get(i);
+            if (answer.getVersion() > max) {
+                max = answer.getVersion();
+                startIndex = i;
+                endIndex = i;
+            }  else if (answer.getVersion() < max) {
+                break;
+            }
+            else {
+                endIndex = i;
+            }
+        }
+
+        return new ArrayList<Answer>(answers.subList(startIndex,endIndex+1));
     }
 
     @Override

@@ -24,7 +24,7 @@ public class Answer extends Model {
     }
 
     public void setVersion(double version){
-        this.version=version;
+        this.version = version;
     }
 
     public int getDeleted(){
@@ -32,7 +32,7 @@ public class Answer extends Model {
     }
 
     public void setDeleted(int deleted){
-        this.deleted=deleted;
+        this.deleted = deleted;
     }
 
     public String getParentAnswer(){

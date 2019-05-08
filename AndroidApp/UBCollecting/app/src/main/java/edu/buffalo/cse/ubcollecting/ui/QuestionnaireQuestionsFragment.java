@@ -3,7 +3,6 @@ package edu.buffalo.cse.ubcollecting.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,22 +20,19 @@ import com.mobeta.android.dslv.DragSortListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.LoopActivity;
-import edu.buffalo.cse.ubcollecting.QuestionnaireActivity;
 import edu.buffalo.cse.ubcollecting.R;
-import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
-import edu.buffalo.cse.ubcollecting.data.models.Loop;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
-import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
-import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_CONTENT;
 
 public class QuestionnaireQuestionsFragment extends Fragment {
@@ -51,6 +47,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
     public static final String IS_LOOP_QUESTION = "isLoopQuestion";
     public static final String QUESTIONNAIRE_CONTENT = "questionnaire content id";
     public static final String EXTRA_PARENT_QC_ID = "extraParentQCId";
+    public static final String EXTRA_PARENT_QC = "extraParentQC";
     public static final String TAG = QuestionnaireQuestionsFragment.class.getSimpleName();
 
 
@@ -71,22 +68,21 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         addQuestionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = AddQuestionsActivity.newIntent(getContext(), questionnaireManager.getQuestionnaireEntry(), questionnaireContent);
+                Intent i = AddQuestionsActivity.newIntent(getContext(), questionnaireManager.getQuestionnaireEntry().getId(), questionnaireContent);
                 startActivityForResult(i, RESULT_ADD_QUESTIONS);
             }
         });
 
         questionnaireDragView = view.findViewById(R.id.questionnaire_question_list_view);
-        Log.i("INNATEINNABLE", String.valueOf(questionnaireManager.getQuestionnaireEntry().getId()));
-        Log.i("ANID", questionnaireManager.getQuestionnaireEntry().getId());
+//        Log.i("INNATEINNABLE", String.valueOf(questionnaireManager.getQuestionnaireEntry().getId()));
+//        Log.i("ANID", questionnaireManager.getQuestionnaireEntry().getId());
         questionnaireContent = QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(questionnaireManager.getQuestionnaireEntry().getId());
-        for (QuestionnaireContent qc: questionnaireContent){
-            Log.i(qc.getQuestionId(),"QUESTION ID");
-            Log.i(qc.getQuestionnaireId(),"QUESTIONNAIRE ID");
-            Log.i(Integer.toString(qc.getQuestionOrder()),"QUESTIONNAIRE ID");
-            Log.i("--","--");
-
-        }
+//        for (QuestionnaireContent qc: questionnaireContent){
+//            Log.i(qc.getQuestionId(),"QUESTION ID");
+//            Log.i(qc.getQuestionnaireId(),"QUESTIONNAIRE ID");
+//            Log.i(Integer.toString(qc.getQuestionOrder()),"QUESTIONNAIRE ID");
+//            Log.i("--","--");
+//        }
 
         questionnaireContentAdapter =
                 new QuestionnaireContentAdapter(getContext(), questionnaireContent);
@@ -105,8 +101,6 @@ public class QuestionnaireQuestionsFragment extends Fragment {
                 toContent.setQuestionOrder(from + 1);
                 fromContent.setQuestionOrder(to + 1);
                 Collections.sort(questionnaireContent);
-                Log.i(TAG, Arrays.toString(questionnaireContent.toArray()));
-
                 questionnaireContentAdapter.notifyDataSetChanged();
             }
         });
@@ -128,7 +122,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             ArrayList<QuestionnaireContent> serializableObject =
                     (ArrayList<QuestionnaireContent>) data.getSerializableExtra(EXTRA_QUESTIONNAIRE_CONTENT);
 
-            Log.i(TAG, "REC: " + Integer.toString(serializableObject.size()));
+//            Log.i(TAG, "REC: " + Integer.toString(serializableObject.size()));
             questionnaireContent.clear();
             questionnaireContent.addAll(serializableObject);
             handleQuestionnaireContentUi();
@@ -174,16 +168,15 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         public View getView(final int position, View convertView, ViewGroup parent) {
             final QuestionnaireContent content = questionnaireContent.get(position);
 
-
-
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.numbered_list_item_view, parent, false);
             }
+
+            QuestionPropertyDef questionProperty = QUESTION_PROPERTY_TABLE.getQuestionProperty(content.getQuestionId());
+
             TextView numberView = convertView.findViewById(R.id.numbered_list_item_number_view);
-
+//            Log.i("Order", Integer.toString(position+1));
             numberView.setText(Integer.toString(position+1));
-
-
 
             content.setQuestionOrder(position+1);
 
@@ -191,27 +184,38 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             QuestionLangVersion question = QUESTION_LANG_VERSION_TABLE.getQuestionTextInEnglish(content.getQuestionId());
             textView.setText(question.getIdentifier());
 
-
             final ImageView imageView = convertView.findViewById(R.id.numbered_list_item_loop_button);
+
+//            boolean temp = questionProperty.getName().equals("List");
+//            Log.i("question Property", questionProperty.toString());
+//            Log.i("TRUTHY", Boolean.toString(temp));
+
+            if (!questionProperty.getName().equals("List")) {
+//                Log.i("NOT", "LIST");
+                imageView.setVisibility(View.INVISIBLE);
+            } else {
+                imageView.setVisibility(View.VISIBLE);
+//                Log.i("IS", "LIST");
+            }
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String selection = QUESTIONNAIRE_CONTENT_TABLE.KEY_PARENT_QUESTIONNAIRE_CONTENT + "= ?";
                     String [] selectionArgs = {content.getId()};
-                    ArrayList<QuestionnaireContent> currentLoopContent = QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs, null);
-                    Intent intent = AddQuestionsActivity.newIntent(getContext(),questionnaireManager.getQuestionnaireEntry(), currentLoopContent ) ;
-                    intent.putExtra(QUESTIONNAIRE_CONTENT, content);
-
-                    intent.putExtra(EXTRA_MODEL, content);
-
-
-                    intent.putExtra(IS_LOOP_QUESTION, true);
+                    ArrayList<QuestionnaireContent> currentLoopContent;
+                    if(tentativeLoopQuestions.containsKey(content.getId())) {
+                        currentLoopContent = tentativeLoopQuestions.get(content.getId());
+                    }
+                    else {
+                        currentLoopContent = QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs, null);
+                    }
+                    Intent intent= LoopActivity.newIntent(getContext());
+                    intent.putExtra(EXTRA_QUESTIONNAIRE_CONTENT, currentLoopContent);
+                    intent.putExtra(EXTRA_PARENT_QC, content);
                     startActivityForResult(intent, RESULT_ADD_LOOP_QUESTIONS);
                 }
             });
-
-
-
 
             return convertView;
         }

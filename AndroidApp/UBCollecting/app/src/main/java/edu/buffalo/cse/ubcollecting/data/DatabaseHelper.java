@@ -124,7 +124,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         interviewer.setOnClient(1);
         ROLE_TABLE.insert(interviewer);
 
-
         QuestionnaireType regType = new QuestionnaireType();
         regType.setName("Regular");
         QUESTIONNAIRE_TYPE_TABLE.insert(regType);
@@ -145,7 +144,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         testType.setName("Test");
         QUESTIONNAIRE_TYPE_TABLE.insert(testType);
 
-
         QuestionPropertyDef audProperty = new QuestionPropertyDef();
         audProperty.setName("Audio");
         QUESTION_PROPERTY_DEF_TABLE.insert(audProperty);
@@ -161,6 +159,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         QuestionPropertyDef freeProperty = new QuestionPropertyDef();
         freeProperty.setName("Text");
         QUESTION_PROPERTY_DEF_TABLE.insert(freeProperty);
+
+        QuestionPropertyDef listProperty = new QuestionPropertyDef();
+        listProperty.setName("List");
+        QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
 //
 //        QuestionPropertyDef fileProperty = new QuestionPropertyDef();
 //        fileProperty.setName("File");

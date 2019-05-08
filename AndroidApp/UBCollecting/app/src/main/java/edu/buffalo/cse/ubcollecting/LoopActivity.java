@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobeta.android.dslv.DragSortListView;
@@ -31,47 +32,39 @@ import edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity;
 import edu.buffalo.cse.ubcollecting.ui.UiUtils;
 
 
+import static android.view.View.GONE;
+import static edu.buffalo.cse.ubcollecting.app.App.getContext;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.QuestionnaireTable.KEY_ID;
+import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
 import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_CONTENT;
+import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.EXTRA_PARENT_QC;
+import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.EXTRA_PARENT_QC_ID;
+import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.IS_LOOP_QUESTION;
 import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.QUESTIONNAIRE_CONTENT;
 import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.RESULT_ADD_QUESTIONS;
 
 public class LoopActivity  extends AppCompatActivity {
     private static final String TAG = PersonActivity.class.getSimpleName().toString();
 
-    private EditText iterationsField;
     private Button addSubQuestionsButton;
     private DragSortListView subQuestionsListView;
     private SubQuestionAdapter subQuestionAdapter;
-    private  QuestionnaireContent questionnaireContent;
+    private QuestionnaireContent parentQC;
+    private ArrayList<QuestionnaireContent> loopContent;
     private Button submitButton;
     private Button updateButton;
-    private ArrayList<QuestionnaireContent> loopContent;
 
     @SuppressLint("WrongConstant")
     protected  void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loop);
 
-        questionnaireContent = (QuestionnaireContent) getIntent().getSerializableExtra(QUESTIONNAIRE_CONTENT);
+        parentQC = (QuestionnaireContent) getIntent().getSerializableExtra(EXTRA_PARENT_QC);
 
+        loopContent = (ArrayList<QuestionnaireContent>) getIntent().getSerializableExtra(EXTRA_QUESTIONNAIRE_CONTENT);
 
-        iterationsField = findViewById(R.id.loop_iterations_field);
-        String selection;
-        String [] selectionArgs;
-        if(getIntent().getFlags() == Table.FLAG_EDIT_ENTRY){
-
-
-             selection = QUESTIONNAIRE_CONTENT_TABLE.KEY_PARENT_QUESTIONNAIRE_CONTENT+ " =? ";
-             selectionArgs = new String[]{questionnaireContent.getId()};
-
-            loopContent = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll(selection,selectionArgs, null );
-        }
-        else{
-            loopContent = new ArrayList<QuestionnaireContent>();
-        }
 
 
 
@@ -79,15 +72,29 @@ public class LoopActivity  extends AppCompatActivity {
         addSubQuestionsButton = findViewById(R.id.add_subquestions_button);
 
 
-        selection = KEY_ID + " = ? ";
-        String [] selectionArguments = {questionnaireContent.getQuestionnaireId()};
+        String selection = KEY_ID + " = ? ";
+        String [] selectionArguments = {parentQC.getQuestionnaireId()};
 
         final Questionnaire questionnaire = DatabaseHelper.QUESTIONNAIRE_TABLE.getAll(selection, selectionArguments, null).get(0);
         addSubQuestionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = AddQuestionsActivity.newIntent(view.getContext(), questionnaire, loopContent);
-                startActivityForResult(i, RESULT_ADD_QUESTIONS);
+                String selection = QUESTIONNAIRE_CONTENT_TABLE.KEY_PARENT_QUESTIONNAIRE_CONTENT + "= ?";
+                String [] selectionArgs = {parentQC.getId()};
+                ArrayList<QuestionnaireContent> currentLoopContent = QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs, null);
+                Intent intent = AddQuestionsActivity.newIntent(getContext(),parentQC.getQuestionnaireId(), currentLoopContent ) ;
+                intent.putExtra(QUESTIONNAIRE_CONTENT,loopContent);
+
+                intent.putExtra(EXTRA_MODEL, parentQC);
+
+
+                intent.putExtra(IS_LOOP_QUESTION, true);
+
+
+
+                startActivityForResult(intent, RESULT_ADD_QUESTIONS);
+
+
             }
         });
 
@@ -113,7 +120,27 @@ public class LoopActivity  extends AppCompatActivity {
             }
         });
         submitButton = findViewById(R.id.loop_submit_button);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent data = new Intent();
+                data.putExtra(EXTRA_QUESTIONNAIRE_CONTENT, loopContent);
+                data.putExtra(EXTRA_PARENT_QC_ID, parentQC.getId());
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        });
         updateButton = findViewById(R.id.loop_update_button);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent data = new Intent();
+                data.putExtra(EXTRA_QUESTIONNAIRE_CONTENT, loopContent);
+                data.putExtra(EXTRA_PARENT_QC, parentQC);
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        });
 
     }
 
@@ -137,6 +164,8 @@ public class LoopActivity  extends AppCompatActivity {
             TextView numberView = convertView.findViewById(R.id.numbered_list_item_number_view);
 
             numberView.setText(Integer.toString(position+1));
+            ImageView loopButton = convertView.findViewById(R.id.numbered_list_item_loop_button);
+            loopButton.setVisibility(GONE);
             content.setQuestionOrder(position+1);
 
             TextView textView = convertView.findViewById(R.id.numbered_list_item_text_view);
@@ -169,7 +198,8 @@ public class LoopActivity  extends AppCompatActivity {
             Log.i(TAG, "REC: " + Integer.toString(serializableObject.size()));
             loopContent.clear();
             loopContent.addAll(serializableObject);
-            handleQuestionnaireContentUi();
+            subQuestionAdapter.notifyDataSetChanged();
+
         }
     }
 
@@ -181,7 +211,7 @@ public class LoopActivity  extends AppCompatActivity {
         if (loopContent.size() > 0) {
             subQuestionsListView.setVisibility(View.VISIBLE);
         } else {
-            subQuestionsListView.setVisibility(View.GONE);
+            subQuestionsListView.setVisibility(GONE);
         }
     }
 

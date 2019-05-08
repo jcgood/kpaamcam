@@ -19,11 +19,11 @@
         android:layout_height="wrap_content"
         android:text="@string/select_question_property"/>
 
-    <ListView
-        android:id="@+id/question_properties_list_view"
+    <Spinner
+        android:id="@+id/question_property_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:spinnerMode="dropdown" />
 
     <TextView
         android:id="@+id/select_question_languages"

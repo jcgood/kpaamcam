@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -101,6 +102,9 @@ public class PhotoFragment extends Fragment{
         questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(questionContent.getQuestionId());
         questionLanguages = new ArrayList<>();
         questionLanguages.addAll(questionTexts.keySet());
+
+        StrictMode.VmPolicy.Builder newbuilder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(newbuilder.build());
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -323,7 +327,10 @@ public class PhotoFragment extends Fragment{
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            questionManager.saveAndQuitQuestionnaire(questionContent);
+            if(validateEntry()){
+                submitTextAnswer();
+                questionManager.saveAndQuitQuestionnaire(questionContent);
+            }
         }
     }
 

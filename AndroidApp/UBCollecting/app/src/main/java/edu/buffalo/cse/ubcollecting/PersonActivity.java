@@ -269,6 +269,7 @@ public class PersonActivity extends EntryActivity<Person> {
                 valid = false;
             }
 
+
         }
 
         if (!valid) {

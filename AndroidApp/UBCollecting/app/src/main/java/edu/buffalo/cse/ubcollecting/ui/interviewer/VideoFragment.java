@@ -323,7 +323,10 @@ public class VideoFragment extends Fragment{
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            questionManager.saveAndQuitQuestionnaire(questionContent);
+            if(validateEntry()){
+                submitTextAnswer();
+                questionManager.saveAndQuitQuestionnaire(questionContent);
+            }
         }
     }
 

@@ -103,11 +103,11 @@ public class AudioFragment extends Fragment{
 
         requestAudioPermissions();
 
-
         takeAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!permission){
+                    Log.e(TAG,"Permisiion Issue");
                     return;
                 }
                 if(!record){
@@ -301,7 +301,11 @@ public class AudioFragment extends Fragment{
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            questionManager.saveAndQuitQuestionnaire(questionContent);
+
+            if(validateEntry()){
+                submitTextAnswer();
+                questionManager.saveAndQuitQuestionnaire(questionContent);
+            }
         }
     }
 

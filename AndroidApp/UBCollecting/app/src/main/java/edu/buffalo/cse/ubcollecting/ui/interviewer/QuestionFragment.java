@@ -171,7 +171,6 @@ public class QuestionFragment extends Fragment{
         listAdapter.addAll(answerList);
         listAdapter.notifyDataSetChanged();
 
-
     }
 
     public void onAttach(Context context){
@@ -214,13 +213,14 @@ public class QuestionFragment extends Fragment{
         }
     }
 
-
-
-
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            questionManager.saveAndQuitQuestionnaire(questionContent);
+
+            if(validateEntry()){
+                submitTextAnswer();
+                questionManager.saveAndQuitQuestionnaire(questionContent);
+            }
         }
     }
 

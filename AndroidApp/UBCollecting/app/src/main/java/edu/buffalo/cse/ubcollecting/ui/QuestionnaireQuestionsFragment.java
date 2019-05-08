@@ -74,16 +74,15 @@ public class QuestionnaireQuestionsFragment extends Fragment {
         });
 
         questionnaireDragView = view.findViewById(R.id.questionnaire_question_list_view);
-        Log.i("INNATEINNABLE", String.valueOf(questionnaireManager.getQuestionnaireEntry().getId()));
-        Log.i("ANID", questionnaireManager.getQuestionnaireEntry().getId());
+//        Log.i("INNATEINNABLE", String.valueOf(questionnaireManager.getQuestionnaireEntry().getId()));
+//        Log.i("ANID", questionnaireManager.getQuestionnaireEntry().getId());
         questionnaireContent = QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(questionnaireManager.getQuestionnaireEntry().getId());
-        for (QuestionnaireContent qc: questionnaireContent){
-            Log.i(qc.getQuestionId(),"QUESTION ID");
-            Log.i(qc.getQuestionnaireId(),"QUESTIONNAIRE ID");
-            Log.i(Integer.toString(qc.getQuestionOrder()),"QUESTIONNAIRE ID");
-            Log.i("--","--");
-
-        }
+//        for (QuestionnaireContent qc: questionnaireContent){
+//            Log.i(qc.getQuestionId(),"QUESTION ID");
+//            Log.i(qc.getQuestionnaireId(),"QUESTIONNAIRE ID");
+//            Log.i(Integer.toString(qc.getQuestionOrder()),"QUESTIONNAIRE ID");
+//            Log.i("--","--");
+//        }
 
         questionnaireContentAdapter =
                 new QuestionnaireContentAdapter(getContext(), questionnaireContent);
@@ -102,8 +101,6 @@ public class QuestionnaireQuestionsFragment extends Fragment {
                 toContent.setQuestionOrder(from + 1);
                 fromContent.setQuestionOrder(to + 1);
                 Collections.sort(questionnaireContent);
-                Log.i(TAG, Arrays.toString(questionnaireContent.toArray()));
-
                 questionnaireContentAdapter.notifyDataSetChanged();
             }
         });
@@ -125,7 +122,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             ArrayList<QuestionnaireContent> serializableObject =
                     (ArrayList<QuestionnaireContent>) data.getSerializableExtra(EXTRA_QUESTIONNAIRE_CONTENT);
 
-            Log.i(TAG, "REC: " + Integer.toString(serializableObject.size()));
+//            Log.i(TAG, "REC: " + Integer.toString(serializableObject.size()));
             questionnaireContent.clear();
             questionnaireContent.addAll(serializableObject);
             handleQuestionnaireContentUi();
@@ -174,8 +171,11 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.numbered_list_item_view, parent, false);
             }
-            TextView numberView = convertView.findViewById(R.id.numbered_list_item_number_view);
 
+            QuestionPropertyDef questionProperty = QUESTION_PROPERTY_TABLE.getQuestionProperty(content.getQuestionId());
+
+            TextView numberView = convertView.findViewById(R.id.numbered_list_item_number_view);
+//            Log.i("Order", Integer.toString(position+1));
             numberView.setText(Integer.toString(position+1));
 
             content.setQuestionOrder(position+1);
@@ -186,11 +186,16 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 
             final ImageView imageView = convertView.findViewById(R.id.numbered_list_item_loop_button);
 
-            QuestionPropertyDef questionProperty = QUESTION_PROPERTY_TABLE.getQuestionProperty(content.getQuestionId());
+//            boolean temp = questionProperty.getName().equals("List");
+//            Log.i("question Property", questionProperty.toString());
+//            Log.i("TRUTHY", Boolean.toString(temp));
 
-            // TODO: For some reason when rearrange order, all the looping buttons become invisible
             if (!questionProperty.getName().equals("List")) {
+//                Log.i("NOT", "LIST");
                 imageView.setVisibility(View.INVISIBLE);
+            } else {
+                imageView.setVisibility(View.VISIBLE);
+//                Log.i("IS", "LIST");
             }
 
             imageView.setOnClickListener(new View.OnClickListener() {

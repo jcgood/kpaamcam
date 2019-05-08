@@ -63,7 +63,6 @@ public class QuestionFragment extends Fragment{
     private Button nextQuestion;
     private Button skipQuestion;
     private Button saveAndExitQuestion;
-    private TextView answerListHeading;
     private ArrayList<Answer> answerList;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
@@ -110,14 +109,7 @@ public class QuestionFragment extends Fragment{
         }
         return view;
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(data==null){
-            return;
-        }
-        String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
-        String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
-    }
+
 
     public void onAttach(Context context){
         super.onAttach(context);
@@ -159,13 +151,14 @@ public class QuestionFragment extends Fragment{
         }
     }
 
-
-
-
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            questionManager.saveAndQuitQuestionnaire(questionContent);
+
+            if(validateEntry()){
+                submitTextAnswer();
+                questionManager.saveAndQuitQuestionnaire(questionContent);
+            }
         }
     }
 
@@ -197,11 +190,6 @@ public class QuestionFragment extends Fragment{
         }
 
         return valid;
-
     }
-
-
-
-
-
+    
 }

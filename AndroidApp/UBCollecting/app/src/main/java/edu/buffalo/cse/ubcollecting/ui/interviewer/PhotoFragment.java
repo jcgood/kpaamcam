@@ -106,6 +106,9 @@ public class PhotoFragment extends Fragment{
         questionLanguages = new ArrayList<>();
         questionLanguages.addAll(questionTexts.keySet());
 
+        StrictMode.VmPolicy.Builder newbuilder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(newbuilder.build());
+
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         questionLangSpinner = view.findViewById(R.id.question_language_spinner);
@@ -327,7 +330,10 @@ public class PhotoFragment extends Fragment{
     private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            questionManager.saveAndQuitQuestionnaire(questionContent);
+            if(validateEntry()){
+                submitTextAnswer();
+                questionManager.saveAndQuitQuestionnaire(questionContent);
+            }
         }
     }
 

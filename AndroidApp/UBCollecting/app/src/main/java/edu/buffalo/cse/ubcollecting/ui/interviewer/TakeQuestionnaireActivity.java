@@ -68,12 +68,6 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             String questionId = questionnaire.get(questionIndex).getQuestionId();
             ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getMostRecentAnswer(questionId, getQuestionnaire(getIntent()).getId());
 
-//            Log.i("Previous Answers", "----------");
-//             for (Answer answer: answerList) {
-//                 Log.i("ANSWER TEXT: ", answer.getText());
-//                 Log.i("ANSWER VERSION: ", Double.toString(answer.getVersion()));
-//             }
-
             // get type of question
              QuestionPropertyDef questionProperty = DatabaseHelper.QUESTION_PROPERTY_TABLE.getQuestionProperty(questionId);
              String typeOfQuestion = questionProperty.getName();
@@ -85,21 +79,18 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             }
 
             if(typeOfQuestion.equals("Audio")){
-//                Log.d("TakeQuestion","Audio Frag started");
                 AudioFragment audioFragment = new AudioFragment();
                 audioFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(audioFragment);
                 questionStatePagerAdapter.notifyDataSetChanged();
             }
             else if(typeOfQuestion.equals("Video")){
-//                Log.d("TakeQuestion","Video Frag started");
                 VideoFragment videoFragment = new VideoFragment();
                 videoFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(videoFragment);
                 questionStatePagerAdapter.notifyDataSetChanged();
             }
             else if(typeOfQuestion.equals("Photo")){
-//                Log.d("TakeQuestion","Photo Frag started");
                 PhotoFragment photoFragment = new PhotoFragment();
                 photoFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(photoFragment);
@@ -112,7 +103,6 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 questionStatePagerAdapter.notifyDataSetChanged();
             }
             else{
-//                Log.d("TakeQuestion","Text Frag started");
                 QuestionFragment questionFragment = new QuestionFragment();
                 questionFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(questionFragment);

@@ -71,6 +71,8 @@ public class AudioFragment extends Fragment{
     private boolean recording;
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
     private boolean permissionGranted;
+    private TextView timer;
+
 
 
     @Nullable
@@ -85,6 +87,7 @@ public class AudioFragment extends Fragment{
         viewAudio = view.findViewById(R.id.view);
         recording = false;
         permissionGranted = false;
+        timer=view.findViewById(R.id.timer);
 
         requestAudioPermissions();
 
@@ -114,18 +117,20 @@ public class AudioFragment extends Fragment{
                     } catch (Exception ise) {
                         Log.e("AudioFragment","Exception: "+ise.toString());
                     }
-                    Toast.makeText(getContext(), "Recording started", Toast.LENGTH_LONG).show();
+                    timer.setVisibility(View.VISIBLE);
+
                     recording =true;
                     takeAudio.setText("STOP RECORDING");
                     viewAudio.setVisibility(View.INVISIBLE);
+
                 }
                 else{
                     Log.d(TAG,"Stop recording");
-
                     myAudioRecorder.stop();
                     myAudioRecorder.release();
                     myAudioRecorder = null;
-                    Toast.makeText(getContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
+                    timer.setVisibility(View.INVISIBLE);
+
                     takeAudio.setText("START RECORDING");
                     viewAudio.setVisibility(View.VISIBLE);
                     recording = false;

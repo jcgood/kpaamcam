@@ -94,7 +94,7 @@ public class ListFragment extends Fragment {
 
             }
         });
-
+        questionManager.isLastQuestion();
         return view;
     }
     public void onAttach(Context context){

@@ -3,12 +3,10 @@ package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,15 +20,10 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,21 +34,13 @@ import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
-import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
-import edu.buffalo.cse.ubcollecting.data.models.SessionQuestion;
-import edu.buffalo.cse.ubcollecting.data.models.SessionQuestionnaire;
-import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
-import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionnaireTable;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.UpdateAnswerActivity.SELECTED_QUESTION;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELECTED_ANSWER;
 
 /**
  * A fragment to represent a question to be taken in a questionnaire.
@@ -64,7 +49,7 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELEC
 public class AudioFragment extends Fragment{
 
     public final static String SELECTED_ANSWER = "selected answer";
-    public final static String TAG=AudioFragment.class.getName();
+    public final static String TAG = AudioFragment.class.getName();
 
 
     private QuestionnaireContent questionContent;
@@ -73,23 +58,19 @@ public class AudioFragment extends Fragment{
     private Button nextQuestion;
     private Button skipQuestion;
     private Button saveAndExitQuestion;
-    private TextView answerListHeading;
-    private ListView previousAnswerList;
     private ArrayList<Answer> answerList;
-    private ArrayAdapter listAdapter;
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
     private QuestionManager questionManager;
     private Answer answer;
-    private String mCurrentPath;
     private Button takeAudio;
     private Button viewAudio;
     private MediaRecorder myAudioRecorder;
-    private String outputFile;
-    private boolean record;
+    private String mCurrentPath;
+    private boolean recording;
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
-    private boolean permission;
+    private boolean permissionGranted;
 
 
     @Nullable
@@ -97,35 +78,35 @@ public class AudioFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         StrictMode.VmPolicy.Builder newBuilder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(newBuilder.build());
+
         View view = inflater.inflate(R.layout.fragment_audio, container, false);
         answer = new Answer();
-        takeAudio=view.findViewById(R.id.answer_instructions);
-        viewAudio=view.findViewById(R.id.view);
-        viewAudio.setEnabled(false);
-        record=false;
-        permission=false;
+        takeAudio = view.findViewById(R.id.answer_instructions);
+        viewAudio = view.findViewById(R.id.view);
+        recording = false;
+        permissionGranted = false;
 
         requestAudioPermissions();
 
         takeAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!permission){
+                if(!permissionGranted){
                     Log.e(TAG,"Permisiion Issue");
                     return;
                 }
-                if(!record){
-                    Log.d(TAG,"start record");
+                if(!recording){
+                    Log.d(TAG,"start recording");
 
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                     String audioFile = "MP3_" + timeStamp + "_";
 
-                    outputFile = getActivity().getExternalCacheDir().getAbsolutePath() + "/"+audioFile+".3gp";
+                    mCurrentPath = getActivity().getExternalCacheDir().getAbsolutePath() + "/"+audioFile+".3gp";
                     myAudioRecorder = new MediaRecorder();
                     myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                     myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
                     myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-                    myAudioRecorder.setOutputFile(outputFile);
+                    myAudioRecorder.setOutputFile(mCurrentPath);
 
                     try {
                         myAudioRecorder.prepare();
@@ -134,20 +115,20 @@ public class AudioFragment extends Fragment{
                         Log.e("AudioFragment","Exception: "+ise.toString());
                     }
                     Toast.makeText(getContext(), "Recording started", Toast.LENGTH_LONG).show();
-                    record=true;
+                    recording =true;
                     takeAudio.setText("STOP RECORDING");
-                    viewAudio.setEnabled(false);
+                    viewAudio.setVisibility(View.INVISIBLE);
                 }
                 else{
-                    Log.d(TAG,"Stop record");
+                    Log.d(TAG,"Stop recording");
 
                     myAudioRecorder.stop();
                     myAudioRecorder.release();
                     myAudioRecorder = null;
                     Toast.makeText(getContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
                     takeAudio.setText("START RECORDING");
-                    viewAudio.setEnabled(true);
-                    record=false;
+                    viewAudio.setVisibility(View.VISIBLE);
+                    recording = false;
                 }
 
 
@@ -157,11 +138,11 @@ public class AudioFragment extends Fragment{
         viewAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!permission)return;
+                if(!permissionGranted)return;
 
                 MediaPlayer mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(outputFile);
+                    mediaPlayer.setDataSource(mCurrentPath);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
                     Toast.makeText(getContext(), "Playing Audio", Toast.LENGTH_LONG).show();
@@ -188,76 +169,25 @@ public class AudioFragment extends Fragment{
         nextQuestion = view.findViewById(R.id.next_question);
         skipQuestion = view.findViewById(R.id.skip_question);
         saveAndExitQuestion = view.findViewById(R.id.saveandexit_question);
+
         if(questionManager.isLastQuestion()){
             nextQuestion.setText("Finish");
         }
+
         nextQuestion.setOnClickListener(new AudioFragment.NextQuestionOnClickListener());
         skipQuestion.setOnClickListener(new AudioFragment.SkipQuestionOnClickListener());
         saveAndExitQuestion.setOnClickListener(new AudioFragment.SaveAndExitQuestionOnClickListener());
-        if(getArguments().containsKey(SELECTED_ANSWER)){
+        if (getArguments().containsKey(SELECTED_ANSWER)) {
             answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
-            previousAnswerList = view.findViewById(R.id.previous_answers_list);
-            answerListHeading = view.findViewById(R.id.answer_list_header);
-            answerListHeading.setVisibility(View.VISIBLE);
-            listAdapter = new ListAdapter(getContext(), answerList);
-            previousAnswerList.setAdapter(listAdapter);
+            Answer prevAnswer = answerList.get(0);
+            mCurrentPath = prevAnswer.getText();
+            viewAudio.setVisibility(View.VISIBLE);
+
+        } else {
+            viewAudio.setVisibility(View.INVISIBLE);
+            answerList = new ArrayList<>();
         }
         return view;
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        String questionId = (String) data.getSerializableExtra(SELECTED_QUESTION);
-        String questionnaireId = (String) data.getSerializableExtra(SELECTED_QUESTIONNAIRE);
-        updateAnswerList(questionId, questionnaireId);
-    }
-
-    private class ListAdapter extends ArrayAdapter<Answer> {
-        ArrayList<Answer> answerList;
-        private ListAdapter(Context context, ArrayList<Answer> answerList){
-            super(context, 0, answerList);
-            this.answerList = answerList;
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            final Answer answer = answerList.get(position);
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_view, parent, false);
-            }
-            TextView answerContents = (TextView) convertView.findViewById(R.id.entry_list_text_view);
-            answerContents.setText(answer.getText());
-            ImageButton updateAnswer = (ImageButton) convertView.findViewById(R.id.entry_list_edit_button);
-            ImageButton deleteAnswer = (ImageButton) convertView.findViewById(R.id.entry_list_delete_button);
-            updateAnswer.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View view) {
-                    Intent intent = UpdateAnswerActivity.newIntent(getActivity());
-                    intent.putExtra(SELECTED_ANSWER, answer);
-                    startActivityForResult(intent,1);
-
-                }
-            });
-
-            deleteAnswer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DatabaseHelper.ANSWER_TABLE.delete(answer.getId());
-                    updateAnswerList(answer.getQuestionId(), answer.getQuestionnaireId());
-                }
-            });
-
-            return convertView;
-        }
-    }
-
-    private void updateAnswerList(String questionId, String questionnaireId){
-        String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
-                +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
-        String [] selectionArgs = {questionId, questionnaireId};
-        final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
-        listAdapter.clear();
-        listAdapter.addAll(answerList);
-        listAdapter.notifyDataSetChanged();
     }
 
     public void onAttach(Context context){
@@ -321,7 +251,7 @@ public class AudioFragment extends Fragment{
         }
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());
-        answer.setText(outputFile);
+        answer.setText(mCurrentPath);
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         answer.setVersion(version+1);
         DatabaseHelper.ANSWER_TABLE.insert(answer);
@@ -330,9 +260,9 @@ public class AudioFragment extends Fragment{
     protected boolean validateEntry() {
         boolean valid = true;
 
-        if (outputFile.isEmpty()){
+        if (mCurrentPath.isEmpty()){
             Toast.makeText(this.getActivity(), "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
-            valid=false;
+            valid = false;
         }
 
         return valid;
@@ -343,10 +273,10 @@ public class AudioFragment extends Fragment{
                 Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            //When permission is not granted by user, show them message why this permission is needed.
+            //When permissionGranted is not granted by user, show them message why this permissionGranted is needed.
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.RECORD_AUDIO)) {
-                Toast.makeText(getContext(), "Please grant permissions to record audio", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Please grant permissions to recording audio", Toast.LENGTH_LONG).show();
 
                 //Give user option to still opt-in the permissions
                 ActivityCompat.requestPermissions(getActivity(),
@@ -354,19 +284,19 @@ public class AudioFragment extends Fragment{
                         MY_PERMISSIONS_RECORD_AUDIO);
 
             } else {
-                // Show user dialog to grant permission to record audio
+                // Show user dialog to grant permissionGranted to recording audio
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.RECORD_AUDIO},
                         MY_PERMISSIONS_RECORD_AUDIO);
             }
         }
-        //If permission is granted, then go ahead recording audio
+        //If permissionGranted is granted, then go ahead recording audio
         else if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_GRANTED) {
 
             //Go ahead with recording audio now
-            permission=true;
+            permissionGranted = true;
         }
     }
 
@@ -378,14 +308,12 @@ public class AudioFragment extends Fragment{
             case MY_PERMISSIONS_RECORD_AUDIO: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay!
-                    permission=true;
+                    // permissionGranted was granted, yay!
+                    permissionGranted = true;
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(getActivity(), "Permissions Denied to record audio", Toast.LENGTH_LONG).show();
+                    // permissionGranted denied, boo! Disable the functionality that depends on this permissionGranted.
+                    Toast.makeText(getActivity(), "Permissions Denied to recording audio", Toast.LENGTH_LONG).show();
                 }
-                return;
             }
         }
     }

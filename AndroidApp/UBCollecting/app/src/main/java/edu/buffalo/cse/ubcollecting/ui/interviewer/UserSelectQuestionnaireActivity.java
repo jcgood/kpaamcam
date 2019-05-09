@@ -116,4 +116,11 @@ private class EntryHolder extends RecyclerView.ViewHolder {
         return i;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = UserLandingActivity.newIntent(UserSelectQuestionnaireActivity.this);
+        startActivity(intent);
+        finish();
+    }
+
 }

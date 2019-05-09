@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
+import edu.buffalo.cse.ubcollecting.SessionActivity;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 
@@ -180,6 +181,13 @@ public class UserSelectSessionActivity extends AppCompatActivity {
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, UserSelectSessionActivity.class);
         return i;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = UserLandingActivity.newIntent(UserSelectSessionActivity.this);
+        startActivity(intent);
+        finish();
     }
 }
 

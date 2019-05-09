@@ -20,6 +20,7 @@ import edu.buffalo.cse.ubcollecting.data.models.FieldTrip;
 import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
+import edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.SESSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity.SELECTED_FIELD_TRIP;

@@ -342,4 +342,11 @@ public class AddSessionRolesActivity extends AppCompatActivity {
         assignedRolesAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = UserLandingActivity.newIntent(AddSessionRolesActivity.this);
+        startActivity(intent);
+        finish();
+    }
+
 }

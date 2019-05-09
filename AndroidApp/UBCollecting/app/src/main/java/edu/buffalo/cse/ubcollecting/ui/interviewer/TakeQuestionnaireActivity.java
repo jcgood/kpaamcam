@@ -50,6 +50,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     private ArrayList<QuestionnaireContent> loopQuestions;
     private boolean inLoop;
     private int iterationsCounter = 0;
+    private int currentQuestionPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,14 +140,17 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 questionStatePagerAdapter.notifyDataSetChanged();
             }
             else{
+                Log.i("START", "FRAGMENT");
 
-                
                 QuestionFragment questionFragment = new QuestionFragment();
                 questionFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(questionFragment);
                 questionStatePagerAdapter.notifyDataSetChanged();
             }
-            questionViewPager.setCurrentItem(questionIndex);
+
+            questionViewPager.setCurrentItem(currentQuestionPosition);
+            currentQuestionPosition+=1;
+
 
 
         }
@@ -160,6 +164,8 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 loopIndex++;
                 if(loopIndex==loopQuestions.size() &&iterationsCounter==parentAnswers.size()-1){
                     inLoop = false;
+                    iterationsCounter = 0;
+                    loopIndex = 0;
                 }
             }
             else{
@@ -173,7 +179,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         inLoop=true;
         parentAnswers = answers;
         loopQuestions = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getLoopingQuestions(qcId);
-        Log.i("Looping", String.valueOf(loopQuestions));
+
         getNextQuestion();
     }
 

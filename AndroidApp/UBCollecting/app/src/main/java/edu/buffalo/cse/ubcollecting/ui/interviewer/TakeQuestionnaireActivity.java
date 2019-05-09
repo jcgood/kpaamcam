@@ -43,6 +43,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     public final static String QUESTIONNAIRE_CONTENT = "Question";
     public final static String QUESTION_TYPE="QuestionType";
     public int questionIndex;
+    public boolean inLoop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -206,7 +206,6 @@ public class PhotoFragment extends Fragment{
             } catch (Exception e) {
                 Log.e(TAG,e.toString());
             }
-            return;
         }
 
     }
@@ -283,7 +282,7 @@ public class PhotoFragment extends Fragment{
 
         if (mCurrentPath.isEmpty()){
             Toast.makeText(this.getActivity(), "Please Take a Photo", Toast.LENGTH_SHORT).show();
-            valid=false;
+            valid = false;
         }
 
         return valid;

@@ -90,7 +90,7 @@ public class ListFragment extends Fragment {
 
 
                 }
-                questionManager.startLoop(answerList);
+                questionManager.startLoop(answerList, questionnaireContent.getId());
 
             }
         });

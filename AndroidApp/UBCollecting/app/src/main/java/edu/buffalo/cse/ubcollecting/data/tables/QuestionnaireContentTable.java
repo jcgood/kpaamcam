@@ -67,5 +67,12 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
 
         return DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs,KEY_QUESTION_ORDER);
     }
+    public ArrayList<QuestionnaireContent> getLoopingQuestions(String questionnaireContentId){
+        String selection =KEY_PARENT_QUESTIONNAIRE_CONTENT + "= ?";
+
+        String[] selectionArgs = {questionnaireContentId};
+        return DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs,KEY_QUESTION_ORDER);
+    }
+
 
 }

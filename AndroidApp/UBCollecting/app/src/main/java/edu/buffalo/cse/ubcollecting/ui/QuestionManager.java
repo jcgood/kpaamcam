@@ -17,7 +17,7 @@ public interface QuestionManager {
 
     public void getNextQuestion();
 
-    public void startLoop(ArrayList<Answer> answers);
+    public void startLoop(ArrayList<Answer> answers, String qcId);
 
     public boolean isLastQuestion();
 

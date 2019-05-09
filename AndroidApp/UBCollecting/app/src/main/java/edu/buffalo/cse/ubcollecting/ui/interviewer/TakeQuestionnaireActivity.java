@@ -43,7 +43,10 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     public final static String QUESTIONNAIRE_CONTENT = "Question";
     public final static String QUESTION_TYPE="QuestionType";
     public int questionIndex;
-    public boolean inLoop;
+    private int loopIndex=0;
+    private ArrayList<Answer> parentAnswers;
+    private boolean inLoop;
+    private int iterationsCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,10 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     }
 
     public void getNextQuestion(){
-         if (questionIndex<questionnaire.size()){
+        if(inLoop){
+
+        }
+         else if (questionIndex<questionnaire.size()){
             Bundle bundle = new Bundle();
             bundle.putSerializable(QUESTIONNAIRE_CONTENT,questionnaire.get(questionIndex));
             bundle.putSerializable(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()).getId());
@@ -130,8 +136,18 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     }
 
     public boolean isLastQuestion(){
-        questionIndex++;
-        return questionIndex-1 == questionnaire.size()-1;
+
+
+            questionIndex++;
+            return questionIndex-1 == questionnaire.size()-1;
+
+
+    }
+
+    public void startLoop(ArrayList<Answer> answers){
+        inLoop=true;
+        parentAnswers = answers;
+        iterationsCounter = answers.size();
     }
 
     public void saveAndQuitQuestionnaire(QuestionnaireContent questionnaireContent){

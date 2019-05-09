@@ -1,5 +1,6 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
+import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
 import static edu.buffalo.cse.ubcollecting.SessionActivity.getSession;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
@@ -42,6 +44,7 @@ public class ListFragment extends Fragment {
     String questionnaireId;
     QuestionnaireContent questionnaireContent;
     Session session;
+    QuestionManager questionManager;
     ArrayList<EditText> list;
 
     @Nullable
@@ -73,8 +76,9 @@ public class ListFragment extends Fragment {
         submitAnswersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<EditText> answerList = entryAdapter.getAnswerList();
-                for(EditText text: answerList){
+                ArrayList<EditText> answerTextList = entryAdapter.getAnswerList();
+                ArrayList<Answer> answerList = new ArrayList<>();
+                for(EditText text: answerTextList){
                     String answerText = text.getText().toString();
                     Answer answer = new Answer();
                     answer.setQuestionId(questionnaireContent.getQuestionId());
@@ -82,12 +86,20 @@ public class ListFragment extends Fragment {
                     answer.setText(answerText);
                     answer.setSessionId(session.getId());
                     DatabaseHelper.ANSWER_TABLE.insert(answer);
+                    answerList.add(answer);
+
+
                 }
+                questionManager.startLoop(answerList);
 
             }
         });
 
         return view;
+    }
+    public void onAttach(Context context){
+        super.onAttach(context);
+        questionManager = (QuestionManager) context;
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {

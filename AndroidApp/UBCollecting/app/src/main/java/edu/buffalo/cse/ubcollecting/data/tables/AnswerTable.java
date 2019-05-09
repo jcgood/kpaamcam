@@ -70,7 +70,9 @@ public class AnswerTable extends Table<Answer> {
         String [] selectionArgs = {questionId, questionnaireId};
 
         ArrayList<Answer> answers = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, KEY_VERSION + " DESC");
-
+        if(answers.size()==0){
+            return answers;
+        }
         double max = 1.0;
         int startIndex = 0;
         int endIndex = 0;

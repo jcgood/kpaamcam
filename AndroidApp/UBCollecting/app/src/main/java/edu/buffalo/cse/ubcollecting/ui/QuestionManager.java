@@ -1,5 +1,8 @@
 package edu.buffalo.cse.ubcollecting.ui;
 
+import java.util.ArrayList;
+
+import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 
@@ -13,6 +16,8 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 public interface QuestionManager {
 
     public void getNextQuestion();
+
+    public void startLoop(ArrayList<Answer> answers);
 
     public boolean isLastQuestion();
 

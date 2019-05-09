@@ -154,6 +154,13 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         return i;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = UserLandingActivity.newIntent(TakeQuestionnaireActivity.this);
+        startActivity(intent);
+        finish();
+    }
+
 
 }
 

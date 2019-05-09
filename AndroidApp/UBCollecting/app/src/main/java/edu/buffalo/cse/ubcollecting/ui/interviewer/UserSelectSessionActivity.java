@@ -187,6 +187,7 @@ public class UserSelectSessionActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = UserLandingActivity.newIntent(UserSelectSessionActivity.this);
         startActivity(intent);
+        finish();
     }
 }
 

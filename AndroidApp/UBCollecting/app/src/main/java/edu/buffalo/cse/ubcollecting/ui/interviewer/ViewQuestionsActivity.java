@@ -139,4 +139,11 @@ public class ViewQuestionsActivity extends AppCompatActivity {
         return i;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = UserLandingActivity.newIntent(ViewQuestionsActivity.this);
+        startActivity(intent);
+        finish();
+    }
+
 }

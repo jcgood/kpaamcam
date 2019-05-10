@@ -36,7 +36,7 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActiv
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends QuestionFragment {
     RecyclerView answerList;
     Button addQuestionsButton;
     Button submitAnswersButton;
@@ -87,8 +87,6 @@ public class ListFragment extends Fragment {
                     answer.setSessionId(session.getId());
                     DatabaseHelper.ANSWER_TABLE.insert(answer);
                     answerList.add(answer);
-
-
                 }
                 questionManager.startLoop(answerList, questionnaireContent.getId());
 
@@ -100,6 +98,16 @@ public class ListFragment extends Fragment {
     public void onAttach(Context context){
         super.onAttach(context);
         questionManager = (QuestionManager) context;
+    }
+
+    @Override
+    boolean validateEntry() {
+        return false;
+    }
+
+    @Override
+    public void submitAnswer() {
+
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {

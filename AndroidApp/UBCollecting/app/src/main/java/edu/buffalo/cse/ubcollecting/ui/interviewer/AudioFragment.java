@@ -46,7 +46,7 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActiv
  * A fragment to represent a question to be taken in a questionnaire.
  */
 
-public class AudioFragment extends Fragment{
+public class AudioFragment extends QuestionFragment{
 
     public final static String SELECTED_ANSWER = "selected answer";
     public final static String TAG = AudioFragment.class.getName();
@@ -214,49 +214,9 @@ public class AudioFragment extends Fragment{
         }
     }
 
-    private class NextQuestionOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view) {
-            if(validateEntry()){
-                submitTextAnswer();
-                questionManager.getNextQuestion();
-            }
-        }
-    }
 
-    private class SkipQuestionOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view){
-            Toast.makeText(getContext(), "Question Skipped", Toast.LENGTH_SHORT).show();
-            questionManager.getNextQuestion();
-        }
-    }
 
-    private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-
-            if(validateEntry()){
-                submitTextAnswer();
-                questionManager.saveAndQuitQuestionnaire(questionContent);
-            }
-        }
-    }
-
-    private void submitTextAnswer() {
-        double version = 0;
-        if (!answerList.isEmpty()) {
-            Answer recentAnswer = answerList.get(0);
-            version = recentAnswer.getVersion();
-        }
-        answer.setQuestionId(questionContent.getQuestionId());
-        answer.setQuestionnaireId(questionContent.getQuestionnaireId());
-        answer.setText(mCurrentPath);
-        answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
-        answer.setVersion(version+1);
-        DatabaseHelper.ANSWER_TABLE.insert(answer);
-    }
-
+    @Override
     protected boolean validateEntry() {
         boolean valid = true;
 
@@ -268,6 +228,23 @@ public class AudioFragment extends Fragment{
         return valid;
 
     }
+
+    @Override
+    public void submitAnswer() {
+        double version = 0;
+        if (!answerList.isEmpty()) {
+            Answer recentAnswer = answerList.get(0);
+            version = recentAnswer.getVersion();
+        }
+        answer.setQuestionId(questionContent.getQuestionId());
+        answer.setQuestionnaireId(questionContent.getQuestionnaireId());
+        answer.setText(mCurrentPath);
+        answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
+        answer.setVersion(version+1);
+        DatabaseHelper.ANSWER_TABLE.insert(answer);
+
+    }
+
     private void requestAudioPermissions() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.RECORD_AUDIO)

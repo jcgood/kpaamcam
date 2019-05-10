@@ -13,19 +13,14 @@ import java.util.ArrayList;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
-import edu.buffalo.cse.ubcollecting.data.DatabaseManager;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
-import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
-import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
-import edu.buffalo.cse.ubcollecting.data.tables.QuestionPropertyDefTable;
-import edu.buffalo.cse.ubcollecting.data.tables.QuestionPropertyTable;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELECTED_ANSWER;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TextFragment.SELECTED_ANSWER;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.ViewQuestionsActivity.QUESTION_INDEX;
@@ -142,7 +137,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             else{
                 Log.i("START", "FRAGMENT");
 
-                QuestionFragment questionFragment = new QuestionFragment();
+                TextFragment questionFragment = new TextFragment();
                 questionFragment.setArguments(bundle);
                 questionStatePagerAdapter.addFragement(questionFragment);
                 questionStatePagerAdapter.notifyDataSetChanged();

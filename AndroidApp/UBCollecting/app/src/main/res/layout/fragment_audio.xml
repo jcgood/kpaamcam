@@ -63,6 +63,22 @@
         android:layout_marginEnd="67dp"
         android:text="Next" />
 
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="140dp"
+        android:layout_height="46dp"
+        android:layout_alignStart="@+id/next_question"
+        android:layout_alignEnd="@+id/next_question"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="349dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:text="Recording In Progress..."
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#00BCD4"
+        android:visibility="invisible" />
+
     <Button
         android:id="@+id/skip_question"
         android:layout_width="wrap_content"
@@ -82,5 +98,6 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="-91dp"
         android:text="Save and Exit" />
+
 
 </RelativeLayout>

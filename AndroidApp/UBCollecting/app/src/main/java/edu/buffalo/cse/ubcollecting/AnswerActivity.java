@@ -11,7 +11,7 @@ import android.widget.TextView;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.ANSWER_TABLE;
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.QuestionFragment.SELECTED_ANSWER;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TextFragment.SELECTED_ANSWER;
 
 /**
  * UNUSED THUS FAR

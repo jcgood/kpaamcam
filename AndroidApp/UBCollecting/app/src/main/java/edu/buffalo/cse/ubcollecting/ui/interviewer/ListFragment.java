@@ -36,7 +36,7 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActiv
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends QuestionFragment {
     RecyclerView answerList;
     Button addQuestionsButton;
     Button submitAnswersButton;
@@ -73,33 +73,37 @@ public class ListFragment extends Fragment {
         });
 
         submitAnswersButton = (Button) view.findViewById(R.id.list_submit_answers);
-        submitAnswersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<EditText> answerTextList = entryAdapter.getAnswerList();
-                ArrayList<Answer> answerList = new ArrayList<>();
-                for(EditText text: answerTextList){
-                    String answerText = text.getText().toString();
-                    Answer answer = new Answer();
-                    answer.setQuestionId(questionnaireContent.getQuestionId());
-                    answer.setQuestionnaireId(questionnaireId);
-                    answer.setText(answerText);
-                    answer.setSessionId(session.getId());
-                    DatabaseHelper.ANSWER_TABLE.insert(answer);
-                    answerList.add(answer);
-
-
-                }
-                questionManager.startLoop(answerList, questionnaireContent.getId());
-
-            }
-        });
+        submitAnswersButton.setOnClickListener(new NextQuestionOnClickListener());
         questionManager.isLastQuestion();
         return view;
     }
-    public void onAttach(Context context){
+
+    public void onAttach(Context context) {
         super.onAttach(context);
         questionManager = (QuestionManager) context;
+    }
+
+    @Override
+    boolean validateEntry() {
+        return true;
+    }
+
+    @Override
+    public void submitAnswer() {
+        ArrayList<EditText> answerTextList = entryAdapter.getAnswerList();
+        ArrayList<Answer> answerList = new ArrayList<>();
+        for (EditText text : answerTextList) {
+            String answerText = text.getText().toString();
+            Answer answer = new Answer();
+            answer.setQuestionId(questionnaireContent.getQuestionId());
+            answer.setQuestionnaireId(questionnaireId);
+            answer.setText(answerText);
+            answer.setSessionId(session.getId());
+            DatabaseHelper.ANSWER_TABLE.insert(answer);
+            answerList.add(answer);
+        }
+        questionManager.startLoop(answerList, questionnaireContent.getId());
+
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {
@@ -109,12 +113,10 @@ public class ListFragment extends Fragment {
         private RelativeLayout layout;
 
 
-
         public EntryHolder(View view) {
             super(view);
             deleteButton = view.findViewById(R.id.entry_list_delete_button);
             layout = (RelativeLayout) view.findViewById(R.id.list_answer_layout);
-
 
 
         }
@@ -122,10 +124,10 @@ public class ListFragment extends Fragment {
 
         public void bindEntry(EditText entry, final int position) {
 
-            if(entry.getParent() != null) {
-                ((ViewGroup)entry.getParent()).removeView(entry);
+            if (entry.getParent() != null) {
+                ((ViewGroup) entry.getParent()).removeView(entry);
             }
-            entry.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+            entry.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 
             layout.addView(entry);
@@ -133,28 +135,29 @@ public class ListFragment extends Fragment {
         }
     }
 
-    private class EntryAdapter extends  RecyclerView.Adapter<ListFragment.EntryHolder> {
+    private class EntryAdapter extends RecyclerView.Adapter<ListFragment.EntryHolder> {
         ArrayList<EditText> list;
 
-        public EntryAdapter(){
+        public EntryAdapter() {
             list = new ArrayList<EditText>();
             list.add(new EditText(getContext()));
         }
-        public void addText(){
+
+        public void addText() {
             list.add(new EditText(getContext()));
             this.notifyDataSetChanged();
         }
-        public ArrayList<EditText> getAnswerList(){
+
+        public ArrayList<EditText> getAnswerList() {
             return list;
         }
 
         @Override
-        public ListFragment.EntryHolder onCreateViewHolder(ViewGroup parent, int viewType)
-        {
+        public ListFragment.EntryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater
                     .inflate(R.layout.list_answer_entry_view, parent, false);
-             return new ListFragment.EntryHolder(view);
+            return new ListFragment.EntryHolder(view);
         }
 
         @Override

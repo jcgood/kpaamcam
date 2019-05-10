@@ -170,7 +170,6 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 Hashtable<String, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
-                Log.i("Hash", String.valueOf(loopContentTable.size()));
                 for(String qcId: loopContentTable.keySet()){
                     ArrayList <QuestionnaireContent> loopContent = loopContentTable.get(qcId);
                     for(QuestionnaireContent qcEntry: loopContent){
@@ -206,7 +205,6 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 Hashtable<String, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
-                Log.i("Hash", String.valueOf(loopContentTable.size()));
                 for(String qcId: loopContentTable.keySet()){
                     ArrayList <QuestionnaireContent> loopContent = loopContentTable.get(qcId);
                     for(QuestionnaireContent qcEntry: loopContent){

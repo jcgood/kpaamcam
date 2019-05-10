@@ -41,6 +41,8 @@ import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionnaireTable;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.IN_LOOP;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.PARENT_ANSWER;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UpdateAnswerActivity.SELECTED_QUESTION;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
@@ -167,6 +169,12 @@ public class QuestionFragment extends Fragment{
         if (!answerList.isEmpty()) {
             Answer recentAnswer = answerList.get(0);
             version = recentAnswer.getVersion();
+        }
+        Boolean inLoop = (boolean) getArguments().getSerializable(IN_LOOP);
+        if(inLoop){
+            Answer parentAnswer = (Answer) getArguments().getSerializable(PARENT_ANSWER);
+            String parentAnswerId = parentAnswer.getId();
+            answer.setParentAnswer(parentAnswerId);
         }
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());

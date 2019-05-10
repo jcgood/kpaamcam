@@ -1,6 +1,7 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,11 @@ public abstract class QuestionFragment extends Fragment {
     abstract boolean validateEntry();
 
     public abstract void submitAnswer();
+
+    public void onAttach(Context context){
+        super.onAttach(context);
+        questionManager = (QuestionManager) context;
+    }
 
 
     protected class NextQuestionOnClickListener implements View.OnClickListener{

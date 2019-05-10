@@ -33,9 +33,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/list_submit_answers"
-        android:text="Submit Questions"
+        android:text="Next"
         android:layout_below="@+id/answer_list"
         />
+    <Button
+        android:id="@+id/skip_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/question_text"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="33dp"
+        android:text="Skip " />
 
 </LinearLayout>
 

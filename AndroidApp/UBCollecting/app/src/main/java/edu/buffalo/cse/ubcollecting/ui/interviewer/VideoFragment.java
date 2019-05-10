@@ -48,7 +48,7 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActiv
  * A fragment to represent a question to be taken in a questionnaire.
  */
 
-public class VideoFragment extends Fragment{
+public class VideoFragment extends QuestionFragment{
 
     public final static String TAG=VideoFragment.class.getName();
 
@@ -64,7 +64,6 @@ public class VideoFragment extends Fragment{
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
-    private QuestionManager questionManager;
     private Answer answer;
     private String type;
     private Button takeVideo;
@@ -194,11 +193,7 @@ public class VideoFragment extends Fragment{
 
     }
 
-    public void onAttach(Context context){
-        super.onAttach(context);
-        questionManager = (QuestionManager) context;
-        int x=0;
-    }
+
 
     private int getEnglishQuestionIndex(){
         for (int i = 0; i<questionLanguages.size(); i++){
@@ -218,47 +213,7 @@ public class VideoFragment extends Fragment{
         }
     }
 
-    private class NextQuestionOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view) {
-            if(validateEntry()){
-                submitTextAnswer();
-                questionManager.getNextQuestion();
-            }
-        }
-    }
 
-    private class SkipQuestionOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view){
-            Toast.makeText(getContext(), "Question Skipped", Toast.LENGTH_SHORT).show();
-            questionManager.getNextQuestion();
-        }
-    }
-
-    private class SaveAndExitQuestionOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            if(validateEntry()){
-                submitTextAnswer();
-                questionManager.saveAndQuitQuestionnaire(questionContent);
-            }
-        }
-    }
-
-    private void submitTextAnswer(){
-        double version = 0;
-        if (!answerList.isEmpty()) {
-            Answer recentAnswer = answerList.get(0);
-            version = recentAnswer.getVersion();
-        }
-        answer.setQuestionId(questionContent.getQuestionId());
-        answer.setQuestionnaireId(questionContent.getQuestionnaireId());
-        answer.setText(mCurrentPath);
-        answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
-        answer.setVersion(version+1);
-        DatabaseHelper.ANSWER_TABLE.insert(answer);
-    }
 
     protected boolean validateEntry() {
 
@@ -270,6 +225,22 @@ public class VideoFragment extends Fragment{
         }
 
         return valid;
+
+    }
+
+    @Override
+    public void submitAnswer() {
+        double version = 0;
+        if (!answerList.isEmpty()) {
+            Answer recentAnswer = answerList.get(0);
+            version = recentAnswer.getVersion();
+        }
+        answer.setQuestionId(questionContent.getQuestionId());
+        answer.setQuestionnaireId(questionContent.getQuestionnaireId());
+        answer.setText(mCurrentPath);
+        answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
+        answer.setVersion(version+1);
+        DatabaseHelper.ANSWER_TABLE.insert(answer);
 
     }
 

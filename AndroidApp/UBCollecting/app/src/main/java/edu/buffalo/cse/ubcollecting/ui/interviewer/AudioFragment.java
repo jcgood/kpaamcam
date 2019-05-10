@@ -62,7 +62,6 @@ public class AudioFragment extends QuestionFragment{
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
-    private QuestionManager questionManager;
     private Answer answer;
     private Button takeAudio;
     private Button viewAudio;
@@ -195,11 +194,7 @@ public class AudioFragment extends QuestionFragment{
         return view;
     }
 
-    public void onAttach(Context context){
-        super.onAttach(context);
-        questionManager = (QuestionManager) context;
-        int x=0;
-    }
+
 
     private int getEnglishQuestionIndex(){
         for (int i = 0; i<questionLanguages.size(); i++){

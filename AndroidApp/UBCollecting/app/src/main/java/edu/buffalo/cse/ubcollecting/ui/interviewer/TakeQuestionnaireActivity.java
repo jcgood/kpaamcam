@@ -73,14 +73,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         else{
 
             if(inLoop){
-                if(loopIndex==loopQuestions.size()){
-                    iterationsCounter++;
-                    loopIndex=0;
-                }
-                Log.i("Looping", String.valueOf(loopIndex));
                 question = loopQuestions.get(loopIndex);
-                Log.i("QUESTION", String.valueOf(loopQuestions.size()));
-
             }
             else{
                 question = questionnaire.get(questionIndex);
@@ -109,51 +102,33 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             if(!answerList.isEmpty()){
                 bundle.putSerializable(SELECTED_ANSWER, answerList);
             }
-
+            QuestionFragment questionFragment;
             if(typeOfQuestion.equals("Audio")){
-                AudioFragment audioFragment = new AudioFragment();
-                audioFragment.setArguments(bundle);
-                questionStatePagerAdapter.addFragement(audioFragment);
-                questionStatePagerAdapter.notifyDataSetChanged();
+                questionFragment = new AudioFragment();
+
             }
             else if(typeOfQuestion.equals("Video")){
-                VideoFragment videoFragment = new VideoFragment();
-                videoFragment.setArguments(bundle);
-                questionStatePagerAdapter.addFragement(videoFragment);
-                questionStatePagerAdapter.notifyDataSetChanged();
+                questionFragment = new VideoFragment();
+
             }
             else if(typeOfQuestion.equals("Photo")){
-                PhotoFragment photoFragment = new PhotoFragment();
-                photoFragment.setArguments(bundle);
-                questionStatePagerAdapter.addFragement(photoFragment);
-                questionStatePagerAdapter.notifyDataSetChanged();
+                questionFragment = new PhotoFragment();
+
             }
             else if(typeOfQuestion.equals("List")){
-                ListFragment listFragment = new ListFragment();
-                listFragment.setArguments(bundle);
-                questionStatePagerAdapter.addFragement(listFragment);
-                questionStatePagerAdapter.notifyDataSetChanged();
+               questionFragment = new ListFragment();
+
             }
             else{
-                Log.i("START", "FRAGMENT");
+                questionFragment = new TextFragment();
 
-                TextFragment questionFragment = new TextFragment();
-                questionFragment.setArguments(bundle);
-                questionStatePagerAdapter.addFragement(questionFragment);
-                questionStatePagerAdapter.notifyDataSetChanged();
             }
-
-            questionViewPager.setCurrentItem(currentQuestionPosition);
+            questionFragment.setArguments(bundle);
+            questionStatePagerAdapter.addFragement(questionFragment);
+            questionStatePagerAdapter.notifyDataSetChanged();
             currentQuestionPosition+=1;
-
-
-
-        }
-
-
-    }
-
-    public boolean isLastQuestion(){
+            Log.i("HELLO", "WORLD");
+            questionViewPager.setCurrentItem(currentQuestionPosition);
 
             if(inLoop){
                 loopIndex++;
@@ -162,10 +137,22 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                     iterationsCounter = 0;
                     loopIndex = 0;
                 }
+                else if (loopIndex==loopQuestions.size()){
+                    iterationsCounter++;
+                    loopIndex = 0;
+                }
             }
             else{
                 questionIndex++;
             }
+
+
+
+        }
+
+    }
+
+    public boolean isLastQuestion(){
         return questionIndex-1 == questionnaire.size()-1;
 
     }
@@ -174,8 +161,6 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         inLoop=true;
         parentAnswers = answers;
         loopQuestions = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getLoopingQuestions(qcId);
-
-        getNextQuestion();
     }
 
     public void saveAndQuitQuestionnaire(QuestionnaireContent questionnaireContent){

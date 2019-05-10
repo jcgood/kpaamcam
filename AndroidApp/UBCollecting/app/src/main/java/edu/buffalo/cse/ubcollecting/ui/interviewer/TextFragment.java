@@ -55,7 +55,6 @@ public class TextFragment extends QuestionFragment{
     private HashMap<Language,QuestionLangVersion> questionTexts;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
-    private QuestionManager questionManager;
     private Answer answer;
     private String type;
 
@@ -85,9 +84,9 @@ public class TextFragment extends QuestionFragment{
         if(questionManager.isLastQuestion()){
             nextQuestion.setText("Finish");
         }
-        nextQuestion.setOnClickListener(new TextFragment.NextQuestionOnClickListener());
-        skipQuestion.setOnClickListener(new TextFragment.SkipQuestionOnClickListener());
-        saveAndExitQuestion.setOnClickListener(new TextFragment.SaveAndExitQuestionOnClickListener());
+        nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
+        skipQuestion.setOnClickListener(new SkipQuestionOnClickListener());
+        saveAndExitQuestion.setOnClickListener(new SaveAndExitQuestionOnClickListener());
         if(getArguments().containsKey(SELECTED_ANSWER)){
             answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
             Answer mostRecentAnswer = answerList.get(0);
@@ -99,10 +98,6 @@ public class TextFragment extends QuestionFragment{
     }
 
 
-    public void onAttach(Context context){
-        super.onAttach(context);
-        questionManager = (QuestionManager) context;
-    }
 
     private int getEnglishQuestionIndex(){
         for (int i = 0; i<questionLanguages.size(); i++){

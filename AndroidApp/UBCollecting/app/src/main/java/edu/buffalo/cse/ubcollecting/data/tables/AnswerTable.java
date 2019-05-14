@@ -2,6 +2,7 @@ package edu.buffalo.cse.ubcollecting.data.tables;
 
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import edu.buffalo.cse.ubcollecting.AnswerActivity;
@@ -56,6 +57,13 @@ public class AnswerTable extends Table<Answer> {
                 + ")";
     }
 
+    public ArrayList<Answer> getAnswers(String questionId, String questionnaireId){
+        String selection = AnswerTable.KEY_QUESTION_ID + " = ? AND " + AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+        String [] selectionArgs = {questionId, questionnaireId};
+        ArrayList<Answer> answers = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
+        return answers;
+
+    }
     /**
      * Function that returns the most recent answer for a question (answer(s) with highest version #)
      * @param questionId
@@ -63,11 +71,19 @@ public class AnswerTable extends Table<Answer> {
      * @return a {@link ArrayList} of {@link Answer}
      */
 
-    public ArrayList<Answer> getMostRecentAnswer(String questionId, String questionnaireId) {
-        String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
-                + AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
-
-        String [] selectionArgs = {questionId, questionnaireId};
+    public ArrayList<Answer> getMostRecentAnswer(String questionId, String questionnaireId, Answer parentAnswer) {
+        String selection;
+        String [] selectionArgs;
+        if(parentAnswer==null){
+            selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
+                    + AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+            selectionArgs = new String [] {questionId, questionnaireId};
+        }
+        else{
+            selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
+                    + AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? AND "+AnswerTable.KEY_PARENT_ANSWER + " = ?";
+            selectionArgs = new String[] {questionId, questionnaireId, parentAnswer.getId()};
+        }
 
         ArrayList<Answer> answers = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, KEY_VERSION + " DESC");
 

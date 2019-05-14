@@ -72,10 +72,6 @@ public class LoopActivity  extends AppCompatActivity {
         addSubQuestionsButton = findViewById(R.id.add_subquestions_button);
 
 
-        String selection = KEY_ID + " = ? ";
-        String [] selectionArguments = {parentQC.getQuestionnaireId()};
-
-        final Questionnaire questionnaire = DatabaseHelper.QUESTIONNAIRE_TABLE.getAll(selection, selectionArguments, null).get(0);
         addSubQuestionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

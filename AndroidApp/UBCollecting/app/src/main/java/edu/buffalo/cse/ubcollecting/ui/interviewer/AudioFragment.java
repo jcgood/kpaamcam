@@ -17,8 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,19 +26,13 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
-import edu.buffalo.cse.ubcollecting.data.models.Language;
-import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
-import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
-import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
-import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
 /**
@@ -52,16 +45,8 @@ public class AudioFragment extends QuestionFragment{
     public final static String TAG = AudioFragment.class.getName();
 
 
-    private QuestionnaireContent questionContent;
-    private Spinner questionLangSpinner;
-    private TextView questionText;
-    private Button nextQuestion;
-    private Button skipQuestion;
     private Button saveAndExitQuestion;
     private ArrayList<Answer> answerList;
-    private HashMap<Language,QuestionLangVersion> questionTexts;
-    private ArrayList<Language> questionLanguages;
-    private ArrayAdapter<Language> questionLanguagesAdapter;
     private Answer answer;
     private Button takeAudio;
     private Button viewAudio;
@@ -156,30 +141,19 @@ public class AudioFragment extends QuestionFragment{
             }
         });
 
-        questionText = view.findViewById(R.id.question_text);
-        questionContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
-        questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(questionContent.getQuestionId());
-        questionLanguages = new ArrayList<>();
-        questionLanguages.addAll(questionTexts.keySet());
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        questionLangSpinner = view.findViewById(R.id.question_language_spinner);
-        questionLanguagesAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, questionLanguages);
-        questionLangSpinner.setAdapter(questionLanguagesAdapter);
-        questionLangSpinner.setOnItemSelectedListener(new AudioFragment.LanguageOnItemSelectedListener());
-        questionLangSpinner.setSelection(getEnglishQuestionIndex());
 
-        nextQuestion = view.findViewById(R.id.next_question);
-        skipQuestion = view.findViewById(R.id.skip_question);
+
+
+
         saveAndExitQuestion = view.findViewById(R.id.saveandexit_question);
 
-        if(questionManager.isLastQuestion()){
-            nextQuestion.setText("Finish");
-        }
 
-        nextQuestion.setOnClickListener(new AudioFragment.NextQuestionOnClickListener());
-        skipQuestion.setOnClickListener(new AudioFragment.SkipQuestionOnClickListener());
+
+
+
         saveAndExitQuestion.setOnClickListener(new AudioFragment.SaveAndExitQuestionOnClickListener());
         if (getArguments().containsKey(SELECTED_ANSWER)) {
             answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
@@ -196,23 +170,6 @@ public class AudioFragment extends QuestionFragment{
 
 
 
-    private int getEnglishQuestionIndex(){
-        for (int i = 0; i<questionLanguages.size(); i++){
-            if (questionLanguages.get(i).getName().toLowerCase().equals("english")){
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    private class LanguageOnItemSelectedListener extends EntryOnItemSelectedListener<Language> {
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            super.onItemSelected(parent, view, position, id);
-            Language language = (Language) questionLangSpinner.getSelectedItem();
-            questionText.setText(questionTexts.get(language).getQuestionText());
-        }
-    }
 
 
 

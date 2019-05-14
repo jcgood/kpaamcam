@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -37,30 +38,31 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnair
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
 public class ListFragment extends QuestionFragment {
-    RecyclerView answerList;
+    RecyclerView answerViewList;
     Button addQuestionsButton;
-    Button submitAnswersButton;
     EntryAdapter entryAdapter;
     String questionnaireId;
     QuestionnaireContent questionnaireContent;
-    Session session;
-    QuestionManager questionManager;
-    ArrayList<EditText> list;
+    ArrayList<Answer> answerList;
 
+    Session session;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        answerList = (RecyclerView) view.findViewById(R.id.answer_list);
+        answerViewList = (RecyclerView) view.findViewById(R.id.answer_list);
 
         questionnaireId = (String) getArguments().getSerializable(SELECTED_QUESTIONNAIRE);
         questionnaireContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
         session = (Session) getArguments().getSerializable(SELECTED_SESSION);
-
+        answerList = new ArrayList<>();
 
         entryAdapter = new ListFragment.EntryAdapter();
-        answerList.setLayoutManager(new LinearLayoutManager(getContext()));
-        answerList.setAdapter(entryAdapter);
+        answerViewList.setLayoutManager(new LinearLayoutManager(getContext()));
+        answerViewList.setAdapter(entryAdapter);
+
+
+
 
         addQuestionsButton = (Button) view.findViewById(R.id.list_add_answer);
         addQuestionsButton.setOnClickListener(new View.OnClickListener() {
@@ -72,35 +74,42 @@ public class ListFragment extends QuestionFragment {
             }
         });
 
-        submitAnswersButton = (Button) view.findViewById(R.id.list_submit_answers);
-        submitAnswersButton.setOnClickListener(new NextQuestionOnClickListener());
+
         questionManager.isLastQuestion();
         return view;
     }
 
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        questionManager = (QuestionManager) context;
-    }
 
     @Override
     boolean validateEntry() {
-        return true;
+        boolean valid = true;
+        for(EditText answer: entryAdapter.getAnswerList()){
+            if (answer.getText().toString().isEmpty()){
+                valid = false;
+                answer.setError("A Text Answer is Required");
+            }
+        }
+
+
+        if (!valid){
+            Toast.makeText(this.getActivity(), "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
+        }
+
+        return valid;
+
     }
 
     @Override
     public void submitAnswer() {
         ArrayList<EditText> answerTextList = entryAdapter.getAnswerList();
-        ArrayList<Answer> answerList = new ArrayList<>();
-        for (EditText text : answerTextList) {
-            String answerText = text.getText().toString();
-            Answer answer = new Answer();
-            answer.setQuestionId(questionnaireContent.getQuestionId());
-            answer.setQuestionnaireId(questionnaireId);
-            answer.setText(answerText);
-            answer.setSessionId(session.getId());
+        for (int i=0; i<answerList.size();i++) {
+            Answer answer = answerList.get(i);
+           if(answer.getText()==null){
+               answer.setText(answerTextList.get(i).getText().toString());
+
+           }
             DatabaseHelper.ANSWER_TABLE.insert(answer);
-            answerList.add(answer);
+
         }
         questionManager.startLoop(answerList, questionnaireContent.getId());
 
@@ -139,14 +148,37 @@ public class ListFragment extends QuestionFragment {
         ArrayList<EditText> list;
 
         public EntryAdapter() {
-            list = new ArrayList<EditText>();
-            list.add(new EditText(getContext()));
+            ArrayList<Answer> previousAnswers = DatabaseHelper.ANSWER_TABLE.getAnswers(questionnaireContent.getQuestionId(), questionnaireContent.getQuestionnaireId());
+            list = new ArrayList<>();
+            if(!previousAnswers.isEmpty()){
+                for(Answer answer: previousAnswers){
+                    answerList.add(answer);
+                    addText(answer.getText());
+                }
+            }
+            else{
+                addText();
+
+            }
+
         }
 
         public void addText() {
             list.add(new EditText(getContext()));
+            Answer answer = new Answer();
+            answer.setQuestionId(questionnaireId);
+            answer.setQuestionnaireId(questionnaireContent.getQuestionnaireId());
+            answer.setSessionId(session.getId());
+            answerList.add(answer);
             this.notifyDataSetChanged();
         }
+        public void addText(String s){
+            EditText editText = new EditText(getContext());
+            editText.setText(s);
+            list.add(editText);
+            this.notifyDataSetChanged();
+        }
+
 
         public ArrayList<EditText> getAnswerList() {
             return list;

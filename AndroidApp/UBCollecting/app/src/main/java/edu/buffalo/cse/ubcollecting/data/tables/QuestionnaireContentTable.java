@@ -4,6 +4,8 @@ package edu.buffalo.cse.ubcollecting.data.tables;
  * Created by aamel786 on 2/17/18.
  */
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import edu.buffalo.cse.ubcollecting.QuestionnaireContentActivity;
@@ -71,6 +73,7 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
         String selection =KEY_PARENT_QUESTIONNAIRE_CONTENT + "= ?";
 
         String[] selectionArgs = {questionnaireContentId};
+        Log.i("DATA", questionnaireContentId);
         return DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs,KEY_QUESTION_ORDER);
     }
 

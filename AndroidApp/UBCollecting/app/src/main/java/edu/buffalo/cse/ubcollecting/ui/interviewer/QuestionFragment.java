@@ -8,22 +8,62 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import edu.buffalo.cse.ubcollecting.R;
+import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.models.Language;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
+import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
+
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
 
 public abstract class QuestionFragment extends Fragment {
 
     QuestionManager questionManager;
     QuestionnaireContent questionContent;
+    private ArrayList<Language> questionLanguages;
+    private ArrayAdapter<Language> questionLanguagesAdapter;
+    private TextView questionText;
+    private Spinner questionLangSpinner;
+    private HashMap<Language, QuestionLangVersion> questionTexts;
 
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
-//    }
+
+    @Override
+    public void onStart() {
+
+
+        Button nextQuestion = getView().findViewById(R.id.next_question);
+        Button skipQuestion = getView().findViewById(R.id.skip_question);
+        questionLangSpinner = getView().findViewById(R.id.question_language_spinner);
+        questionText = getView().findViewById(R.id.question_text);
+        skipQuestion.setOnClickListener(new AudioFragment.SkipQuestionOnClickListener());
+        nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
+        if(questionManager.isLastQuestion()){
+            nextQuestion.setText("Finish");
+        }
+
+        questionContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
+        questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(questionContent.getQuestionId());
+
+        questionLanguages = new ArrayList<>();
+        questionLanguages.addAll(questionTexts.keySet());
+        questionLanguagesAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, questionLanguages);
+        questionLangSpinner.setAdapter(questionLanguagesAdapter);
+        questionLangSpinner.setOnItemSelectedListener(new LanguageOnItemSelectedListener());
+        questionLangSpinner.setSelection(getEnglishQuestionIndex());
+        super.onStart();
+    }
 
     abstract boolean validateEntry();
 
@@ -32,6 +72,7 @@ public abstract class QuestionFragment extends Fragment {
     public void onAttach(Context context){
         super.onAttach(context);
         questionManager = (QuestionManager) context;
+
     }
 
 
@@ -44,6 +85,7 @@ public abstract class QuestionFragment extends Fragment {
             }
         }
     }
+
 
     protected class SkipQuestionOnClickListener implements View.OnClickListener{
         @Override
@@ -62,6 +104,25 @@ public abstract class QuestionFragment extends Fragment {
             }
         }
     }
+
+    private int getEnglishQuestionIndex(){
+        for (int i = 0; i<questionLanguages.size(); i++){
+            if (questionLanguages.get(i).getName().toLowerCase().equals("english")){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private class LanguageOnItemSelectedListener extends EntryOnItemSelectedListener<Language> {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            super.onItemSelected(parent, view, position, id);
+            Language language = (Language) questionLangSpinner.getSelectedItem();
+            questionText.setText(questionTexts.get(language).getQuestionText());
+        }
+    }
+
 
 
 }

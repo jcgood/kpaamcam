@@ -72,7 +72,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         }
         else{
 
-            if(inLoop){
+            if(inLoop ){
                 question = loopQuestions.get(loopIndex);
             }
             else{
@@ -84,14 +84,20 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             bundle.putSerializable(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()).getId());
             bundle.putSerializable(SELECTED_SESSION, getSession(getIntent()));
             bundle.putSerializable(IN_LOOP, inLoop);
+
+
+            Answer answerParent=null;
             if(inLoop){
-                bundle.putSerializable(PARENT_ANSWER, parentAnswers.get(iterationsCounter));
+                answerParent= parentAnswers.get(iterationsCounter);
+                bundle.putSerializable(PARENT_ANSWER, answerParent);
             }
 
 
+
             // get most recent answer(s)
+
             String questionId = question.getQuestionId();
-            ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getMostRecentAnswer(questionId, getQuestionnaire(getIntent()).getId());
+            ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getMostRecentAnswer(questionId, getQuestionnaire(getIntent()).getId(), answerParent);
 
             // get type of question
             QuestionPropertyDef questionProperty = DatabaseHelper.QUESTION_PROPERTY_TABLE.getQuestionProperty(questionId);
@@ -127,12 +133,20 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             questionStatePagerAdapter.addFragement(questionFragment);
             questionStatePagerAdapter.notifyDataSetChanged();
             currentQuestionPosition+=1;
-            Log.i("HELLO", "WORLD");
             questionViewPager.setCurrentItem(currentQuestionPosition);
+            Log.i("LOOP INDEX VALUE ", String.valueOf(loopIndex));
+            Log.i("ITERATIONS COUNTER ", String.valueOf(iterationsCounter));
+            if(parentAnswers!=null){
+                Log.i(" PARENT ANSWERS ", String.valueOf(parentAnswers.size()));
+            }
+
+            if(loopQuestions!= null){
+                Log.i("LOOP QUESTIONS SIZE", String.valueOf(loopQuestions.size()));
+            }
 
             if(inLoop){
                 loopIndex++;
-                if(loopIndex==loopQuestions.size() &&iterationsCounter==parentAnswers.size()-1){
+                if(loopIndex==loopQuestions.size() && iterationsCounter==parentAnswers.size()-1){
                     inLoop = false;
                     iterationsCounter = 0;
                     loopIndex = 0;
@@ -146,10 +160,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 questionIndex++;
             }
 
-
-
         }
-
     }
 
     public boolean isLastQuestion(){
@@ -158,9 +169,12 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     }
 
     public void startLoop(ArrayList<Answer> answers, String qcId){
-        inLoop=true;
-        parentAnswers = answers;
         loopQuestions = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getLoopingQuestions(qcId);
+        if(!loopQuestions.isEmpty()){
+            inLoop=true;
+        }
+        parentAnswers = answers;
+
     }
 
     public void saveAndQuitQuestionnaire(QuestionnaireContent questionnaireContent){

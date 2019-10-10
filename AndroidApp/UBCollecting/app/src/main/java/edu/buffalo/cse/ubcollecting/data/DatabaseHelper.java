@@ -39,6 +39,11 @@ import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionnaireTable;
 import edu.buffalo.cse.ubcollecting.data.tables.SessionTable;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
+import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_AUDIO_QUESTION_PROP;
+import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_LIST_QUESTION_PROP;
+import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_PHOTO_QUESTION_PROP;
+import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_TEXT_QUESTION_PROP;
+import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_VIDEO_QUESTION_PROP;
 import static edu.buffalo.cse.ubcollecting.data.tables.LanguageTable.ENGLISH_LANG_NAME;
 
 
@@ -144,25 +149,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         testType.setName("Test");
         QUESTIONNAIRE_TYPE_TABLE.insert(testType);
 
-        QuestionPropertyDef audProperty = new QuestionPropertyDef();
-        audProperty.setName("Audio");
-        QUESTION_PROPERTY_DEF_TABLE.insert(audProperty);
+        if (SHOULD_USE_AUDIO_QUESTION_PROP) {
+            QuestionPropertyDef audProperty = new QuestionPropertyDef();
+            audProperty.setName("Audio");
+            QUESTION_PROPERTY_DEF_TABLE.insert(audProperty);
+        }
 
-        QuestionPropertyDef vidProperty = new QuestionPropertyDef();
-        vidProperty.setName("Video");
-        QUESTION_PROPERTY_DEF_TABLE.insert(vidProperty);
+        if (SHOULD_USE_VIDEO_QUESTION_PROP) {
+            QuestionPropertyDef vidProperty = new QuestionPropertyDef();
+            vidProperty.setName("Video");
+            QUESTION_PROPERTY_DEF_TABLE.insert(vidProperty);
+        }
 
-        QuestionPropertyDef phtProperty = new QuestionPropertyDef();
-        phtProperty.setName("Photo");
-        QUESTION_PROPERTY_DEF_TABLE.insert(phtProperty);
+        if (SHOULD_USE_PHOTO_QUESTION_PROP) {
+            QuestionPropertyDef phtProperty = new QuestionPropertyDef();
+            phtProperty.setName("Photo");
+            QUESTION_PROPERTY_DEF_TABLE.insert(phtProperty);
+        }
 
-        QuestionPropertyDef freeProperty = new QuestionPropertyDef();
-        freeProperty.setName("Text");
-        QUESTION_PROPERTY_DEF_TABLE.insert(freeProperty);
+        if (SHOULD_USE_TEXT_QUESTION_PROP) {
+            QuestionPropertyDef freeProperty = new QuestionPropertyDef();
+            freeProperty.setName("Text");
+            QUESTION_PROPERTY_DEF_TABLE.insert(freeProperty);
+        }
 
-        QuestionPropertyDef listProperty = new QuestionPropertyDef();
-        listProperty.setName("List");
-        QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
+        if(SHOULD_USE_LIST_QUESTION_PROP) {
+            QuestionPropertyDef listProperty = new QuestionPropertyDef();
+            listProperty.setName("List");
+            QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
+        }
 //
 //        QuestionPropertyDef fileProperty = new QuestionPropertyDef();
 //        fileProperty.setName("File");

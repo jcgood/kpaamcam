@@ -73,7 +73,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
         propertySpinner.setOnItemSelectedListener(new EntryOnItemSelectedListener<QuestionnaireType>());
 
 
-        ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getResearchLanguages();
+        ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getAll();
         questionLanguageAdapter = new QuestionLanguageAdapter(this, quesLangs);
         questionLanguagesListView.setAdapter(questionLanguageAdapter);
 //        UiUtils.setListViewHeightBasedOnItems(questionPropertiesListView);

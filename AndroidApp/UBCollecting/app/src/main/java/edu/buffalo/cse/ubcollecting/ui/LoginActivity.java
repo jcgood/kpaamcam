@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                         i = UserLandingActivity.newIntent(LoginActivity.this);
                     }
                     startActivity(i);
+                    finish();
                 }
             }
         });

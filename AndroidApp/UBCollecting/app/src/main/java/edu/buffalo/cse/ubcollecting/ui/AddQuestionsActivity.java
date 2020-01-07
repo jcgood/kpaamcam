@@ -246,7 +246,12 @@ public class AddQuestionsActivity extends AppCompatActivity {
             content.setQuestionnaireId(questionnaireId);
             question = content;
 
-            entryNameView.setText(question1.getTextSummary());
+            String questionText = question1.getTextSummary();
+            if (questionText.indexOf('|') > 0) {
+                questionText = questionText.substring(0, questionText.indexOf('|'));
+            }
+
+            entryNameView.setText(questionText);
 
             selectBox.setChecked(selections.contains(question));
             selectBox.setOnCheckedChangeListener(selectBoxListener);

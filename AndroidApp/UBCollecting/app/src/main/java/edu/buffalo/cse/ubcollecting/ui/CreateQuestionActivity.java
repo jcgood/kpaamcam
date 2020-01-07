@@ -1,13 +1,14 @@
 package edu.buffalo.cse.ubcollecting.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,10 +22,13 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
+import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
@@ -35,12 +39,17 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireType;
  * Activity for creating a Question.
  */
 
-public class CreateQuestionActivity extends AppCompatActivity {
+public class CreateQuestionActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public static final String LIST_QUESTION_LANGUAGE_ID = "list_language_id_extra";
+    public static final String LIST_QUESTION_LANGUAGE = "list_language_extra";
+    public static final String LIST_QUESTION_ANSWER = "list_answer_extra";
 
     private ListView questionLanguagesListView;
     private QuestionLanguageAdapter questionLanguageAdapter;
     private HashMap<Language, EditText> questionTexts;
     private Button submit;
+    private Button mAddListQuestionLevel;
     private Question question;
     private TextView selectQuestionProperties;
     private TextView selectQuestionLanguages;
@@ -70,7 +79,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 quesPropDefs);
         propertySpinner.setAdapter(propertyAdapter);
         propertySpinner.setSelected(false);
-        propertySpinner.setOnItemSelectedListener(new EntryOnItemSelectedListener<QuestionnaireType>());
+        propertySpinner.setOnItemSelectedListener(new OnItemSelectedListener<QuestionnaireType>());
 
 
         ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getResearchLanguages();
@@ -93,28 +102,82 @@ public class CreateQuestionActivity extends AppCompatActivity {
                     DatabaseHelper.QUESTION_TABLE.insert(question);
 
                     QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
-                    QuestionProperty quesProp = new QuestionProperty();
-                    quesProp.setQuestionId(question.getId());
-                    quesProp.setPropertyId(propertyDef.getId());
-                    DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
 
-                    for (Language lang : questionTexts.keySet()) {
-                        if (lang.getName().equals("English")) {
-                            question.setDisplayText(questionTexts.get(lang).getText().toString());
-                            DatabaseHelper.QUESTION_TABLE.update(question);
+                    if (checkIsListQuestionAndOneLanguageSelected(propertyDef)) {
+                        QuestionProperty quesProp = new QuestionProperty();
+                        quesProp.setQuestionId(question.getId());
+                        quesProp.setPropertyId(propertyDef.getId());
+                        DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
+
+                        for (Language lang : questionTexts.keySet()) {
+                            if (lang.getName().equals("English")) {
+                                question.setDisplayText(questionTexts.get(lang).getText().toString());
+                                DatabaseHelper.QUESTION_TABLE.update(question);
+                            }
+                            QuestionLangVersion quesLang = new QuestionLangVersion();
+                            quesLang.setQuestionId(question.getId());
+                            quesLang.setQuestionLanguageId(lang.getId());
+                            quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
+                            DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
                         }
-                        QuestionLangVersion quesLang = new QuestionLangVersion();
-                        quesLang.setQuestionId(question.getId());
-                        quesLang.setQuestionLanguageId(lang.getId());
-                        quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
-                        DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
-                    }
 
-                    finish();
+                        finish();
+                    }
                 }
             }
         });
 
+        mAddListQuestionLevel = findViewById(R.id.create_question_add_list_level_button);
+        mAddListQuestionLevel.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.create_question_add_list_level_button) {
+            QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
+
+            if (checkIsListQuestionAndOneLanguageSelected(propertyDef)) {
+                Intent intent = new Intent(CreateQuestionActivity.this, AddListQuestionLevelActivity.class);
+
+                Iterator<Language> languageIterator = questionTexts.keySet().iterator();
+                if (!languageIterator.hasNext()) {
+                    return;
+                }
+
+                Language language = languageIterator.next();
+                intent.putExtra(LIST_QUESTION_LANGUAGE_ID, language.getId());
+                intent.putExtra(LIST_QUESTION_LANGUAGE, language.name);
+                intent.putExtra(LIST_QUESTION_ANSWER, questionTexts.get(language).getText().toString());
+                startActivity(intent);
+                finish();
+            }
+        }
+    }
+
+    private boolean checkIsListQuestionAndOneLanguageSelected(QuestionPropertyDef propertyDef) {
+        if (propertyDef.getName().equals("List")) {
+            boolean languageChecked = false;
+            for (int i = 0; i < questionLanguagesListView.getChildCount(); i++) {
+                View childView = questionLanguagesListView.getChildAt(i);
+                if (((CheckBox) childView.findViewById(R.id.entry_list_select_box)).isChecked()) {
+                    if (!languageChecked) {
+                        languageChecked = true;
+                        continue;
+                    }
+                    Toast.makeText(
+                            getParent(),
+                            "For List Question please select only one language",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
+
+            if (!languageChecked) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private class QuestionLanguageAdapter extends ArrayAdapter<Language> {
@@ -131,7 +194,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_select, parent, false);
             }
 
-            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+//            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
 
             final EditText questionText = new EditText(getApplicationContext());
             questionText.setTextColor(Color.BLACK);
@@ -187,5 +250,23 @@ public class CreateQuestionActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+    private class OnItemSelectedListener<E extends Model> implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+            E questionnaireType = (E) adapterView.getItemAtPosition(position);
+            TextView listView = view.findViewById(android.R.id.text1);
+            listView.setText(questionnaireType.getIdentifier());
+            if (questionnaireType.getIdentifier().equals("List")) {
+                mAddListQuestionLevel.setEnabled(true);
+            } else {
+                mAddListQuestionLevel.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) { }
     }
 }

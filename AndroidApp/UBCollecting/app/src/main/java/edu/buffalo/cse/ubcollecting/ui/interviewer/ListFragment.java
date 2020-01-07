@@ -1,16 +1,9 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,36 +14,32 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
-import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
-import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
-import static edu.buffalo.cse.ubcollecting.SessionActivity.getSession;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.getQuestionnaire;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
 public class ListFragment extends QuestionFragment {
-    RecyclerView answerViewList;
-    Button addQuestionsButton;
-    EntryAdapter entryAdapter;
-    String questionnaireId;
-    QuestionnaireContent questionnaireContent;
-    ArrayList<Answer> answerList;
 
-    Session session;
+    private RecyclerView answerViewList;
+    private Button addQuestionsButton;
+    private EntryAdapter entryAdapter;
+    private String questionnaireId;
+    private QuestionnaireContent questionnaireContent;
+    private ArrayList<Answer> answerList;
+    private Session session;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        answerViewList = (RecyclerView) view.findViewById(R.id.answer_list);
+        answerViewList = view.findViewById(R.id.answer_list);
 
         questionnaireId = (String) getArguments().getSerializable(SELECTED_QUESTIONNAIRE);
         questionnaireContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
@@ -64,7 +53,7 @@ public class ListFragment extends QuestionFragment {
 
 
 
-        addQuestionsButton = (Button) view.findViewById(R.id.list_add_answer);
+        addQuestionsButton = view.findViewById(R.id.list_add_answer);
         addQuestionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -182,7 +182,17 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 
             final TextView textView = convertView.findViewById(R.id.numbered_list_item_text_view);
             QuestionLangVersion question = QUESTION_LANG_VERSION_TABLE.getQuestionTextInEnglish(content.getQuestionId());
-            textView.setText(question.getIdentifier());
+
+            if (questionProperty.getName().equals("List")) {
+                String questionText = question.getIdentifier();
+                if (questionText.indexOf('|') > 0) {
+                    questionText = questionText.substring(0, questionText.indexOf('|'));
+                }
+                textView.setText(questionText);
+            }
+            else {
+                textView.setText(question.getIdentifier());
+            }
 
             final ImageView imageView = convertView.findViewById(R.id.numbered_list_item_loop_button);
 

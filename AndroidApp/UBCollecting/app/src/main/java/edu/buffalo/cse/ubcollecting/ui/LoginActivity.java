@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailField.getText().toString();
+                String email = emailField.getText().toString().trim();
                 String password = passwordField.getText().toString();
 
                 String[] info = PERSON_TABLE.validateUser(email, genHash(password));

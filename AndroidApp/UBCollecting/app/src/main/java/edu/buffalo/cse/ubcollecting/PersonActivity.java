@@ -205,10 +205,7 @@ public class PersonActivity extends EntryActivity<Person> {
     }
 
     private boolean confirmPasswordsMatch(String password, String confirmPassword){
-        if(password.equals(confirmPassword)) {
-            return true;
-        }
-        return false;
+        return password.equals(confirmPassword);
     }
 
 
@@ -274,7 +271,6 @@ public class PersonActivity extends EntryActivity<Person> {
 
         if (!valid) {
             Toast.makeText(this, "Please Fill in All Required Fields!", Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

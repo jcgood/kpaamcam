@@ -36,7 +36,6 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
     private static final int REQUEST_CODE = 1;
 
     private TextView mQuestionTextTextView;
-    private Button mReorderListButton;
     private Button mAddQuestionLevelButton;
     private Button mSubmitButton;
 
@@ -79,23 +78,18 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
 
     private void initializeViewVariables() {
         mQuestionTextTextView = findViewById(R.id.add_question_level_question_text_text_view);
-        mReorderListButton = findViewById(R.id.add_question_level_reorder_list);
         mAddQuestionLevelButton = findViewById(R.id.add_question_level_add_level_button);
         mSubmitButton = findViewById(R.id.add_question_level_submit_button);
     }
 
     private void setListeners() {
-        mReorderListButton.setOnClickListener(this);
         mAddQuestionLevelButton.setOnClickListener(this);
         mSubmitButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.add_question_level_reorder_list) {
-            // TODO
-        }
-        else if (view.getId() == R.id.add_question_level_add_level_button) {
+        if (view.getId() == R.id.add_question_level_add_level_button) {
             mQuestionLevelIdArrayList.add(mQuestionLevelIdArrayList.size(), "");
             mQuestionLevelDisplayArrayList.add(mQuestionLevelDisplayArrayList.size(), "");
             Intent intent = new Intent(

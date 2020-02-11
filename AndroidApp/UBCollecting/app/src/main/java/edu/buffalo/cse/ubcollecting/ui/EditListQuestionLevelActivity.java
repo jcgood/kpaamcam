@@ -34,7 +34,6 @@ import static edu.buffalo.cse.ubcollecting.ui.AddListQuestionLevelActivity.QUEST
 
 public class EditListQuestionLevelActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button mReorderListButton;
     private Button mAddQuestionButton;
     private Button mSaveLevelButton;
     private EditListQuestionAdapter mEditListQuestionAdapter;
@@ -75,23 +74,18 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
     }
 
     private void initializeViewVariable() {
-        mReorderListButton = findViewById(R.id.add_question_level_reorder_list);
         mAddQuestionButton = findViewById(R.id.add_question_level_add_level_button);
         mSaveLevelButton = findViewById(R.id.add_question_level_submit_button);
     }
 
     private void setListeners() {
-        mReorderListButton.setOnClickListener(this);
         mAddQuestionButton.setOnClickListener(this);
         mSaveLevelButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.add_question_level_reorder_list) {
-            //TODO
-        }
-        else if (view.getId() == R.id.add_question_level_add_level_button) {
+        if (view.getId() == R.id.add_question_level_add_level_button) {
             mQuestionsTextArrayList.add("");
             mQuestionsIdArrayList.add("");
             mEditListQuestionAdapter.notifyDataSetChanged();

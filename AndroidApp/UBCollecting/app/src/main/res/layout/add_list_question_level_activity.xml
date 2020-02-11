@@ -35,13 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_question_level_text_view"
-        app:layout_constraintBottom_toTopOf="@id/add_question_level_reorder_list"/>
-
-    <Button
-        android:id="@+id/add_question_level_reorder_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/reorder_list"
         app:layout_constraintBottom_toTopOf="@id/add_question_level_add_level_button"/>
 
     <Button

@@ -33,6 +33,7 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_CONTENT;
 
 public class QuestionnaireQuestionsFragment extends Fragment {
@@ -184,10 +185,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             QuestionLangVersion question = QUESTION_LANG_VERSION_TABLE.getQuestionTextInEnglish(content.getQuestionId());
 
             if (questionProperty.getName().equals("List")) {
-                String questionText = question.getIdentifier();
-                if (questionText.indexOf('|') > 0) {
-                    questionText = questionText.substring(0, questionText.indexOf('|'));
-                }
+                String questionText = QUESTION_TABLE.findById(content.getQuestionId()).getDisplayText();
                 textView.setText(questionText);
             }
             else {

@@ -1,4 +1,5 @@
 package edu.buffalo.cse.ubcollecting.ui;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
 import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.EXTRA_PARENT_QC_ID;
 import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.IS_LOOP_QUESTION;
@@ -30,6 +31,7 @@ import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
+import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
@@ -246,12 +248,13 @@ public class AddQuestionsActivity extends AppCompatActivity {
             content.setQuestionnaireId(questionnaireId);
             question = content;
 
-            String questionText = question1.getTextSummary();
-            if (questionText.indexOf('|') > 0) {
-                questionText = questionText.substring(0, questionText.indexOf('|'));
+            String textSummary = question1.getTextSummary();
+            Question currentQuestion = QUESTION_TABLE.findById(question1.getQuestionId());
+            if (currentQuestion.getType() != null && currentQuestion.getType().equals("List")) {
+                textSummary = currentQuestion.getDisplayText();
             }
 
-            entryNameView.setText(questionText);
+            entryNameView.setText(textSummary);
 
             selectBox.setChecked(selections.contains(question));
             selectBox.setOnCheckedChangeListener(selectBoxListener);

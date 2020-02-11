@@ -41,9 +41,7 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireType;
 
 public class CreateQuestionActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String LIST_QUESTION_LANGUAGE_ID = "list_language_id_extra";
-    public static final String LIST_QUESTION_LANGUAGE = "list_language_extra";
-    public static final String LIST_QUESTION_ANSWER = "list_answer_extra";
+    public static final String LIST_QUESTION_EXTRA = "list_question_extra";
 
     private ListView questionLanguagesListView;
     private QuestionLanguageAdapter questionLanguageAdapter;
@@ -96,31 +94,11 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onClick(View view) {
-
                 if (validateEntry()) {
-
-                    DatabaseHelper.QUESTION_TABLE.insert(question);
-
                     QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
 
                     if (checkIsListQuestionAndOneLanguageSelected(propertyDef)) {
-                        QuestionProperty quesProp = new QuestionProperty();
-                        quesProp.setQuestionId(question.getId());
-                        quesProp.setPropertyId(propertyDef.getId());
-                        DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
-
-                        for (Language lang : questionTexts.keySet()) {
-                            if (lang.getName().equals("English")) {
-                                question.setDisplayText(questionTexts.get(lang).getText().toString());
-                                DatabaseHelper.QUESTION_TABLE.update(question);
-                            }
-                            QuestionLangVersion quesLang = new QuestionLangVersion();
-                            quesLang.setQuestionId(question.getId());
-                            quesLang.setQuestionLanguageId(lang.getId());
-                            quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
-                            DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
-                        }
-
+                        insertInformationIntoDataBases(propertyDef, question, questionTexts);
                         finish();
                     }
                 }
@@ -134,23 +112,45 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.create_question_add_list_level_button) {
-            QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
+            if (validateEntry()) {
+                QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
 
-            if (checkIsListQuestionAndOneLanguageSelected(propertyDef)) {
-                Intent intent = new Intent(CreateQuestionActivity.this, AddListQuestionLevelActivity.class);
+                if (checkIsListQuestionAndOneLanguageSelected(propertyDef)) {
+                    insertInformationIntoDataBases(propertyDef, question, questionTexts);
 
-                Iterator<Language> languageIterator = questionTexts.keySet().iterator();
-                if (!languageIterator.hasNext()) {
-                    return;
+                    Intent intent = new Intent(CreateQuestionActivity.this, AddListQuestionLevelActivity.class);
+                    intent.putExtra(LIST_QUESTION_EXTRA, question);
+                    startActivity(intent);
+
+                    finish();
                 }
-
-                Language language = languageIterator.next();
-                intent.putExtra(LIST_QUESTION_LANGUAGE_ID, language.getId());
-                intent.putExtra(LIST_QUESTION_LANGUAGE, language.name);
-                intent.putExtra(LIST_QUESTION_ANSWER, questionTexts.get(language).getText().toString());
-                startActivity(intent);
-                finish();
             }
+        }
+    }
+
+    private static void insertInformationIntoDataBases(
+            QuestionPropertyDef propertyDef,
+            Question question,
+            HashMap<Language, EditText> questionTexts) {
+
+        question.setType(propertyDef.getName());
+        DatabaseHelper.QUESTION_TABLE.insert(question);
+
+        QuestionProperty quesProp = new QuestionProperty();
+        quesProp.setQuestionId(question.getId());
+        quesProp.setPropertyId(propertyDef.getId());
+        DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
+
+        for (Language lang : questionTexts.keySet()) {
+            if (lang.getName().equals("English")) {
+                question.setDisplayText(questionTexts.get(lang).getText().toString());
+                DatabaseHelper.QUESTION_TABLE.update(question);
+            }
+            QuestionLangVersion quesLang = new QuestionLangVersion();
+            quesLang.setQuestionId(question.getId());
+            quesLang.setQuestionLanguageId(lang.getId());
+            quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
+            DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
         }
     }
 
@@ -165,15 +165,11 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                         continue;
                     }
                     Toast.makeText(
-                            getParent(),
+                            this,
                             "For List Question please select only one language",
                             Toast.LENGTH_SHORT).show();
                     return false;
                 }
-            }
-
-            if (!languageChecked) {
-                return false;
             }
         }
 

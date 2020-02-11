@@ -55,11 +55,18 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
         Intent intent = getIntent();
         if (intent != null) {
             originalQuestionString = intent.getStringExtra(QUESTION_STRING);
+            if (originalQuestionString.contains("#") || TextUtils.isDigitsOnly(originalQuestionString)) {
+                for (String questionIdString : TextUtils.split(originalQuestionString, "#")) {
+                    mQuestionsTextArrayList.add(QUESTION_TABLE.findById(questionIdString).getDisplayText());
+                    mQuestionsIdArrayList.add(questionIdString);
+                }
+            }
+            else {
+                mQuestionsTextArrayList.add(originalQuestionString);
+                mQuestionsIdArrayList.add("");
+            }
             mQuestionPosition = intent.getIntExtra(QUESTION_POSITION, 0);
         }
-
-        mQuestionsTextArrayList.add(originalQuestionString);
-        mQuestionsIdArrayList.add("");
 
         ((TextView) findViewById(R.id.add_question_level_text_view))
                 .setText(TextUtils.concat("Level ", String.valueOf(mQuestionPosition + 1)));
@@ -201,7 +208,6 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
             final ArrayList<String> questionDisplayTextArrayList = new ArrayList<>();
 
             for (Question question : questionArrayList) {
-                System.out.println(question.displayText);
                 if (question.getDisplayText() != null) {
                     questionDisplayTextArrayList.add(question.getDisplayText());
                 }

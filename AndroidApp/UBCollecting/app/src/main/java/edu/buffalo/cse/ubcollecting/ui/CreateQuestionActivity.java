@@ -73,7 +73,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
         propertySpinner.setOnItemSelectedListener(new EntryOnItemSelectedListener<QuestionnaireType>());
 
 
-        ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getResearchLanguages();
+        ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getAll();
         questionLanguageAdapter = new QuestionLanguageAdapter(this, quesLangs);
         questionLanguagesListView.setAdapter(questionLanguageAdapter);
 //        UiUtils.setListViewHeightBasedOnItems(questionPropertiesListView);
@@ -131,7 +131,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_select, parent, false);
             }
 
-            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+//            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
 
             final EditText questionText = new EditText(getApplicationContext());
             questionText.setTextColor(Color.BLACK);

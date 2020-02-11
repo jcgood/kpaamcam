@@ -76,7 +76,7 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
         questionPropertiesListView.setAdapter(questionPropertyAdapter);
 
-        ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getResearchLanguages();
+        ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getAll();
 
         questionLanguageAdapter = new QuestionLanguageAdapter(this, quesLangs);
 

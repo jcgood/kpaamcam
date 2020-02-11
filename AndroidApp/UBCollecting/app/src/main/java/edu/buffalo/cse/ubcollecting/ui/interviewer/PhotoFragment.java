@@ -180,7 +180,7 @@ public class PhotoFragment extends QuestionFragment {
 
         boolean valid = true;
 
-        if (mCurrentPath.isEmpty()){
+        if (mCurrentPath == null || mCurrentPath.isEmpty()){
             Toast.makeText(this.getActivity(), "Please Take a Photo", Toast.LENGTH_SHORT).show();
             valid = false;
         }

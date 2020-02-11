@@ -182,7 +182,7 @@ public class VideoFragment extends QuestionFragment{
 
         boolean valid = true;
 
-        if (mCurrentPath.isEmpty()){
+        if (mCurrentPath == null || mCurrentPath.isEmpty()){
             Toast.makeText(this.getActivity(), "Please Take a Video", Toast.LENGTH_SHORT).show();
             valid = false;
         }

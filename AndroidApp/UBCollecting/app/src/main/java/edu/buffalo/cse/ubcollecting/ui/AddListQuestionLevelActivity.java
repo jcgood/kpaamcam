@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity.LIST_QUESTION_EXTRA;
 
 public class AddListQuestionLevelActivity extends AppCompatActivity implements View.OnClickListener {
@@ -68,6 +70,29 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
         if (mOriginalQuestionTexts.size() != 0 && mOriginalQuestionTexts.keySet().size() == 1) {
             mLanguage = mOriginalQuestionTexts.keySet().iterator().next();
             mQuestionTextTextView.setText(mQuestion.getDisplayText());
+            String originalQuestionString = mOriginalQuestionTexts.get(mLanguage).getQuestionText();
+            System.out.println(originalQuestionString);
+            if (originalQuestionString.contains("|")) {
+                for (String questionString : originalQuestionString.split("\\|")) {
+                    mQuestionLevelIdArrayList.add(questionString);
+                    if (questionString.contains("#")) {
+                        questionString = questionString.substring(0, questionString.indexOf('#'));
+                    }
+                    mQuestionLevelDisplayArrayList.add(QUESTION_TABLE.findById(questionString).getDisplayText());
+                }
+            }
+            else if (originalQuestionString.contains("#")) {
+                mQuestionLevelIdArrayList.add(originalQuestionString);
+                originalQuestionString =
+                        originalQuestionString.substring(0, originalQuestionString.indexOf('#'));
+                mQuestionLevelDisplayArrayList.add(
+                        QUESTION_TABLE.findById(originalQuestionString).getDisplayText());
+            }
+            else if (TextUtils.isDigitsOnly(originalQuestionString)) {
+                mQuestionLevelIdArrayList.add(originalQuestionString);
+                mQuestionLevelDisplayArrayList.add(
+                        QUESTION_TABLE.findById(originalQuestionString).getDisplayText());
+            }
         }
 
         mAddQuestionLevelAdapter = new AddQuestionLevelAdapter(this);

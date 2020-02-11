@@ -55,11 +55,15 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
         Intent intent = getIntent();
         if (intent != null) {
             originalQuestionString = intent.getStringExtra(QUESTION_STRING);
-            if (originalQuestionString.contains("#") || TextUtils.isDigitsOnly(originalQuestionString)) {
-                for (String questionIdString : TextUtils.split(originalQuestionString, "#")) {
+            if (originalQuestionString.contains("#")) {
+                for (String questionIdString : originalQuestionString.split("#")) {
                     mQuestionsTextArrayList.add(QUESTION_TABLE.findById(questionIdString).getDisplayText());
                     mQuestionsIdArrayList.add(questionIdString);
                 }
+            }
+            else if (TextUtils.isDigitsOnly(originalQuestionString) && originalQuestionString.length() > 5) {
+                mQuestionsTextArrayList.add(QUESTION_TABLE.findById(originalQuestionString).getDisplayText());
+                mQuestionsIdArrayList.add(originalQuestionString);
             }
             else {
                 mQuestionsTextArrayList.add(originalQuestionString);

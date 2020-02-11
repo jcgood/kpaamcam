@@ -1,6 +1,7 @@
 package edu.buffalo.cse.ubcollecting.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
+import static edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity.LIST_QUESTION_EXTRA;
 
 
 /**
@@ -92,6 +94,10 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
         update = findViewById(R.id.update_question_button);
 
+        if (question.getType() != null && question.getType().equals("List")) {
+            update.setText("Edit");
+        }
+
         update.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -104,17 +110,18 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                             question.setDisplayText(newQuestionTexts.get(lang).getText().toString());
                             DatabaseHelper.QUESTION_TABLE.update(question);
                         }
-                        if(originalQuestionTexts.containsKey(lang)){
-                            QuestionLangVersion quesLang = originalQuestionTexts.get(lang);
-                            quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
-                            DatabaseHelper.QUESTION_LANG_VERSION_TABLE.update(quesLang);
-                        }
-                        else{
-                            QuestionLangVersion quesLang = new QuestionLangVersion();
-                            quesLang.setQuestionId(question.getId());
-                            quesLang.setQuestionLanguageId(lang.getId());
-                            quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
-                            DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
+                        if (!(question.getType() != null && question.getType().equals("List"))) {
+                            if (originalQuestionTexts.containsKey(lang)) {
+                                QuestionLangVersion quesLang = originalQuestionTexts.get(lang);
+                                quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
+                                DatabaseHelper.QUESTION_LANG_VERSION_TABLE.update(quesLang);
+                            } else {
+                                QuestionLangVersion quesLang = new QuestionLangVersion();
+                                quesLang.setQuestionId(question.getId());
+                                quesLang.setQuestionLanguageId(lang.getId());
+                                quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
+                                DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
+                            }
                         }
                     }
 
@@ -124,6 +131,12 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                         }
                     }
 
+                    if (question.getType() != null && question.getType().equals("List")) {
+                        Intent intent = new Intent(
+                                UpdateQuestionActivity.this, AddListQuestionLevelActivity.class);
+                        intent.putExtra(LIST_QUESTION_EXTRA, question);
+                        startActivity(intent);
+                    }
 
                     finish();
             }
@@ -181,11 +194,19 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
             final CheckBox languageSelect = (CheckBox) convertView.findViewById(R.id.entry_list_select_box);
 
+            if (question.getType() != null && question.getType().equals("List")) {
+                languageSelect.setEnabled(false);
+            }
 
             if (originalQuestionTexts.containsKey(language)){
                 languageSelect.setChecked(true);
                 languageSelect.setEnabled(false);
-                questionText.setText(originalQuestionTexts.get(language).getQuestionText());
+                if (question.getType() != null && question.getType().equals("List")) {
+                    questionText.setText(question.getDisplayText());
+                }
+                else {
+                    questionText.setText(originalQuestionTexts.get(language).getQuestionText());
+                }
                 linearView.addView(questionText,params);
                 newQuestionTexts.put(language,questionText);
             }

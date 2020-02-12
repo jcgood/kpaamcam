@@ -109,6 +109,8 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         mAddListQuestionLevel.setOnClickListener(this);
     }
 
+    // If a Question is selected to be a List Question then this will allow you to
+    // create List Question Levels
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.create_question_add_list_level_button) {
@@ -128,6 +130,8 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         }
     }
 
+    // Inserts the information related to question into the appropriate places
+    // Used for storing both List Questions and non List Questions
     private static void insertInformationIntoDataBases(
             QuestionPropertyDef propertyDef,
             Question question,
@@ -154,6 +158,9 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         }
     }
 
+    // Checks to see if the Question is a List Question, and if so
+    // it checks to see if only one language is selected. Then you may edit
+    // the Question levels
     private boolean checkIsListQuestionAndOneLanguageSelected(QuestionPropertyDef propertyDef) {
         if (propertyDef.getName().equals("List")) {
             boolean languageChecked = false;
@@ -248,6 +255,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         return true;
     }
 
+    // Custom listener for enabling and disabling the add question level button
     private class OnItemSelectedListener<E extends Model> implements AdapterView.OnItemSelectedListener {
 
         @Override

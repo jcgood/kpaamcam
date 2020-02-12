@@ -32,6 +32,11 @@ import static edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity.LIST_QUESTI
 
 public class AddListQuestionLevelActivity extends AppCompatActivity implements View.OnClickListener {
 
+    // QUESTION_STRING is used to pass the Question Id strings for each Question level
+    // QUESTION_POSITION is used to determine what place the modified Question Level will replace
+    // when the information is sent back to this Activity
+    // QUESTION_LEVEL_DISPLAY_TEXT is used to show what the Display text for an incoming level from
+    // EditListQuestionLevel should be
     public static final String QUESTION_STRING = "question_string";
     public static final String QUESTION_POSITION = "question_position";
     public static final String QUESTION_LEVEL_DISPLAY_TEXT = "question_level_display_text";
@@ -42,8 +47,8 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
     private Button mSubmitButton;
 
     private AddQuestionLevelAdapter mAddQuestionLevelAdapter;
-    private ArrayList<String> mQuestionLevelIdArrayList;
-    private ArrayList<String> mQuestionLevelDisplayArrayList;
+    private ArrayList<String> mQuestionLevelIdArrayList; // Stores the Question Id Strings
+    private ArrayList<String> mQuestionLevelDisplayArrayList; // Stores the first question text of each level
     private HashMap<Language, QuestionLangVersion> mOriginalQuestionTexts;
     private Question mQuestion;
     private Language mLanguage;
@@ -67,6 +72,9 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
         mQuestionLevelIdArrayList = new ArrayList<>();
         mQuestionLevelDisplayArrayList = new ArrayList<>();
 
+        // Splits the incoming Question Id Strings, so they can be used for Displaying the top Question
+        // of each Level and for passing into the EditListQuestionLevelActivity. Delimited by the
+        // Pipe | symbol
         if (mOriginalQuestionTexts.size() != 0 && mOriginalQuestionTexts.keySet().size() == 1) {
             mLanguage = mOriginalQuestionTexts.keySet().iterator().next();
             mQuestionTextTextView.setText(mQuestion.getDisplayText());
@@ -114,6 +122,8 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
 
     @Override
     public void onClick(View view) {
+        //Creates a new Question Level and passes it empty placeholders for the Question and
+        // for the position
         if (view.getId() == R.id.add_question_level_add_level_button) {
             mQuestionLevelIdArrayList.add(mQuestionLevelIdArrayList.size(), "");
             mQuestionLevelDisplayArrayList.add(mQuestionLevelDisplayArrayList.size(), "");
@@ -124,6 +134,7 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
             startActivityForResult(intent, REQUEST_CODE);
         }
         else if (view.getId() == R.id.add_question_level_submit_button) {
+            // Updates the Question information inside of the database, after the user has clicked submit
             if (!mQuestionLevelIdArrayList.isEmpty()) {
                 QuestionLangVersion quesLang = mOriginalQuestionTexts.get(mLanguage);
                 quesLang.setQuestionText(concatListQuestions(mQuestionLevelIdArrayList, '|'));
@@ -171,9 +182,6 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
         void bind(int position) {
             mLevelTextView.setText(String.valueOf(position + 1));
             String questionText = mQuestionLevelDisplayArrayList.get(position);
-            if (questionText.contains("#")) {
-                questionText = questionText.substring(0, questionText.indexOf('#'));
-            }
             if (questionText.length() > 20) {
                 questionText = questionText.substring(0, 20);
             }
@@ -190,6 +198,7 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
                 startActivityForResult(intent, REQUEST_CODE);
             }
             else if (view.getId() == R.id.add_list_question_level_delete_level_button) {
+                // Dialog for confirming to delete a level
                 AlertDialog dialog = new AlertDialog.Builder(getApplicationContext())
                         .setMessage("Are you sure you want to delete question level " + mPosition + "?")
                         .setCancelable(false)
@@ -213,6 +222,8 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
         }
     }
 
+    // Result received from the EditListQuestionLevelActivity. Assigns the new Question Id String
+    // and Display Text to the appropriate ArrayList Position
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {

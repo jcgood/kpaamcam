@@ -131,6 +131,8 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                         }
                     }
 
+                    // Starts the AddListQuestionLevelActivity in order to properly edit the contents
+                    // of the question itself. The name, however, will changed in this file
                     if (question.getType() != null && question.getType().equals("List")) {
                         Intent intent = new Intent(
                                 UpdateQuestionActivity.this, AddListQuestionLevelActivity.class);
@@ -194,6 +196,7 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
             final CheckBox languageSelect = (CheckBox) convertView.findViewById(R.id.entry_list_select_box);
 
+            // Disable any other languages with List Questions
             if (question.getType() != null && question.getType().equals("List")) {
                 languageSelect.setEnabled(false);
             }

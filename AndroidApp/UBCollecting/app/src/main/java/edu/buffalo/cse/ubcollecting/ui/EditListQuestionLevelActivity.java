@@ -38,7 +38,9 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
     private Button mSaveLevelButton;
     private EditListQuestionAdapter mEditListQuestionAdapter;
 
+    // Stores the Text for each Question in the Level
     private ArrayList<String> mQuestionsTextArrayList;
+    // Stores the unique Question Id's for each one of the Questions chosen
     private ArrayList<String> mQuestionsIdArrayList;
     private int mQuestionPosition;
 
@@ -54,6 +56,7 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
 
         Intent intent = getIntent();
         if (intent != null) {
+            // Parses the incoming Question Id string to extract the unique Question Id list
             originalQuestionString = intent.getStringExtra(QUESTION_STRING);
             if (originalQuestionString.contains("#")) {
                 for (String questionIdString : originalQuestionString.split("#")) {
@@ -109,6 +112,8 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
                         Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            // Information that is sent back to the AddListQuestionLevelActivity
             Intent returnIntent = new Intent();
             returnIntent.putExtra(QUESTION_STRING,
                     AddListQuestionLevelActivity.concatListQuestions(mQuestionsIdArrayList, '#'));
@@ -158,20 +163,23 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
                 final View dialogView = getLayoutInflater()
                         .inflate(R.layout.edit_list_question_level_pick_question_dialog, null, false);
 
-                Spinner dialogSpinner =
+                // Spinner for selecting a specific Property Def you want to choose
+                Spinner dialogPropertyDefSpinner =
                         dialogView.findViewById(R.id.edit_list_question_property_spinner);
 
-                dialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                dialogPropertyDefSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         String selectedItem = adapterView.getItemAtPosition(i).toString();
                         ArrayList<Question> questionArrayList = QUESTION_TABLE.getAll();
 
+                        // Used for selecting All Questions
                         if (selectedItem.equals(getString(R.string.all_questions))) {
                             createQuestionListView(dialogView, questionArrayList);
                             return;
                         }
 
+                        // Used for selecting individual Question types
                         ArrayList<Question> selectiveQuestionArrayList = new ArrayList<>();
                         for (Question question : questionArrayList) {
                             System.out.println(question.getType());
@@ -187,6 +195,7 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
                     public void onNothingSelected(AdapterView<?> adapterView) { }
                 });
 
+                // Updates the Question Level RecyclerView
                 AlertDialog dialog = new AlertDialog.Builder(EditListQuestionLevelActivity.this)
                         .setView(dialogView)
                         .setCancelable(false)
@@ -207,6 +216,7 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
             }
         }
 
+        // Populates the ListView with Questions
         private void createQuestionListView(View view, final ArrayList<Question> questionArrayList) {
             ListView listView = view.findViewById(R.id.edit_list_question_list_view);
             final ArrayList<String> questionDisplayTextArrayList = new ArrayList<>();

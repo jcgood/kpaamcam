@@ -109,75 +109,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static void populateData() {
         Role admin = new Role();
-        admin.setName("Admin");
+        admin.setName(Constants.ROLE_ADMIN);
         admin.setIntroRequired(0);
         admin.setPhotoRequired(0);
         admin.setOnClient(0);
         ROLE_TABLE.insert(admin);
 
         Role consultant = new Role();
-        consultant.setName("Consultant");
+        consultant.setName(Constants.ROLE_CONSULTANT);
         consultant.setIntroRequired(1);
         consultant.setPhotoRequired(1);
         consultant.setOnClient(1);
         ROLE_TABLE.insert(consultant);
 
         Role interviewer = new Role();
-        interviewer.setName("Interviewer");
+        interviewer.setName(Constants.ROLE_INTERVIEWER);
         interviewer.setIntroRequired(0);
         interviewer.setPhotoRequired(0);
         interviewer.setOnClient(1);
         ROLE_TABLE.insert(interviewer);
 
         QuestionnaireType regType = new QuestionnaireType();
-        regType.setName("Regular");
+        regType.setName(Constants.REGULAR);
         QUESTIONNAIRE_TYPE_TABLE.insert(regType);
 
         QuestionnaireType introType = new QuestionnaireType();
-        introType.setName("Introductory");
+        introType.setName(Constants.INTRODUCTORY);
         QUESTIONNAIRE_TYPE_TABLE.insert(introType);
 
         QuestionnaireType sclType = new QuestionnaireType();
-        sclType.setName("Sociolinguistic");
+        sclType.setName(Constants.SOCIOLINGUISTIC);
         QUESTIONNAIRE_TYPE_TABLE.insert(sclType);
 
         QuestionnaireType emrType = new QuestionnaireType();
-        emrType.setName("Emergency");
+        emrType.setName(Constants.EMERGENCY);
         QUESTIONNAIRE_TYPE_TABLE.insert(emrType);
 
         QuestionnaireType testType = new QuestionnaireType();
-        testType.setName("Test");
+        testType.setName(Constants.TEST);
         QUESTIONNAIRE_TYPE_TABLE.insert(testType);
 
-        if (SHOULD_USE_AUDIO_QUESTION_PROP) {
-            QuestionPropertyDef audProperty = new QuestionPropertyDef();
-            audProperty.setName("Audio");
-            QUESTION_PROPERTY_DEF_TABLE.insert(audProperty);
-        }
+        QuestionPropertyDef audProperty = new QuestionPropertyDef();
+        audProperty.setName(Constants.AUDIO);
+        QUESTION_PROPERTY_DEF_TABLE.insert(audProperty);
 
-        if (SHOULD_USE_VIDEO_QUESTION_PROP) {
-            QuestionPropertyDef vidProperty = new QuestionPropertyDef();
-            vidProperty.setName("Video");
-            QUESTION_PROPERTY_DEF_TABLE.insert(vidProperty);
-        }
+        QuestionPropertyDef vidProperty = new QuestionPropertyDef();
+        vidProperty.setName(Constants.VIDEO);
+        QUESTION_PROPERTY_DEF_TABLE.insert(vidProperty);
 
-        if (SHOULD_USE_PHOTO_QUESTION_PROP) {
-            QuestionPropertyDef phtProperty = new QuestionPropertyDef();
-            phtProperty.setName("Photo");
-            QUESTION_PROPERTY_DEF_TABLE.insert(phtProperty);
-        }
+        QuestionPropertyDef phtProperty = new QuestionPropertyDef();
+        phtProperty.setName(Constants.PHOTO);
+        QUESTION_PROPERTY_DEF_TABLE.insert(phtProperty);
 
-        if (SHOULD_USE_TEXT_QUESTION_PROP) {
-            QuestionPropertyDef freeProperty = new QuestionPropertyDef();
-            freeProperty.setName("Text");
-            QUESTION_PROPERTY_DEF_TABLE.insert(freeProperty);
-        }
+        QuestionPropertyDef freeProperty = new QuestionPropertyDef();
+        freeProperty.setName(Constants.TEXT);
+        QUESTION_PROPERTY_DEF_TABLE.insert(freeProperty);
 
-        if(SHOULD_USE_LIST_QUESTION_PROP) {
-            QuestionPropertyDef listProperty = new QuestionPropertyDef();
-            listProperty.setName("List");
-            QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
-        }
+        //Roopa
+        QuestionPropertyDef listProperty = new QuestionPropertyDef();
+        listProperty.setName(Constants.LIST);
+        QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
+        //Roopa
 //
 //        QuestionPropertyDef fileProperty = new QuestionPropertyDef();
 //        fileProperty.setName("File");

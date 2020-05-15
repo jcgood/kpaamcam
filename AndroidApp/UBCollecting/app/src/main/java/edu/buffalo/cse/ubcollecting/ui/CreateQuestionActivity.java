@@ -2,27 +2,34 @@ package edu.buffalo.cse.ubcollecting.ui;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
+import edu.buffalo.cse.ubcollecting.utils.Constants;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.Question;
@@ -47,8 +54,10 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private Spinner propertySpinner;
     private ArrayAdapter<QuestionPropertyDef> propertyAdapter;
 
-
+    private QuestionPropertyDef questionPropertyDef;
+    private List<EditText> allListOptions = new ArrayList<EditText>();
     private boolean checkSelected=false;
+    private int listOptionsCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +79,26 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 quesPropDefs);
         propertySpinner.setAdapter(propertyAdapter);
         propertySpinner.setSelected(false);
-        propertySpinner.setOnItemSelectedListener(new EntryOnItemSelectedListener<QuestionnaireType>());
+        propertySpinner.setOnItemSelectedListener(new EntryOnItemSelectedListener<QuestionnaireType>(){
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                Object item = parent.getItemAtPosition(pos).toString();
+                propertySpinner.setSelection(pos);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
 
 
         ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getAll();
         questionLanguageAdapter = new QuestionLanguageAdapter(this, quesLangs);
         questionLanguagesListView.setAdapter(questionLanguageAdapter);
 //        UiUtils.setListViewHeightBasedOnItems(questionPropertiesListView);
-        UiUtils.setListViewHeightBasedOnItems(questionLanguagesListView);
+        UiUtils.setDynamicHeight(questionLanguagesListView);
 
+        //HashMap of the language and the question text
         questionTexts = new HashMap<>();
 
         submit = findViewById(R.id.create_question_submit_button);
@@ -92,21 +112,22 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
                     DatabaseHelper.QUESTION_TABLE.insert(question);
 
-                    QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
+                    questionPropertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
                     QuestionProperty quesProp = new QuestionProperty();
                     quesProp.setQuestionId(question.getId());
-                    quesProp.setPropertyId(propertyDef.getId());
+                    quesProp.setPropertyId(questionPropertyDef.getId());
                     DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
 
+
                     for (Language lang : questionTexts.keySet()) {
-                        if (lang.getName().equals("English")) {
+                        if (lang.getName().equals("English") && !question.getType().equals(Constants.LIST)) {
                             question.setDisplayText(questionTexts.get(lang).getText().toString());
                             DatabaseHelper.QUESTION_TABLE.update(question);
                         }
                         QuestionLangVersion quesLang = new QuestionLangVersion();
                         quesLang.setQuestionId(question.getId());
                         quesLang.setQuestionLanguageId(lang.getId());
-                        quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
+                        quesLang.setQuestionText(question.getDisplayText());
                         DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
                     }
 
@@ -131,24 +152,65 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_select, parent, false);
             }
 
-//            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
 
+            //Edit Text for entering the question for the selected lang
             final EditText questionText = new EditText(getApplicationContext());
             questionText.setTextColor(Color.BLACK);
+            questionText.setHintTextColor(Color.GRAY);
+            //questionText.getBackground().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
+            questionText.setHint("Type question here");
+
             final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             final LinearLayout linearView = convertView.findViewById(R.id.entry_list_outer_linear_layout);
 
-            final CheckBox languageSelect = (CheckBox) convertView.findViewById(R.id.entry_list_select_box);
+            //Add button for adding predefined answer options
+            final ImageButton buttonAdd = new ImageButton(getApplicationContext());
+//            LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            buttonLayoutParams.rightMargin = 10;
+//            buttonAdd.setLayoutParams(buttonLayoutParams);
+            buttonAdd.setMinimumHeight(50);
+            buttonAdd.setMinimumWidth(50);
+            buttonAdd.setRight(10);
+            buttonAdd.setImageResource(R.drawable.ic_add_black_24dp);
 
+
+
+            buttonAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText editText = new EditText(getApplicationContext());
+                    listOptionsCounter += 1;
+                    editText.setTextColor(Color.BLACK);
+                    editText.setHint("Type option " +  listOptionsCounter);
+                    editText.setHintTextColor(Color.GRAY);
+                    linearView.addView(editText);
+                    allListOptions.add(editText);
+                }
+            });
+
+            final CheckBox languageSelect = (CheckBox) convertView.findViewById(R.id.entry_list_select_box);
             languageSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if (isChecked) {
-                        linearView.addView(questionText, params);
-//                        listViewParams.height+=100;
+                    questionPropertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
+                    //final String questionType = propertyDef.getName();
+                    question.setType(questionPropertyDef.getName());
+                    if(isChecked){
+                        if(question.getType().equals(Constants.LIST)){
+                            buttonAdd.setVisibility(View.VISIBLE);
+                            linearView.addView(questionText, params);
+                            linearView.addView(buttonAdd);
+//                        params.height+=300;
 //                        questionLanguagesListView.setLayoutParams(listViewParams);
-                        questionTexts.put(language, questionText);
-                    } else {
+                            // question.setDisplayText(questionText.getText().toString().trim());
+                            questionTexts.put(language, questionText);
+                        } else{
+                            linearView.addView(questionText, params);
+                            // question.setDisplayText(questionText.getText().toString().trim());
+                            questionTexts.put(language, questionText);
+                        }
+                    } else{
                         linearView.removeView(questionText);
 //                        listViewParams.height-=100;
 //                        questionLanguagesListView.setLayoutParams(listViewParams);
@@ -164,13 +226,12 @@ public class CreateQuestionActivity extends AppCompatActivity {
             return convertView;
 
         }
-    }
+
 
     /**
-     * Helper function that validates user su//bmission
+     * Helper function that validates user submission
      * @return {@link Boolean}
      */
-
     private boolean validateEntry() {
 
         if (questionTexts.isEmpty()) {
@@ -183,6 +244,18 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 if (questionText.trim().length() < 5) {
                     Toast.makeText(this, "Each Selected Question Text Must Have At Least 5 Characters", Toast.LENGTH_SHORT).show();
                     return false;
+                }
+                if(question.getType().equals(Constants.LIST)){
+                    String listQuestionOptions = "";
+                    for(EditText options:allListOptions){
+                        if (null == options) {
+                            Toast.makeText(this, "Please Fill in options Fields", Toast.LENGTH_SHORT).show();
+                            return false;
+                        }else{
+                            listQuestionOptions = listQuestionOptions + "~" + options.getText().toString().trim();
+                        }
+                    }
+                    question.setDisplayText(questionText + listQuestionOptions);
                 }
             }
         }

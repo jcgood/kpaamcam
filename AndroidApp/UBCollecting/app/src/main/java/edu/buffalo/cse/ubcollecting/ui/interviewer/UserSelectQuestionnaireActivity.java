@@ -18,8 +18,8 @@ import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 import static edu.buffalo.cse.ubcollecting.SessionActivity.getSession;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
 /**
  * Activity that allows interviewer to select which questionnaire to take
@@ -29,7 +29,6 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
     private static final String TAG = UserSelectQuestionnaireActivity.class.getSimpleName();
 
     public final static String SELECTED_QUESTIONNAIRE = "SelectedQuestionnaire";
-
 
     private RecyclerView entryRecyclerView;
     private EntryAdapter entryAdapter;
@@ -41,6 +40,9 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_select_questionnaire);
 
+        Toolbar toolbar = findViewById(R.id.user_select_questionnaire_toolbar);
+        setSupportActionBar(toolbar);
+
         entryRecyclerView = findViewById(R.id.questionnaire_recycler_view);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -49,7 +51,27 @@ public class UserSelectQuestionnaireActivity extends AppCompatActivity {
 
     }
 
-private class EntryHolder extends RecyclerView.ViewHolder {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(UserSelectQuestionnaireActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private class EntryHolder extends RecyclerView.ViewHolder {
 
         private Questionnaire questionnaire;
         private Button selectButton;
@@ -68,7 +90,7 @@ private class EntryHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View view) {
                     Intent i = ViewQuestionsActivity.newIntent(UserSelectQuestionnaireActivity.this);
-                    i.putExtra(SELECTED_SESSION,getSession(getIntent()));
+                    i.putExtra(SELECTED_SESSION, getSession(getIntent()));
                     i.putExtra(SELECTED_QUESTIONNAIRE, questionnaire);
                     startActivity(i);
                     finish();

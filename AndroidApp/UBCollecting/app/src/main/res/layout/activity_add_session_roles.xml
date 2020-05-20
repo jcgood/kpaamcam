@@ -9,6 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <include
+            android:id="@+id/add_session_roles_toolbar"
+            layout="@layout/activity_toolbar"/>
+
         <Button
             android:text="@string/create_new_person"
             android:id="@+id/create_new_person"

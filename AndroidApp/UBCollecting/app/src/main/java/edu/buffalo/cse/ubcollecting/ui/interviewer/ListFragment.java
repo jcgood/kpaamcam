@@ -16,6 +16,8 @@ import java.util.Arrays;
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionOption;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 
@@ -26,11 +28,11 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActiv
 public class ListFragment extends QuestionFragment {
 
     QuestionnaireContent questionnaireContent;
+    QuestionLangVersion questionLangVersion;
     Session session;
     String questionnaireId;
     ArrayList<Answer> answerList;
     ArrayList<CheckBox> selectedCheckBoxList;
-    String questionText;
 
     private static final String TAG = ListFragment.class.getSimpleName();
 
@@ -42,8 +44,6 @@ public class ListFragment extends QuestionFragment {
 
         questionnaireId = (String) getArguments().getSerializable(SELECTED_QUESTIONNAIRE);
         questionnaireContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
-
-        questionText = DatabaseHelper.QUESTION_TABLE.findById(questionnaireContent.questionId).getDisplayText();
 
         session = (Session) getArguments().getSerializable(SELECTED_SESSION);
 
@@ -65,14 +65,14 @@ public class ListFragment extends QuestionFragment {
     }
 
     public void showCheckBoxList(LinearLayout linearLayout){
-        ArrayList<String> questionOptions = new ArrayList<String>(Arrays.asList(questionText.split("~")));
-        questionOptions.remove(0);
+        ArrayList<QuestionOption> questionOptions = DatabaseHelper.QUESTION_OPTION_TABLE.getQuestionOptions(questionnaireContent.getQuestionId());
 
         for(int index=0; index<questionOptions.size(); index++){
-            String value = questionOptions.get(index);
+            String value = questionOptions.get(index).getOptionText().toString();
             final CheckBox cb = new CheckBox(getContext());
             cb.setId(index);
             cb.setText(value);
+            cb.setTextSize(20);
             /*if(!answerList.isEmpty()){
                 for(Answer prevAnswer:answerList){
                     if(prevAnswer.getText().toString().equals(value))

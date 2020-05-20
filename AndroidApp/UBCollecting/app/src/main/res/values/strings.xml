@@ -15,5 +15,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="type_question_hint">Type Question Here</string>
+    <string name="type_question_option_hint">Type option</string>
+    <string name="action_logout">Logout</string>
 
 </resources>

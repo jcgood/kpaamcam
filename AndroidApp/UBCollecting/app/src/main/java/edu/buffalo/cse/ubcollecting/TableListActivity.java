@@ -31,11 +31,34 @@ public abstract class TableListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_list);
 
+        Toolbar toolbar = findViewById(R.id.table_list_toolbar);
+        setSupportActionBar(toolbar);
+
         tableRecyclerView = findViewById(R.id.table_recycler_view);
         tableRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         tableAdapter = new TableAdapter(getTables());
         tableRecyclerView.setAdapter(tableAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(TableListActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+
+        return false;
     }
 
     private class TableHolder extends RecyclerView.ViewHolder {

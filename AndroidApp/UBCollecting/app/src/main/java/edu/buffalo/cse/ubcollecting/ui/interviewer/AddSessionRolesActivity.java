@@ -29,11 +29,10 @@ import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.models.Role;
 import edu.buffalo.cse.ubcollecting.data.models.SessionPerson;
 
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity.REQUEST_CODE_ADD_ENTRY;
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity.FLAG_INTERVIEWER_EDIT;
 import static edu.buffalo.cse.ubcollecting.SessionActivity.getSession;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity.FLAG_INTERVIEWER_EDIT;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity.REQUEST_CODE_ADD_ENTRY;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
-
 
 
 /**
@@ -62,13 +61,16 @@ public class AddSessionRolesActivity extends AppCompatActivity {
     private AssignedRolesAdapter assignedRolesAdapter;
 
 
-    private HashMap<SessionPerson,ArrayList<Role>> rolesAlreadyAssigned;
+    private HashMap<SessionPerson, ArrayList<Role>> rolesAlreadyAssigned;
 
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_session_roles);
+
+        Toolbar toolbar = findViewById(R.id.add_session_roles_toolbar);
+        setSupportActionBar(toolbar);
 
         allRolesAssigned = new ArrayList<>();
         assignedRolesUI = new ArrayList<>();
@@ -77,7 +79,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
 
 
         assignedRolesListView = findViewById(R.id.assigned_roles_list_view);
-        assignedRolesAdapter = new AssignedRolesAdapter(this,assignedRolesUI);
+        assignedRolesAdapter = new AssignedRolesAdapter(this, assignedRolesUI);
         assignedRolesListView.setAdapter(assignedRolesAdapter);
 
         selectPerson = findViewById(R.id.select_person);
@@ -88,7 +90,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = DatabaseHelper.PERSON_TABLE.insertActivityIntent(AddSessionRolesActivity.this);
                 i.setFlags(FLAG_INTERVIEWER_EDIT);
-                startActivityForResult(i,REQUEST_CODE_ADD_ENTRY);
+                startActivityForResult(i, REQUEST_CODE_ADD_ENTRY);
             }
         });
 
@@ -117,7 +119,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
 
         rolesAlreadyAssigned = DatabaseHelper.SESSION_PERSON_TABLE.getSessionPersonRoles(getSession(getIntent()).getId());
 
-        if (!rolesAlreadyAssigned.isEmpty()){
+        if (!rolesAlreadyAssigned.isEmpty()) {
             setActivityState();
         }
 
@@ -126,9 +128,9 @@ public class AddSessionRolesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(validateAssignRole()){
+                if (validateAssignRole()) {
                     Person checkedPerson = (Person) personListView.getItemAtPosition(personSelectedIndex);
-                    personListView.setItemChecked(personSelectedIndex,false);
+                    personListView.setItemChecked(personSelectedIndex, false);
                     personSelectedIndex = -1;
                     selectPerson.setError(null);
 
@@ -141,7 +143,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
                     sp.setSessionId(getSession(getIntent()).getId());
 
 
-                    if (!assignedRoles.contains(sp)){
+                    if (!assignedRoles.contains(sp)) {
                         assignedRoles.add(sp);
                         allRolesAssigned.add(role.getName().toLowerCase());
 
@@ -151,10 +153,9 @@ public class AddSessionRolesActivity extends AppCompatActivity {
                         sb.append(role.getName());
                         assignedRolesUI.add(sb.toString());
 
-                        uiMapping.put(sb.toString(),sp);
+                        uiMapping.put(sb.toString(), sp);
                         assignedRolesAdapter.notifyDataSetChanged();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(AddSessionRolesActivity.this, "You have already assigned this person to that role", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -167,25 +168,24 @@ public class AddSessionRolesActivity extends AppCompatActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validateContinue()){
+                if (validateContinue()) {
                     Log.i(assignedRoles.toString(), "INSERTING INTO DATABASE");
 
-                    for (SessionPerson sp :rolesAlreadyAssigned.keySet()){
-                        if(!assignedRoles.contains(sp)){
+                    for (SessionPerson sp : rolesAlreadyAssigned.keySet()) {
+                        if (!assignedRoles.contains(sp)) {
                             DatabaseHelper.SESSION_PERSON_TABLE.delete(sp.getId());
-                            Log.i(sp.getPersonId(),"DELETING PERSON");
+                            Log.i(sp.getPersonId(), "DELETING PERSON");
                         }
                     }
 
-                    for (SessionPerson sp: assignedRoles){
-                        if(!rolesAlreadyAssigned.containsKey(sp)){
+                    for (SessionPerson sp : assignedRoles) {
+                        if (!rolesAlreadyAssigned.containsKey(sp)) {
                             DatabaseHelper.SESSION_PERSON_TABLE.insert(sp);
-                            Log.i(sp.getPersonId(),"ADDING PERSON");
+                            Log.i(sp.getPersonId(), "ADDING PERSON");
 
-                        }
-                        else {
+                        } else {
                             DatabaseHelper.SESSION_PERSON_TABLE.update(sp);
-                            Log.i(sp.getPersonId(),"UPDATING PERSON");
+                            Log.i(sp.getPersonId(), "UPDATING PERSON");
 
                         }
                     }
@@ -205,6 +205,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String text) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String text) {
                 personAdapter.getFilter().filter(text);
@@ -212,6 +213,26 @@ public class AddSessionRolesActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(AddSessionRolesActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+
+        return false;
     }
 
     private class AssignedRolesAdapter extends ArrayAdapter<String> {
@@ -240,7 +261,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
                     SessionPerson sp = uiMapping.get(personAndRole);
                     assignedRoles.remove(sp);
                     uiMapping.remove(personAndRole);
-                    String [] splitString = personAndRole.split(":");
+                    String[] splitString = personAndRole.split(":");
                     allRolesAssigned.remove(splitString[1].trim().toLowerCase());
                     assignedRolesAdapter.notifyDataSetChanged();
                 }
@@ -269,17 +290,16 @@ public class AddSessionRolesActivity extends AppCompatActivity {
     }
 
 
-
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, AddSessionRolesActivity.class);
         return i;
     }
 
 
-    private boolean validateAssignRole(){
+    private boolean validateAssignRole() {
         boolean valid = true;
 
-        if(personSelectedIndex == -1){
+        if (personSelectedIndex == -1) {
             selectPerson.setError("You must select a person");
             valid = false;
         }
@@ -292,14 +312,14 @@ public class AddSessionRolesActivity extends AppCompatActivity {
     }
 
 
-    private boolean validateContinue(){
+    private boolean validateContinue() {
         boolean valid = true;
 
-        if (allRolesAssigned.size() < 2){
+        if (allRolesAssigned.size() < 2) {
             valid = false;
         }
 
-        if (!allRolesAssigned.contains("interviewer") || !allRolesAssigned.contains("consultant")){
+        if (!allRolesAssigned.contains("interviewer") || !allRolesAssigned.contains("consultant")) {
             valid = false;
         }
 
@@ -310,7 +330,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void setListViewHeights(){
+    private void setListViewHeights() {
 
         ViewGroup.LayoutParams assignedRolesLayoutParams = assignedRolesListView.getLayoutParams();
         assignedRolesLayoutParams.height = 180;
@@ -323,11 +343,11 @@ public class AddSessionRolesActivity extends AppCompatActivity {
         personListView.requestLayout();
     }
 
-    private void setActivityState(){
-        for (SessionPerson sp: rolesAlreadyAssigned.keySet()){
+    private void setActivityState() {
+        for (SessionPerson sp : rolesAlreadyAssigned.keySet()) {
             assignedRoles.add(sp);
 
-            for (int i = 0; i<rolesAlreadyAssigned.get(sp).size(); i++){
+            for (int i = 0; i < rolesAlreadyAssigned.get(sp).size(); i++) {
                 allRolesAssigned.add(rolesAlreadyAssigned.get(sp).get(i).getName().toLowerCase());
                 Person person = DatabaseHelper.PERSON_TABLE.findById(sp.getPersonId());
                 StringBuilder sb = new StringBuilder();
@@ -335,7 +355,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
                 sb.append(" : ");
                 sb.append(rolesAlreadyAssigned.get(sp).get(i).getName());
                 assignedRolesUI.add(sb.toString());
-                uiMapping.put(sb.toString(),sp);
+                uiMapping.put(sb.toString(), sp);
             }
 
         }

@@ -45,6 +45,9 @@ public class UserLandingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_landing);
 
+        Toolbar toolbar = findViewById(R.id.user_landing_toolbar);
+        setSupportActionBar(toolbar);
+
         entryRecyclerView = findViewById(R.id.fieldtrip_recycler_view);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -57,9 +60,29 @@ public class UserLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = DatabaseHelper.FIELD_TRIP_TABLE.insertActivityIntent(UserLandingActivity.this);
-                startActivityForResult(i,REQUEST_CODE_ADD_ENTRY);
+                startActivityForResult(i, REQUEST_CODE_ADD_ENTRY);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(UserLandingActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -128,7 +151,7 @@ public class UserLandingActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Entry Deleted", Toast.LENGTH_SHORT).show();
                                 }
                             })
-                            .setNegativeButton("Cancel",null);
+                            .setNegativeButton("Cancel", null);
                     AlertDialog alert = confirmDelete.create();
                     alert.setTitle("Confirm Selection");
                     alert.show();

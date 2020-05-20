@@ -19,7 +19,6 @@ import android.widget.Toast;
 import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
-import edu.buffalo.cse.ubcollecting.SessionActivity;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 
@@ -49,6 +48,9 @@ public class UserSelectSessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_select_session);
 
+        Toolbar toolbar = findViewById(R.id.user_select_session_toolbar);
+        setSupportActionBar(toolbar);
+
         entryRecyclerView = findViewById(R.id.session_recycler_view);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -65,6 +67,26 @@ public class UserSelectSessionActivity extends AppCompatActivity {
                 startActivityForResult(i, REQUEST_CODE_ADD_ENTRY);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(UserSelectSessionActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override

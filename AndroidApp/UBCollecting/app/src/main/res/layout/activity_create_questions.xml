@@ -6,14 +6,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/create_question_toolbar"
+            layout="@layout/activity_toolbar" />
 
         <TextView
             android:id="@+id/select_question_properties"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/select_question_property" />
@@ -22,12 +26,16 @@
             android:id="@+id/question_property_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:spinnerMode="dropdown" />
 
         <TextView
             android:id="@+id/select_question_languages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="@string/select_question_languages" />
@@ -35,13 +43,15 @@
         <ListView
             android:id="@+id/question_languages_list_view"
             android:layout_width="match_parent"
-            android:layout_height="463dp" />
+            android:layout_height="400dp" />
 
         <Button
             android:id="@+id/create_question_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:paddingTop="10dp"
             android:text="Submit" />
 

@@ -11,12 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
-import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionOption;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
@@ -28,12 +26,13 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActiv
 public class ListFragment extends QuestionFragment {
 
     QuestionnaireContent questionnaireContent;
-    QuestionLangVersion questionLangVersion;
+    //QuestionLangVersion questionLangVersion;
     Session session;
     String questionnaireId;
     ArrayList<Answer> answerList;
     ArrayList<CheckBox> selectedCheckBoxList;
 
+    private Answer initAnswer;
     private static final String TAG = ListFragment.class.getSimpleName();
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,6 +44,8 @@ public class ListFragment extends QuestionFragment {
         questionnaireId = (String) getArguments().getSerializable(SELECTED_QUESTIONNAIRE);
         questionnaireContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
 
+        //questionLangVersion = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.findById(questionnaireContent.getQuestionId());
+
         session = (Session) getArguments().getSerializable(SELECTED_SESSION);
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -52,43 +53,56 @@ public class ListFragment extends QuestionFragment {
         answerList = new ArrayList<>();
         selectedCheckBoxList = new ArrayList<>();
 
-        ArrayList<Answer> previousAnswers = DatabaseHelper.ANSWER_TABLE.getAnswers(questionnaireContent.getQuestionId(), questionnaireContent.getQuestionnaireId());
-        if(!previousAnswers.isEmpty()){
-            for(Answer answer: previousAnswers){
-                answerList.add(answer);
-            }
-        }
+        getPreviousAnswers();
         showCheckBoxList(linearView);
 
-        questionManager.isLastQuestion();
         return view;
     }
 
-    public void showCheckBoxList(LinearLayout linearLayout){
+    /**
+     * Retrieve the most recent answer's(selected checkbox)
+     */
+    public void getPreviousAnswers() {
+        ArrayList<Answer> previousAnswers = DatabaseHelper.ANSWER_TABLE.getMostRecentAnswer(questionnaireContent.getQuestionId(), questionnaireContent.getQuestionnaireId(), initAnswer);
+        if (!previousAnswers.isEmpty()) {
+            for (Answer answer : previousAnswers) {
+                answerList.add(answer);
+            }
+        }
+
+    }
+
+    /**
+     * Convert the List element options to checkbox
+     *
+     * @param linearLayout
+     */
+    public void showCheckBoxList(LinearLayout linearLayout) {
         ArrayList<QuestionOption> questionOptions = DatabaseHelper.QUESTION_OPTION_TABLE.getQuestionOptions(questionnaireContent.getQuestionId());
 
-        for(int index=0; index<questionOptions.size(); index++){
+        for (int index = 0; index < questionOptions.size(); index++) {
             String value = questionOptions.get(index).getOptionText().toString();
             final CheckBox cb = new CheckBox(getContext());
             cb.setId(index);
             cb.setText(value);
             cb.setTextSize(20);
-            /*if(!answerList.isEmpty()){
-                for(Answer prevAnswer:answerList){
-                    if(prevAnswer.getText().toString().equals(value))
+            if (!answerList.isEmpty()) {
+                for (Answer prevAnswer : answerList) {
+                    if (prevAnswer.getText().toString().equals(value))
                         cb.setChecked(true);
+                    selectedCheckBoxList.add(cb);
                 }
-            }*/
+            }
             cb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final LinearLayout linearLayout = (LinearLayout) view.getParent();
-                    for(int index=0; index<linearLayout.getChildCount(); index++){
+                    for (int index = 0; index < linearLayout.getChildCount(); index++) {
                         CheckBox cbView = (CheckBox) linearLayout.getChildAt(index);
-                        if(view.getId() == cbView.getId()){
-                            if(cb.isChecked()){
+                        if (view.getId() == cbView.getId()) {
+                            if (cb.isChecked()) {
                                 selectedCheckBoxList.add(cb);
-                            }else {
+                            } else {
                                 selectedCheckBoxList.remove(cb);
                             }
                         }
@@ -101,12 +115,12 @@ public class ListFragment extends QuestionFragment {
 
     @Override
     boolean validateEntry() {
-        if(selectedCheckBoxList.isEmpty()){
+        if (selectedCheckBoxList.isEmpty()) {
             Toast.makeText(this.getActivity(), "Please select from the options!", Toast.LENGTH_SHORT).show();
             return false;
         }
-        for(CheckBox cb:selectedCheckBoxList){
-            if(cb.isChecked())
+        for (CheckBox cb : selectedCheckBoxList) {
+            if (cb.isChecked())
                 return true;
         }
 
@@ -121,8 +135,8 @@ public class ListFragment extends QuestionFragment {
             Answer recentAnswer = answerList.get(0);
             version = recentAnswer.getVersion();
         }
-        for(CheckBox cb: selectedCheckBoxList){
-            if(cb.isChecked()){
+        for (CheckBox cb : selectedCheckBoxList) {
+            if (cb.isChecked()) {
                 String selectedOption = cb.getText().toString();
 
                 Answer answer = new Answer();
@@ -130,7 +144,7 @@ public class ListFragment extends QuestionFragment {
                 answer.setSessionId(session.getId());
                 answer.setQuestionId(questionnaireContent.getQuestionId());
                 answer.setText(selectedOption);
-                answer.setVersion(version+1);
+                answer.setVersion(version + 1);
                 DatabaseHelper.ANSWER_TABLE.insert(answer);
             }
         }

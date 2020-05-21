@@ -33,6 +33,7 @@
 
         <activity
             android:name=".ui.CreateQuestionActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.UpdateQuestionActivity"

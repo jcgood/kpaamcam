@@ -21,6 +21,7 @@ import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.LIST_QUESTION_ID;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
@@ -29,11 +30,14 @@ public class ListFragment extends QuestionFragment {
 
     private RecyclerView answerViewList;
     private Button addQuestionsButton;
+    private Button mSaveAndQuitButton;
     private EntryAdapter entryAdapter;
     private String questionnaireId;
     private QuestionnaireContent questionnaireContent;
     private ArrayList<Answer> answerList;
     private Session session;
+
+    private String mListQuestionId;
 
     @Nullable
     @Override
@@ -41,6 +45,8 @@ public class ListFragment extends QuestionFragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         answerViewList = view.findViewById(R.id.answer_list);
 
+        super.setIsListQuestion(true);
+        mListQuestionId = (String) getArguments().getSerializable(LIST_QUESTION_ID);
         questionnaireId = (String) getArguments().getSerializable(SELECTED_QUESTIONNAIRE);
         questionnaireContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
         session = (Session) getArguments().getSerializable(SELECTED_SESSION);
@@ -63,6 +69,8 @@ public class ListFragment extends QuestionFragment {
             }
         });
 
+        mSaveAndQuitButton = view.findViewById(R.id.save_and_quit_question);
+        mSaveAndQuitButton.setOnClickListener(new SaveAndExitQuestionOnClickListener());
 
         questionManager.isLastQuestion();
         return view;
@@ -100,8 +108,6 @@ public class ListFragment extends QuestionFragment {
             DatabaseHelper.ANSWER_TABLE.insert(answer);
 
         }
-        questionManager.startLoop(answerList, questionnaireContent.getId());
-
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {
@@ -137,7 +143,7 @@ public class ListFragment extends QuestionFragment {
         ArrayList<EditText> list;
 
         public EntryAdapter() {
-            ArrayList<Answer> previousAnswers = DatabaseHelper.ANSWER_TABLE.getAnswers(questionnaireContent.getQuestionId(), questionnaireContent.getQuestionnaireId());
+            ArrayList<Answer> previousAnswers = DatabaseHelper.ANSWER_TABLE.getAnswers(mListQuestionId, questionnaireContent.getQuestionnaireId());
             list = new ArrayList<>();
             if(!previousAnswers.isEmpty()){
                 for(Answer answer: previousAnswers){
@@ -155,7 +161,7 @@ public class ListFragment extends QuestionFragment {
         public void addText() {
             list.add(new EditText(getContext()));
             Answer answer = new Answer();
-            answer.setQuestionId(questionnaireId);
+            answer.setQuestionId(mListQuestionId);
             answer.setQuestionnaireId(questionnaireContent.getQuestionnaireId());
             answer.setSessionId(session.getId());
             answerList.add(answer);

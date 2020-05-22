@@ -26,6 +26,8 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.IS_LAST_LIST_QUESTION;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.LIST_QUESTION_TEXT;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
 
 public abstract class QuestionFragment extends Fragment {
@@ -37,6 +39,10 @@ public abstract class QuestionFragment extends Fragment {
     private TextView questionText;
     private Spinner questionLangSpinner;
     private HashMap<Language, QuestionLangVersion> questionTexts;
+    private String mListQuestionText;
+
+    private boolean mIsListQuestion = false;
+    private boolean mIsLastListQuestion = true;
 
 
     @Override
@@ -49,10 +55,18 @@ public abstract class QuestionFragment extends Fragment {
         questionText = getView().findViewById(R.id.question_text);
         skipQuestion.setOnClickListener(new AudioFragment.SkipQuestionOnClickListener());
         nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
-        if(questionManager.isLastQuestion()){
+        if (mIsListQuestion && mIsLastListQuestion) {
+            nextQuestion.setText("Next Question");
+        }
+        if((questionManager.isLastQuestion() && mIsListQuestion && mIsLastListQuestion)
+                || (!mIsListQuestion && questionManager.isLastQuestion())){
             nextQuestion.setText("Finish");
         }
 
+        if (mIsListQuestion) {
+            mListQuestionText = (String) getArguments().getSerializable(LIST_QUESTION_TEXT);
+            mIsLastListQuestion = (boolean) getArguments().getSerializable(IS_LAST_LIST_QUESTION);
+        }
         questionContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
         questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(questionContent.getQuestionId());
 
@@ -75,13 +89,22 @@ public abstract class QuestionFragment extends Fragment {
 
     }
 
+    public void setIsListQuestion(boolean isListQuestion) {
+        mIsListQuestion = isListQuestion;
+    }
 
     protected class NextQuestionOnClickListener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             if(validateEntry()){
                 submitAnswer();
-                questionManager.getNextQuestion();
+
+                if (mIsLastListQuestion) {
+                    questionManager.getNextQuestion();
+                }
+                else {
+                    questionManager.continueLoop();
+                }
             }
         }
     }
@@ -119,7 +142,12 @@ public abstract class QuestionFragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             super.onItemSelected(parent, view, position, id);
             Language language = (Language) questionLangSpinner.getSelectedItem();
-            questionText.setText(questionTexts.get(language).getQuestionText());
+            if (mIsListQuestion) {
+                questionText.setText(mListQuestionText);
+            }
+            else {
+                questionText.setText(questionTexts.get(language).getQuestionText());
+            }
         }
     }
 

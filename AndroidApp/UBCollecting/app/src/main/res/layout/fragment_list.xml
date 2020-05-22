@@ -1,23 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <TextView
         android:id="@+id/question_language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="5dp"
         android:text="Language:"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <Spinner
         android:id="@+id/question_language_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/question_language"
-        >
+        app:layout_constraintTop_toBottomOf="@id/question_language"
+        app:layout_constraintStart_toStartOf="parent">
 
     </Spinner>
 
@@ -28,15 +31,19 @@
         android:layout_below="@+id/question_language_spinner"
         android:paddingStart="5dp"
         android:text="List Question"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@id/question_language_spinner"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/answer_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_below="@+id/question_text"
-        >
+        app:layout_constraintTop_toBottomOf="@id/question_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_guideline">
     </android.support.v7.widget.RecyclerView>
 
     <Button
@@ -44,22 +51,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/answer_list"
-        android:text="Add an Answer" />
+        android:text="Add an Answer"
+        app:layout_constraintTop_toBottomOf="@id/answer_list"
+        app:layout_constraintStart_toStartOf="parent"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/next_question"
         android:text="Next"
         android:layout_below="@+id/answer_list"
-        />
+        app:layout_constraintTop_toBottomOf="@id/list_add_answer"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <Button
+        android:id="@+id/save_and_quit_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Save and Quit "
+        app:layout_constraintTop_toBottomOf="@id/next_question"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
         android:id="@+id/skip_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="Skip " />
+        android:text="Skip "
+        app:layout_constraintTop_toBottomOf="@id/save_and_quit_question"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+    <android.support.constraint.Guideline
+        android:id="@+id/horizontal_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5" />
+
+</android.support.constraint.ConstraintLayout>
 
 

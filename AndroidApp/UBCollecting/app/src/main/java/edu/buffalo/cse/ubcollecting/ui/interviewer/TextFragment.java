@@ -108,12 +108,12 @@ public class TextFragment extends QuestionFragment{
             Answer recentAnswer = answerList.get(0);
             version = recentAnswer.getVersion();
         }
-        Boolean inLoop = (boolean) getArguments().getSerializable(IN_LOOP);
-        if(inLoop){
-            Answer parentAnswer = (Answer) getArguments().getSerializable(PARENT_ANSWER);
-            String parentAnswerId = parentAnswer.getId();
-            answer.setParentAnswer(parentAnswerId);
-        }
+//        Boolean inLoop = (boolean) getArguments().getSerializable(IN_LOOP);
+//        if(inLoop){
+//            Answer parentAnswer = (Answer) getArguments().getSerializable(PARENT_ANSWER);
+//            String parentAnswerId = parentAnswer.getId();
+//            answer.setParentAnswer(parentAnswerId);
+//        }
         answer.setQuestionId(questionContent.getQuestionId());
         answer.setQuestionnaireId(questionContent.getQuestionnaireId());
         answer.setText(answerText.getText().toString());

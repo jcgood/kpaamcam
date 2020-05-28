@@ -19,19 +19,18 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
-import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
-import static edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity.LIST_QUESTION_EXTRA;
+import static edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity.LOOP_QUESTION_EXTRA;
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 
 /**
@@ -94,7 +93,7 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
         update = findViewById(R.id.update_question_button);
 
-        if (question.getType() != null && question.getType().equals("List")) {
+        if (question.getType() != null && question.getType().equals(LOOP)) {
             update.setText("Edit");
         }
 
@@ -110,7 +109,7 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                             question.setDisplayText(newQuestionTexts.get(lang).getText().toString());
                             DatabaseHelper.QUESTION_TABLE.update(question);
                         }
-                        if (!(question.getType() != null && question.getType().equals("List"))) {
+                        if (!(question.getType() != null && question.getType().equals(LOOP))) {
                             if (originalQuestionTexts.containsKey(lang)) {
                                 QuestionLangVersion quesLang = originalQuestionTexts.get(lang);
                                 quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
@@ -131,12 +130,12 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                         }
                     }
 
-                    // Starts the AddListQuestionLevelActivity in order to properly edit the contents
+                    // Starts the AddLoopQuestionLevelActivity in order to properly edit the contents
                     // of the question itself. The name, however, will changed in this file
-                    if (question.getType() != null && question.getType().equals("List")) {
+                    if (question.getType() != null && question.getType().equals(LOOP)) {
                         Intent intent = new Intent(
-                                UpdateQuestionActivity.this, AddListQuestionLevelActivity.class);
-                        intent.putExtra(LIST_QUESTION_EXTRA, question);
+                                UpdateQuestionActivity.this, AddLoopQuestionLevelActivity.class);
+                        intent.putExtra(LOOP_QUESTION_EXTRA, question);
                         startActivity(intent);
                     }
 
@@ -196,15 +195,15 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
             final CheckBox languageSelect = (CheckBox) convertView.findViewById(R.id.entry_list_select_box);
 
-            // Disable any other languages with List Questions
-            if (question.getType() != null && question.getType().equals("List")) {
+            // Disable any other languages with Loop Questions
+            if (question.getType() != null && question.getType().equals(LOOP)) {
                 languageSelect.setEnabled(false);
             }
 
             if (originalQuestionTexts.containsKey(language)){
                 languageSelect.setChecked(true);
                 languageSelect.setEnabled(false);
-                if (question.getType() != null && question.getType().equals("List")) {
+                if (question.getType() != null && question.getType().equals(LOOP)) {
                     questionText.setText(question.getDisplayText());
                 }
                 else {

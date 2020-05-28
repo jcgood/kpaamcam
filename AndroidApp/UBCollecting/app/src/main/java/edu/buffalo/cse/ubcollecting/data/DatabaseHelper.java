@@ -40,6 +40,7 @@ import edu.buffalo.cse.ubcollecting.data.tables.SessionTable;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
 import static edu.buffalo.cse.ubcollecting.data.tables.LanguageTable.ENGLISH_LANG_NAME;
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -163,6 +164,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         QuestionPropertyDef listProperty = new QuestionPropertyDef();
         listProperty.setName("List");
         QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
+
+        QuestionPropertyDef loopProperty = new QuestionPropertyDef();
+        loopProperty.setName(LOOP);
+        QUESTION_PROPERTY_DEF_TABLE.insert(loopProperty);
 //
 //        QuestionPropertyDef fileProperty = new QuestionPropertyDef();
 //        fileProperty.setName("File");

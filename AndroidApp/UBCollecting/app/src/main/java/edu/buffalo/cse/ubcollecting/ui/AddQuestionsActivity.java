@@ -40,6 +40,7 @@ import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.LANGUAGE_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.LanguageTable.ENGLISH_LANG_NAME;
 import static edu.buffalo.cse.ubcollecting.ui.QuestionnaireQuestionsFragment.QUESTIONNAIRE_CONTENT;
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 /**
  * Activity for adding questions to a Questionnaire
@@ -250,7 +251,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
 
             String textSummary = question1.getTextSummary();
             Question currentQuestion = QUESTION_TABLE.findById(question1.getQuestionId());
-            if (currentQuestion.getType() != null && currentQuestion.getType().equals("List")) {
+            if (currentQuestion.getType() != null && currentQuestion.getType().equals(LOOP)) {
                 textSummary = currentQuestion.getDisplayText();
             }
 

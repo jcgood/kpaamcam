@@ -28,9 +28,9 @@ import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_TABLE;
-import static edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity.LIST_QUESTION_EXTRA;
+import static edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity.LOOP_QUESTION_EXTRA;
 
-public class AddListQuestionLevelActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddLoopQuestionLevelActivity extends AppCompatActivity implements View.OnClickListener {
 
     // QUESTION_STRING is used to pass the Question Id strings for each Question level
     // QUESTION_POSITION is used to determine what place the modified Question Level will replace
@@ -60,7 +60,7 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
 
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
-            mQuestion = (Question) intent.getSerializableExtra(LIST_QUESTION_EXTRA);
+            mQuestion = (Question) intent.getSerializableExtra(LOOP_QUESTION_EXTRA);
         }
 
         initializeViewVariables();
@@ -73,7 +73,7 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
         mQuestionLevelDisplayArrayList = new ArrayList<>();
 
         // Splits the incoming Question Id Strings, so they can be used for Displaying the top Question
-        // of each Level and for passing into the EditListQuestionLevelActivity. Delimited by the
+        // of each Level and for passing into the EditLoopQuestionLevelActivity. Delimited by the
         // Pipe | symbol
         if (mOriginalQuestionTexts.size() != 0 && mOriginalQuestionTexts.keySet().size() == 1) {
             mLanguage = mOriginalQuestionTexts.keySet().iterator().next();
@@ -128,7 +128,7 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
             mQuestionLevelIdArrayList.add(mQuestionLevelIdArrayList.size(), "");
             mQuestionLevelDisplayArrayList.add(mQuestionLevelDisplayArrayList.size(), "");
             Intent intent = new Intent(
-                    AddListQuestionLevelActivity.this, EditListQuestionLevelActivity.class);
+                    AddLoopQuestionLevelActivity.this, EditLoopQuestionLevelActivity.class);
             intent.putExtra(QUESTION_STRING, "");
             intent.putExtra(QUESTION_POSITION, mQuestionLevelIdArrayList.size() - 1);
             startActivityForResult(intent, REQUEST_CODE);
@@ -137,7 +137,7 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
             // Updates the Question information inside of the database, after the user has clicked submit
             if (!mQuestionLevelIdArrayList.isEmpty()) {
                 QuestionLangVersion quesLang = mOriginalQuestionTexts.get(mLanguage);
-                quesLang.setQuestionText(concatListQuestions(mQuestionLevelIdArrayList, '|'));
+                quesLang.setQuestionText(concatLoopQuestions(mQuestionLevelIdArrayList, '|'));
                 DatabaseHelper.QUESTION_LANG_VERSION_TABLE.update(quesLang);
                 Toast.makeText(this, "Your Question has been submitted", Toast.LENGTH_SHORT).show();
                 finish();
@@ -150,15 +150,15 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
 
     // The '|' is used to separate question levels
     // The '#' is used to separate questions within the same question level
-    public static String concatListQuestions(ArrayList<String> questionArrayList, char delim) {
-        String listQuestion = "";
+    public static String concatLoopQuestions(ArrayList<String> questionArrayList, char delim) {
+        String loopQuestion = "";
         for (String question : questionArrayList) {
             if (!question.isEmpty()) {
-                listQuestion = listQuestion.concat(delim + question);
+                loopQuestion = loopQuestion.concat(delim + question);
             }
         }
 
-        return listQuestion.substring(1);
+        return loopQuestion.substring(1);
     }
 
     private class AddQuestionLevelViewHolder extends RecyclerView.ViewHolder
@@ -192,7 +192,7 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.add_list_question_level_view_level_button) {
-                Intent intent = new Intent(AddListQuestionLevelActivity.this, EditListQuestionLevelActivity.class);
+                Intent intent = new Intent(AddLoopQuestionLevelActivity.this, EditLoopQuestionLevelActivity.class);
                 intent.putExtra(QUESTION_STRING, mQuestionLevelIdArrayList.get(mPosition));
                 intent.putExtra(QUESTION_POSITION, mPosition);
                 startActivityForResult(intent, REQUEST_CODE);
@@ -222,7 +222,7 @@ public class AddListQuestionLevelActivity extends AppCompatActivity implements V
         }
     }
 
-    // Result received from the EditListQuestionLevelActivity. Assigns the new Question Id String
+    // Result received from the EditLoopQuestionLevelActivity. Assigns the new Question Id String
     // and Display Text to the appropriate ArrayList Position
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

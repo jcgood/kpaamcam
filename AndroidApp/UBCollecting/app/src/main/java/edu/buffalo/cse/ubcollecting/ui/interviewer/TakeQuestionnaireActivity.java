@@ -11,7 +11,6 @@ import android.widget.Toast;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
@@ -28,6 +27,7 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.TextFragment.SELECTED_
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.ViewQuestionsActivity.QUESTION_INDEX;
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 
 /**
@@ -36,9 +36,9 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.ViewQuestionsActivity.
 
 public class TakeQuestionnaireActivity extends AppCompatActivity implements QuestionManager {
 
-    static final String LIST_QUESTION_TEXT = "list_question_text";
-    static final String LIST_QUESTION_ID = "list_question_id";
-    static final String IS_LAST_LIST_QUESTION = "is_last_list_question";
+    static final String LOOP_QUESTION_TEXT = "loop_question_text";
+    static final String LOOP_QUESTION_ID = "loop_question_id";
+    static final String IS_LAST_LOOP_QUESTION = "is_last_loop_question";
 
     private QuestionStatePagerAdapter questionStatePagerAdapter;
     private ViewPager questionViewPager;
@@ -94,28 +94,28 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 System.out.println("Current: " + questionViewPager.getCurrentItem() + ", Max: " + questionStatePagerAdapter.getCount());
             }
 
-            /* Takes care of list question, by adding every question in the list to the viewpager as
+            /* Takes care of loop question, by adding every question in the loop to the viewpager as
                a separate Fragment */
-            if (typeOfQuestion.equals("List")) {
+            if (typeOfQuestion.equals(LOOP)) {
                 HashMap<Language, QuestionLangVersion> questionTexts =
                         DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(question.getQuestionId());
-                String listQuestion = questionTexts.get(questionTexts.keySet().iterator().next()).getQuestionText();
+                String loopQuestion = questionTexts.get(questionTexts.keySet().iterator().next()).getQuestionText();
                 HashMap<String, String> questionHashMap =
-                        ListQuestionHelper.createQuestionHashMap(listQuestion);
+                        LoopQuestionHelper.createQuestionHashMap(loopQuestion);
 
                 int counter = 0;
-                for (String listQuestionId : questionHashMap.keySet()) {
-                    String listQuestionText = questionHashMap.get(listQuestionId);
+                for (String loopQuestionId : questionHashMap.keySet()) {
+                    String loopQuestionText = questionHashMap.get(loopQuestionId);
                     Bundle bundle = createBundleArgs(question, typeOfQuestion);
-                    bundle.putSerializable(LIST_QUESTION_TEXT, listQuestionText);
-                    bundle.putSerializable(LIST_QUESTION_ID, listQuestionId);
-                    bundle.putSerializable(IS_LAST_LIST_QUESTION,
+                    bundle.putSerializable(LOOP_QUESTION_TEXT, loopQuestionText);
+                    bundle.putSerializable(LOOP_QUESTION_ID, loopQuestionId);
+                    bundle.putSerializable(IS_LAST_LOOP_QUESTION,
                             counter == (questionHashMap.keySet().size() - 1));
 
-                    QuestionFragment listFragment = new ListFragment();
-                    listFragment.setArguments(bundle);
-                    questionStatePagerAdapter.addFragement(listFragment);
-                    System.out.println("Question Text: " + listQuestionText);
+                    QuestionFragment loopFragment = new LoopFragment();
+                    loopFragment.setArguments(bundle);
+                    questionStatePagerAdapter.addFragement(loopFragment);
+                    System.out.println("Question Text: " + loopQuestionText);
                     counter++;
                 }
                 questionStatePagerAdapter.notifyDataSetChanged();

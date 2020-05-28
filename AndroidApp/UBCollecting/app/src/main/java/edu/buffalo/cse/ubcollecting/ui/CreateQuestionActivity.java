@@ -22,8 +22,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
@@ -35,25 +33,28 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireType;
 
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
+
 /**
  * Activity for creating a Question.
  */
 
 public class CreateQuestionActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final String LIST_QUESTION_EXTRA = "list_question_extra";
+    public static final String LOOP_QUESTION_EXTRA = "loop_question_extra";
 
     private ListView questionLanguagesListView;
     private QuestionLanguageAdapter questionLanguageAdapter;
     private HashMap<Language, EditText> questionTexts;
     private Button submit;
-    private Button mAddListQuestionLevel;
+    private Button mAddLoopQuestionLevel;
     private Question question;
     private TextView selectQuestionProperties;
     private TextView selectQuestionLanguages;
     private Spinner propertySpinner;
     private ArrayAdapter<QuestionPropertyDef> propertyAdapter;
 
+    private QuestionPropertyDef questionPropertyDef;
 
     private boolean checkSelected=false;
 
@@ -95,33 +96,33 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View view) {
                 if (validateEntry()) {
-                    QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
+                    questionPropertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
 
-                    if (checkIsListQuestionAndOneLanguageSelected(propertyDef)) {
-                        insertInformationIntoDataBases(propertyDef, question, questionTexts);
+                    if (checkIsLoopQuestionAndOneLanguageSelected()) {
+                        insertInformationIntoDataBases(questionPropertyDef, question, questionTexts);
                         finish();
                     }
                 }
             }
         });
 
-        mAddListQuestionLevel = findViewById(R.id.create_question_add_list_level_button);
-        mAddListQuestionLevel.setOnClickListener(this);
+        mAddLoopQuestionLevel = findViewById(R.id.create_question_add_list_level_button);
+        mAddLoopQuestionLevel.setOnClickListener(this);
     }
 
-    // If a Question is selected to be a List Question then this will allow you to
-    // create List Question Levels
+    // If a Question is selected to be a Loop Question then this will allow you to
+    // create Loop Question Levels
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.create_question_add_list_level_button) {
             if (validateEntry()) {
-                QuestionPropertyDef propertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
+                questionPropertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
 
-                if (checkIsListQuestionAndOneLanguageSelected(propertyDef)) {
-                    insertInformationIntoDataBases(propertyDef, question, questionTexts);
+                if (checkIsLoopQuestionAndOneLanguageSelected()) {
+                    insertInformationIntoDataBases(questionPropertyDef, question, questionTexts);
 
-                    Intent intent = new Intent(CreateQuestionActivity.this, AddListQuestionLevelActivity.class);
-                    intent.putExtra(LIST_QUESTION_EXTRA, question);
+                    Intent intent = new Intent(CreateQuestionActivity.this, AddLoopQuestionLevelActivity.class);
+                    intent.putExtra(LOOP_QUESTION_EXTRA, question);
                     startActivity(intent);
 
                     finish();
@@ -131,7 +132,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
     }
 
     // Inserts the information related to question into the appropriate places
-    // Used for storing both List Questions and non List Questions
+    // Used for storing both Loop Questions and non Loop Questions
     private static void insertInformationIntoDataBases(
             QuestionPropertyDef propertyDef,
             Question question,
@@ -158,11 +159,11 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         }
     }
 
-    // Checks to see if the Question is a List Question, and if so
+    // Checks to see if the Question is a Loop Question, and if so
     // it checks to see if only one language is selected. Then you may edit
     // the Question levels
-    private boolean checkIsListQuestionAndOneLanguageSelected(QuestionPropertyDef propertyDef) {
-        if (propertyDef.getName().equals("List")) {
+    private boolean checkIsLoopQuestionAndOneLanguageSelected() {
+        if (questionPropertyDef.getName().equals(LOOP)) {
             boolean languageChecked = false;
             for (int i = 0; i < questionLanguagesListView.getChildCount(); i++) {
                 View childView = questionLanguagesListView.getChildAt(i);
@@ -173,7 +174,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                     }
                     Toast.makeText(
                             this,
-                            "For List Question please select only one language",
+                            "For Loop Question please select only one language",
                             Toast.LENGTH_SHORT).show();
                     return false;
                 }
@@ -263,11 +264,13 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             E questionnaireType = (E) adapterView.getItemAtPosition(position);
             TextView listView = view.findViewById(android.R.id.text1);
             listView.setText(questionnaireType.getIdentifier());
-            if (questionnaireType.getIdentifier().equals("List")) {
-                mAddListQuestionLevel.setEnabled(true);
+            if (questionnaireType.getIdentifier().equals(LOOP)) {
+                mAddLoopQuestionLevel.setEnabled(true);
             } else {
-                mAddListQuestionLevel.setEnabled(false);
+                mAddLoopQuestionLevel.setEnabled(false);
             }
+
+            propertySpinner.setSelection(position);
         }
 
         @Override

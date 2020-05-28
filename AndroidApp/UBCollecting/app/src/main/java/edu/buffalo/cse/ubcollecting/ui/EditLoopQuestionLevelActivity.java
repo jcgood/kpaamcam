@@ -28,15 +28,15 @@ import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.models.Question;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_TABLE;
-import static edu.buffalo.cse.ubcollecting.ui.AddListQuestionLevelActivity.QUESTION_LEVEL_DISPLAY_TEXT;
-import static edu.buffalo.cse.ubcollecting.ui.AddListQuestionLevelActivity.QUESTION_POSITION;
-import static edu.buffalo.cse.ubcollecting.ui.AddListQuestionLevelActivity.QUESTION_STRING;
+import static edu.buffalo.cse.ubcollecting.ui.AddLoopQuestionLevelActivity.QUESTION_LEVEL_DISPLAY_TEXT;
+import static edu.buffalo.cse.ubcollecting.ui.AddLoopQuestionLevelActivity.QUESTION_POSITION;
+import static edu.buffalo.cse.ubcollecting.ui.AddLoopQuestionLevelActivity.QUESTION_STRING;
 
-public class EditListQuestionLevelActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditLoopQuestionLevelActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button mAddQuestionButton;
     private Button mSaveLevelButton;
-    private EditListQuestionAdapter mEditListQuestionAdapter;
+    private EditLoopQuestionAdapter mEditLoopQuestionAdapter;
 
     // Stores the Text for each Question in the Level
     private ArrayList<String> mQuestionsTextArrayList;
@@ -56,7 +56,7 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
 
         Intent intent = getIntent();
         if (intent != null) {
-            // Parses the incoming Question Id string to extract the unique Question Id list
+            // Parses the incoming Question Id string to extract the unique Question Id loop
             originalQuestionString = intent.getStringExtra(QUESTION_STRING);
             if (originalQuestionString.contains("#")) {
                 for (String questionIdString : originalQuestionString.split("#")) {
@@ -81,10 +81,10 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
         initializeViewVariable();
         setListeners();
 
-        mEditListQuestionAdapter = new EditListQuestionAdapter(this);
-        RecyclerView editListQuestionRecyclerView = findViewById(R.id.add_question_level_recycler_view);
-        editListQuestionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        editListQuestionRecyclerView.setAdapter(mEditListQuestionAdapter);
+        mEditLoopQuestionAdapter = new EditLoopQuestionAdapter(this);
+        RecyclerView editLoopQuestionRecyclerView = findViewById(R.id.add_question_level_recycler_view);
+        editLoopQuestionRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        editLoopQuestionRecyclerView.setAdapter(mEditLoopQuestionAdapter);
     }
 
     private void initializeViewVariable() {
@@ -102,21 +102,21 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
         if (view.getId() == R.id.add_question_level_add_level_button) {
             mQuestionsTextArrayList.add("");
             mQuestionsIdArrayList.add("");
-            mEditListQuestionAdapter.notifyDataSetChanged();
+            mEditLoopQuestionAdapter.notifyDataSetChanged();
         }
         else if (view.getId() == R.id.add_question_level_submit_button) {
             if (mQuestionsIdArrayList.isEmpty()) {
                 Toast.makeText(
-                        EditListQuestionLevelActivity.this,
+                        EditLoopQuestionLevelActivity.this,
                         "Please create a question level",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Information that is sent back to the AddListQuestionLevelActivity
+            // Information that is sent back to the AddLoopQuestionLevelActivity
             Intent returnIntent = new Intent();
             returnIntent.putExtra(QUESTION_STRING,
-                    AddListQuestionLevelActivity.concatListQuestions(mQuestionsIdArrayList, '#'));
+                    AddLoopQuestionLevelActivity.concatLoopQuestions(mQuestionsIdArrayList, '#'));
             returnIntent.putExtra(QUESTION_POSITION, mQuestionPosition);
             returnIntent.putExtra(QUESTION_LEVEL_DISPLAY_TEXT, mQuestionsTextArrayList.get(0));
             setResult(Activity.RESULT_OK, returnIntent);
@@ -124,14 +124,14 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
         }
     }
 
-    private class EditListQuestionViewHolder extends RecyclerView.ViewHolder
+    private class EditLoopQuestionViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener{
 
         private TextView mQuestionOrderTextView;
         private TextView mQuestionTextView;
         private int mPosition;
 
-        EditListQuestionViewHolder(LayoutInflater inflater, ViewGroup parent) {
+        EditLoopQuestionViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.add_list_question_level_list_item, parent, false));
 
             mQuestionOrderTextView =
@@ -157,7 +157,7 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
         public void onClick(View view) {
             if (view.getId() == R.id.add_list_question_level_delete_level_button) {
                 mQuestionsTextArrayList.remove(mPosition);
-                mEditListQuestionAdapter.notifyDataSetChanged();
+                mEditLoopQuestionAdapter.notifyDataSetChanged();
             }
             else if (view.getId() == R.id.add_list_question_level_view_level_button) {
                 final View dialogView = getLayoutInflater()
@@ -196,13 +196,13 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
                 });
 
                 // Updates the Question Level RecyclerView
-                AlertDialog dialog = new AlertDialog.Builder(EditListQuestionLevelActivity.this)
+                AlertDialog dialog = new AlertDialog.Builder(EditLoopQuestionLevelActivity.this)
                         .setView(dialogView)
                         .setCancelable(false)
                         .setPositiveButton("Accept", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mEditListQuestionAdapter.notifyDataSetChanged();
+                                mEditLoopQuestionAdapter.notifyDataSetChanged();
                                 dialogInterface.dismiss();
                             }
                         })
@@ -231,7 +231,7 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
             }
 
             ArrayAdapter<String> listViewAdapter = new ArrayAdapter<>(
-                    EditListQuestionLevelActivity.this,
+                    EditLoopQuestionLevelActivity.this,
                     android.R.layout.simple_list_item_1,
                     questionDisplayTextArrayList);
             listView.setAdapter(listViewAdapter);
@@ -246,21 +246,21 @@ public class EditListQuestionLevelActivity extends AppCompatActivity implements 
         }
     }
 
-    private class EditListQuestionAdapter extends RecyclerView.Adapter<EditListQuestionViewHolder> {
+    private class EditLoopQuestionAdapter extends RecyclerView.Adapter<EditLoopQuestionViewHolder> {
 
         private Context mContext;
 
-        EditListQuestionAdapter(Context context) {
+        EditLoopQuestionAdapter(Context context) {
             mContext = context;
         }
 
         @Override
-        public EditListQuestionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new EditListQuestionViewHolder(LayoutInflater.from(mContext), parent);
+        public EditLoopQuestionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new EditLoopQuestionViewHolder(LayoutInflater.from(mContext), parent);
         }
 
         @Override
-        public void onBindViewHolder(EditListQuestionViewHolder holder, int position) {
+        public void onBindViewHolder(EditLoopQuestionViewHolder holder, int position) {
             holder.bind(position);
         }
 

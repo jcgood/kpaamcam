@@ -35,6 +35,7 @@ import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VER
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_CONTENT;
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 public class QuestionnaireQuestionsFragment extends Fragment {
     private QuestionnaireManager questionnaireManager;
@@ -184,7 +185,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
             final TextView textView = convertView.findViewById(R.id.numbered_list_item_text_view);
             QuestionLangVersion question = QUESTION_LANG_VERSION_TABLE.getQuestionTextInEnglish(content.getQuestionId());
 
-            if (questionProperty.getName().equals("List")) {
+            if (questionProperty.getName().equals(LOOP)) {
                 String questionText = QUESTION_TABLE.findById(content.getQuestionId()).getDisplayText();
                 textView.setText(questionText);
             }
@@ -198,7 +199,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 //            Log.i("question Property", questionProperty.toString());
 //            Log.i("TRUTHY", Boolean.toString(temp));
 
-            if (!questionProperty.getName().equals("List")) {
+            if (!questionProperty.getName().equals(LOOP)) {
 //                Log.i("NOT", "LIST");
                 imageView.setVisibility(View.INVISIBLE);
             } else {

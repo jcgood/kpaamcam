@@ -2,12 +2,8 @@ package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,8 +22,8 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 import edu.buffalo.cse.ubcollecting.ui.QuestionManager;
 
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.IS_LAST_LIST_QUESTION;
-import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.LIST_QUESTION_TEXT;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.IS_LAST_LOOP_QUESTION;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.LOOP_QUESTION_TEXT;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
 
 public abstract class QuestionFragment extends Fragment {
@@ -39,34 +35,34 @@ public abstract class QuestionFragment extends Fragment {
     private TextView questionText;
     private Spinner questionLangSpinner;
     private HashMap<Language, QuestionLangVersion> questionTexts;
-    private String mListQuestionText;
+    private String mLoopQuestionText;
 
-    private boolean mIsListQuestion = false;
-    private boolean mIsLastListQuestion = true;
+    private boolean mIsLoopQuestion = false;
+    private boolean mIsLastLoopQuestion = true;
 
 
     @Override
     public void onStart() {
-
-
         Button nextQuestion = getView().findViewById(R.id.next_question);
         Button skipQuestion = getView().findViewById(R.id.skip_question);
         questionLangSpinner = getView().findViewById(R.id.question_language_spinner);
         questionText = getView().findViewById(R.id.question_text);
         skipQuestion.setOnClickListener(new AudioFragment.SkipQuestionOnClickListener());
         nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
-        if (mIsListQuestion && mIsLastListQuestion) {
+
+        if (mIsLoopQuestion) {
+            mLoopQuestionText = (String) getArguments().getSerializable(LOOP_QUESTION_TEXT);
+            mIsLastLoopQuestion = (boolean) getArguments().getSerializable(IS_LAST_LOOP_QUESTION);
+        }
+        
+        if (mIsLoopQuestion && mIsLastLoopQuestion) {
             nextQuestion.setText("Next Question");
         }
-        if((questionManager.isLastQuestion() && mIsListQuestion && mIsLastListQuestion)
-                || (!mIsListQuestion && questionManager.isLastQuestion())){
+        if((questionManager.isLastQuestion() && mIsLoopQuestion && mIsLastLoopQuestion)
+                || (!mIsLoopQuestion && questionManager.isLastQuestion())){
             nextQuestion.setText("Finish");
         }
 
-        if (mIsListQuestion) {
-            mListQuestionText = (String) getArguments().getSerializable(LIST_QUESTION_TEXT);
-            mIsLastListQuestion = (boolean) getArguments().getSerializable(IS_LAST_LIST_QUESTION);
-        }
         questionContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
         questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(questionContent.getQuestionId());
 
@@ -89,8 +85,8 @@ public abstract class QuestionFragment extends Fragment {
 
     }
 
-    public void setIsListQuestion(boolean isListQuestion) {
-        mIsListQuestion = isListQuestion;
+    public void setIsLoopQuestion(boolean isLoopQuestion) {
+        mIsLoopQuestion = isLoopQuestion;
     }
 
     protected class NextQuestionOnClickListener implements View.OnClickListener{
@@ -99,7 +95,7 @@ public abstract class QuestionFragment extends Fragment {
             if(validateEntry()){
                 submitAnswer();
 
-                if (mIsLastListQuestion) {
+                if (mIsLastLoopQuestion) {
                     questionManager.getNextQuestion();
                 }
                 else {
@@ -142,8 +138,8 @@ public abstract class QuestionFragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             super.onItemSelected(parent, view, position, id);
             Language language = (Language) questionLangSpinner.getSelectedItem();
-            if (mIsListQuestion) {
-                questionText.setText(mListQuestionText);
+            if (mIsLoopQuestion) {
+                questionText.setText(mLoopQuestionText);
             }
             else {
                 questionText.setText(questionTexts.get(language).getQuestionText());

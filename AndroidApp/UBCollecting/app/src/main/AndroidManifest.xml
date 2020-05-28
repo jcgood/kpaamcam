@@ -129,9 +129,9 @@
             android:name=".LoopActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.AddListQuestionLevelActivity"
+            android:name=".ui.AddLoopQuestionLevelActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.EditListQuestionLevelActivity" />
+        <activity android:name=".ui.EditLoopQuestionLevelActivity" />
 
     </application>
 

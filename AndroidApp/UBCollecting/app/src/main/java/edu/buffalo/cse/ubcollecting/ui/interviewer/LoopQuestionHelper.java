@@ -6,9 +6,9 @@ import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 
-class ListQuestionHelper {
+class LoopQuestionHelper {
 
-    // Parses the List Question format into question Ids and question texts
+    // Parses the Loop Question format into question Ids and question texts
     static HashMap<String, String> createQuestionHashMap(String questionString) {
         HashMap<String, String> questionHashMap = new HashMap<>();
 

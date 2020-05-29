@@ -139,6 +139,10 @@
         <activity
             android:name=".LoopActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.AddLoopQuestionLevelActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.EditLoopQuestionLevelActivity" />
 
     </application>
 

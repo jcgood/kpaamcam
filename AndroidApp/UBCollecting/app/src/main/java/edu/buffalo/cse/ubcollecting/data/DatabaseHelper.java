@@ -38,12 +38,8 @@ import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionTable;
 import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionnaireTable;
 import edu.buffalo.cse.ubcollecting.data.tables.SessionTable;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
+import edu.buffalo.cse.ubcollecting.utils.Constants;
 
-import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_AUDIO_QUESTION_PROP;
-import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_LIST_QUESTION_PROP;
-import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_PHOTO_QUESTION_PROP;
-import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_TEXT_QUESTION_PROP;
-import static edu.buffalo.cse.ubcollecting.Gatekeepers.SHOULD_USE_VIDEO_QUESTION_PROP;
 import static edu.buffalo.cse.ubcollecting.data.tables.LanguageTable.ENGLISH_LANG_NAME;
 
 
@@ -169,6 +165,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         QuestionPropertyDef listProperty = new QuestionPropertyDef();
         listProperty.setName(Constants.LIST);
         QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
+
+        QuestionPropertyDef loopProperty = new QuestionPropertyDef();
+        loopProperty.setName(Constants.LOOP);
+        QUESTION_PROPERTY_DEF_TABLE.insert(loopProperty);
+
         //Roopa
 //
 //        QuestionPropertyDef fileProperty = new QuestionPropertyDef();

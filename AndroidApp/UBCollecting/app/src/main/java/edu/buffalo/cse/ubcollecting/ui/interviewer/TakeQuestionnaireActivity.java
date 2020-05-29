@@ -10,10 +10,13 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
+import edu.buffalo.cse.ubcollecting.data.models.Language;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
@@ -24,6 +27,7 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.TextFragment.SELECTED_
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectQuestionnaireActivity.SELECTED_QUESTIONNAIRE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.ViewQuestionsActivity.QUESTION_INDEX;
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 
 /**
@@ -31,6 +35,10 @@ import static edu.buffalo.cse.ubcollecting.ui.interviewer.ViewQuestionsActivity.
  */
 
 public class TakeQuestionnaireActivity extends AppCompatActivity implements QuestionManager {
+
+    static final String LOOP_QUESTION_TEXT = "loop_question_text";
+    static final String LOOP_QUESTION_ID = "loop_question_id";
+    static final String IS_LAST_LOOP_QUESTION = "is_last_loop_question";
 
     private QuestionStatePagerAdapter questionStatePagerAdapter;
     private ViewPager questionViewPager;
@@ -40,12 +48,9 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     public final static String QUESTION_TYPE="QuestionType";
     public final static String PARENT_ANSWER = "parentAnswer";
     public int questionIndex;
-    private int loopIndex=0;
-    private ArrayList<Answer> parentAnswers;
-    private ArrayList<QuestionnaireContent> loopQuestions;
-    private boolean inLoop;
     private int iterationsCounter = 0;
     private int currentQuestionPosition = 0;
+    private boolean mIsFirstQuestion = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,31 +76,10 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
 
         }
         else{
-
-            if(inLoop ){
-                question = loopQuestions.get(loopIndex);
-            }
-            else{
-                question = questionnaire.get(questionIndex);
-
-            }
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(QUESTIONNAIRE_CONTENT,question);
-            bundle.putSerializable(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()).getId());
-            bundle.putSerializable(SELECTED_SESSION, getSession(getIntent()));
-            bundle.putSerializable(IN_LOOP, inLoop);
-
-
+            question = questionnaire.get(questionIndex);
             Answer answerParent=null;
-            if(inLoop){
-                answerParent= parentAnswers.get(iterationsCounter);
-                bundle.putSerializable(PARENT_ANSWER, answerParent);
-            }
-
-
 
             // get most recent answer(s)
-
             String questionId = question.getQuestionId();
             ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getMostRecentAnswer(questionId, getQuestionnaire(getIntent()).getId(), answerParent);
 
@@ -103,11 +87,48 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             QuestionPropertyDef questionProperty = DatabaseHelper.QUESTION_PROPERTY_TABLE.getQuestionProperty(questionId);
             String typeOfQuestion = questionProperty.getName();
 
-            bundle.putSerializable(QUESTION_TYPE,typeOfQuestion);
-
-            if(!answerList.isEmpty()){
-                bundle.putSerializable(SELECTED_ANSWER, answerList);
+            // Goes to the end of the View Pager, to ensure latest question is showing
+            if (questionStatePagerAdapter.getCount() > 0) {
+                currentQuestionPosition = questionStatePagerAdapter.getCount() - 1;
+                questionViewPager.setCurrentItem(currentQuestionPosition);
+                System.out.println("Current: " + questionViewPager.getCurrentItem() + ", Max: " + questionStatePagerAdapter.getCount());
             }
+
+            /* Takes care of loop question, by adding every question in the loop to the viewpager as
+               a separate Fragment */
+            if (typeOfQuestion.equals(LOOP)) {
+                HashMap<Language, QuestionLangVersion> questionTexts =
+                        DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(question.getQuestionId());
+                String loopQuestion = questionTexts.get(questionTexts.keySet().iterator().next()).getQuestionText();
+                HashMap<String, String> questionHashMap =
+                        LoopQuestionHelper.createQuestionHashMap(loopQuestion);
+
+                int counter = 0;
+                for (String loopQuestionId : questionHashMap.keySet()) {
+                    String loopQuestionText = questionHashMap.get(loopQuestionId);
+                    Bundle bundle = createBundleArgs(question, typeOfQuestion);
+                    bundle.putSerializable(LOOP_QUESTION_TEXT, loopQuestionText);
+                    bundle.putSerializable(LOOP_QUESTION_ID, loopQuestionId);
+                    bundle.putSerializable(IS_LAST_LOOP_QUESTION,
+                            counter == (questionHashMap.keySet().size() - 1));
+
+                    QuestionFragment loopFragment = new LoopFragment();
+                    loopFragment.setArguments(bundle);
+                    questionStatePagerAdapter.addFragement(loopFragment);
+                    System.out.println("Question Text: " + loopQuestionText);
+                    counter++;
+                }
+                questionStatePagerAdapter.notifyDataSetChanged();
+
+                if (!mIsFirstQuestion) {
+                    continueLoop();
+                }
+
+                mIsFirstQuestion = false;
+                questionIndex++;
+                return;
+            }
+
             QuestionFragment questionFragment;
             if(typeOfQuestion.equals("Audio")){
                 questionFragment = new AudioFragment();
@@ -121,46 +142,37 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 questionFragment = new PhotoFragment();
 
             }
-            else if(typeOfQuestion.equals("List")){
-               questionFragment = new ListFragment();
-
-            }
-            else{
+            else {
                 questionFragment = new TextFragment();
 
             }
+
+            Bundle bundle = createBundleArgs(question, typeOfQuestion);
+
+            if(!answerList.isEmpty()){
+                bundle.putSerializable(SELECTED_ANSWER, answerList);
+            }
+
             questionFragment.setArguments(bundle);
             questionStatePagerAdapter.addFragement(questionFragment);
             questionStatePagerAdapter.notifyDataSetChanged();
-            currentQuestionPosition+=1;
+            currentQuestionPosition += 1;
             questionViewPager.setCurrentItem(currentQuestionPosition);
-            Log.i("LOOP INDEX VALUE ", String.valueOf(loopIndex));
             Log.i("ITERATIONS COUNTER ", String.valueOf(iterationsCounter));
-            if(parentAnswers!=null){
-                Log.i(" PARENT ANSWERS ", String.valueOf(parentAnswers.size()));
-            }
 
-            if(loopQuestions!= null){
-                Log.i("LOOP QUESTIONS SIZE", String.valueOf(loopQuestions.size()));
-            }
-
-            if(inLoop){
-                loopIndex++;
-                if(loopIndex==loopQuestions.size() && iterationsCounter==parentAnswers.size()-1){
-                    inLoop = false;
-                    iterationsCounter = 0;
-                    loopIndex = 0;
-                }
-                else if (loopIndex==loopQuestions.size()){
-                    iterationsCounter++;
-                    loopIndex = 0;
-                }
-            }
-            else{
-                questionIndex++;
-            }
-
+            questionIndex++;
+            mIsFirstQuestion = false;
         }
+    }
+
+    private Bundle createBundleArgs(QuestionnaireContent questionnaireContent, String questionType) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(QUESTIONNAIRE_CONTENT, questionnaireContent);
+        bundle.putSerializable(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()).getId());
+        bundle.putSerializable(SELECTED_SESSION, getSession(getIntent()));
+        bundle.putSerializable(QUESTION_TYPE, questionType);
+
+        return bundle;
     }
 
     public boolean isLastQuestion(){
@@ -168,13 +180,10 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
 
     }
 
-    public void startLoop(ArrayList<Answer> answers, String qcId){
-        loopQuestions = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getLoopingQuestions(qcId);
-        if(!loopQuestions.isEmpty()){
-            inLoop=true;
-        }
-        parentAnswers = answers;
-
+    public void continueLoop(){
+        currentQuestionPosition += 1;
+        questionViewPager.setCurrentItem(currentQuestionPosition);
+        System.out.println("Question position: " + currentQuestionPosition);
     }
 
     public void saveAndQuitQuestionnaire(QuestionnaireContent questionnaireContent){

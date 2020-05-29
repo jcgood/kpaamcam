@@ -33,7 +33,9 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity.EXTRA_QUESTIONNAIRE_CONTENT;
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 public class QuestionnaireQuestionsFragment extends Fragment {
     private QuestionnaireManager questionnaireManager;
@@ -182,7 +184,14 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 
             final TextView textView = convertView.findViewById(R.id.numbered_list_item_text_view);
             QuestionLangVersion question = QUESTION_LANG_VERSION_TABLE.getQuestionTextInEnglish(content.getQuestionId());
-            textView.setText(question.getIdentifier());
+
+            if (questionProperty.getName().equals(LOOP)) {
+                String questionText = QUESTION_TABLE.findById(content.getQuestionId()).getDisplayText();
+                textView.setText(questionText);
+            }
+            else {
+                textView.setText(question.getIdentifier());
+            }
 
             final ImageView imageView = convertView.findViewById(R.id.numbered_list_item_loop_button);
 
@@ -190,7 +199,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
 //            Log.i("question Property", questionProperty.toString());
 //            Log.i("TRUTHY", Boolean.toString(temp));
 
-            if (!questionProperty.getName().equals("List")) {
+            if (!questionProperty.getName().equals(LOOP)) {
 //                Log.i("NOT", "LIST");
                 imageView.setVisibility(View.INVISIBLE);
             } else {

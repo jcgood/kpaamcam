@@ -20,6 +20,7 @@ public class Constants {
     public static final String PHOTO = "Photo";
     public static final String TEXT = "Text";
     public static final String LIST = "List";
+    public static final String LOOP = "Loop";
 
     //Language Type
     public static final String LWC = "LWC";
@@ -29,6 +30,4 @@ public class Constants {
     //Language Name
     public static final String ENGLISH = "English";
     public static final String FRENCH = "French";
-
-
 }

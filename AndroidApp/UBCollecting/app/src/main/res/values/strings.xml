@@ -14,6 +14,31 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_question_list_level">Add List Question Level</string>
+    <string name="add_question_level">Add Question Level</string>
+    <string name="add_question_levels_for">Add question levels for </string>
+    <string name="add_question">Add Question</string>
+    <string name="reorder_list">Reorder List</string>
+    <string name="submit">Submit</string>
+    <string name="save">Save</string>
+    <string name="save_question_level">Save Question Level</string>
+    <string name="saved">Saved</string>
+
+    <string name="all_questions">All Questions</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="photo">Photo</string>
+    <string name="text">Text</string>
+    <string name="list">List</string>
+
+    <string-array name="question_prop_list">
+        <item>@string/all_questions</item>
+        <item>@string/audio</item>
+        <item>@string/video</item>
+        <item>@string/photo</item>
+        <item>@string/text</item>
+        <item>@string/list</item>
+    </string-array>
 
     <string name="type_question_hint">Type Question Here</string>
     <string name="type_question_option_hint">Type option</string>

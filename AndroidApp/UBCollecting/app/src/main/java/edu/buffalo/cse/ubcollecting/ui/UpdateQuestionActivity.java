@@ -1,6 +1,7 @@
 package edu.buffalo.cse.ubcollecting.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import edu.buffalo.cse.ubcollecting.utils.Constants;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
+import static edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity.LOOP_QUESTION_EXTRA;
+import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 
 /**
@@ -90,6 +93,10 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
         update = findViewById(R.id.update_question_button);
 
+        if (question.getType() != null && question.getType().equals(LOOP)) {
+            update.setText("Edit");
+        }
+
         update.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -102,16 +109,18 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                             question.setDisplayText(newQuestionTexts.get(lang).getText().toString());
                             DatabaseHelper.QUESTION_TABLE.update(question);
                         }
-                        if (originalQuestionTexts.containsKey(lang)) {
-                            QuestionLangVersion quesLang = originalQuestionTexts.get(lang);
-                            quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
-                            DatabaseHelper.QUESTION_LANG_VERSION_TABLE.update(quesLang);
-                        } else {
-                            QuestionLangVersion quesLang = new QuestionLangVersion();
-                            quesLang.setQuestionId(question.getId());
-                            quesLang.setQuestionLanguageId(lang.getId());
-                            quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
-                            DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
+                        if (!(question.getType() != null && question.getType().equals(LOOP))) {
+                            if (originalQuestionTexts.containsKey(lang)) {
+                                QuestionLangVersion quesLang = originalQuestionTexts.get(lang);
+                                quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
+                                DatabaseHelper.QUESTION_LANG_VERSION_TABLE.update(quesLang);
+                            } else {
+                                QuestionLangVersion quesLang = new QuestionLangVersion();
+                                quesLang.setQuestionId(question.getId());
+                                quesLang.setQuestionLanguageId(lang.getId());
+                                quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
+                                DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
+                            }
                         }
                         if (chosenQuestionProperty.getName().equals(Constants.LIST)) {
                             double version = prevQuestionOptionsList.get(0).getVersion();
@@ -128,12 +137,19 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                         }
                     }
 
+                    // Starts the AddLoopQuestionLevelActivity in order to properly edit the contents
+                    // of the question itself. The name, however, will changed in this file
+                    if (question.getType() != null && question.getType().equals(LOOP)) {
+                        Intent intent = new Intent(
+                                UpdateQuestionActivity.this, AddLoopQuestionLevelActivity.class);
+                        intent.putExtra(LOOP_QUESTION_EXTRA, question);
+                        startActivity(intent);
+                    }
 
                     finish();
                 }
             }
         });
-
     }
 
     private class QuestionLanguageAdapter extends ArrayAdapter<Language> {
@@ -175,13 +191,24 @@ public class UpdateQuestionActivity extends AppCompatActivity {
 
             final CheckBox languageSelect = convertView.findViewById(R.id.entry_list_select_box);
 
+            // Disable any other languages with Loop Questions
+            if (question.getType() != null && question.getType().equals(LOOP)) {
+                languageSelect.setEnabled(false);
+            }
+
             if (originalQuestionTexts.containsKey(language)) {
                 languageSelect.setChecked(true);
                 languageSelect.setEnabled(false);
-                questionText.setText(originalQuestionTexts.get(language).getQuestionText());
+                if (question.getType() != null && question.getType().equals(LOOP)) {
+                    questionText.setText(question.getDisplayText());
+                }
+                else {
+                    questionText.setText(originalQuestionTexts.get(language).getQuestionText());
+                }
+
                 questionText.setTextColor(Color.BLACK);
-                linearView.addView(questionText, params);
-                newQuestionTexts.put(language, questionText);
+                linearView.addView(questionText,params);
+                newQuestionTexts.put(language,questionText);
             }
 
             languageSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

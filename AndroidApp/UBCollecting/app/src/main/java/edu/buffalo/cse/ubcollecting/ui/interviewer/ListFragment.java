@@ -148,6 +148,5 @@ public class ListFragment extends QuestionFragment {
                 DatabaseHelper.ANSWER_TABLE.insert(answer);
             }
         }
-        questionManager.startLoop(answerList, questionnaireContent.getId());
     }
 }

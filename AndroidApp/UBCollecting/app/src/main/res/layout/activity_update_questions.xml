@@ -46,6 +46,11 @@
             android:layout_height="wrap_content"
             android:text="Update"/>
 
+        <CheckBox
+            android:id="@+id/chosen_question_property_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </ScrollView>

@@ -8,8 +8,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +25,7 @@ import java.util.List;
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.FieldTrip;
+import edu.buffalo.cse.ubcollecting.ui.LoginActivity;
 
 import static edu.buffalo.cse.ubcollecting.EntryActivity.REQUEST_CODE_EDIT_ENTRY;
 
@@ -45,6 +50,9 @@ public class UserLandingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_landing);
 
+        Toolbar toolbar = findViewById(R.id.user_landing_toolbar);
+        setSupportActionBar(toolbar);
+
         entryRecyclerView = findViewById(R.id.fieldtrip_recycler_view);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -57,9 +65,29 @@ public class UserLandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = DatabaseHelper.FIELD_TRIP_TABLE.insertActivityIntent(UserLandingActivity.this);
-                startActivityForResult(i,REQUEST_CODE_ADD_ENTRY);
+                startActivityForResult(i, REQUEST_CODE_ADD_ENTRY);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(UserLandingActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -128,7 +156,7 @@ public class UserLandingActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Entry Deleted", Toast.LENGTH_SHORT).show();
                                 }
                             })
-                            .setNegativeButton("Cancel",null);
+                            .setNegativeButton("Cancel", null);
                     AlertDialog alert = confirmDelete.create();
                     alert.setTitle("Confirm Selection");
                     alert.show();

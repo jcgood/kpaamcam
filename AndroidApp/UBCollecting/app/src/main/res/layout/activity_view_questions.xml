@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/view_questions_toolbar"
+        layout="@layout/activity_toolbar" />
 
     <TextView
         android:id="@+id/questionnaireName"
@@ -14,15 +17,14 @@
         android:textAlignment="center"
         android:textSize="24dp"
         android:textColor="#000000"
-        android:text="@string/choose_questionnnaire"/>
+        android:text="@string/choose_questionnnaire" />
 
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/questionList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity">
-    </android.support.v7.widget.RecyclerView>
+        tools:context="edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity"></android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>

@@ -54,7 +54,7 @@ public abstract class QuestionFragment extends Fragment {
             mLoopQuestionText = (String) getArguments().getSerializable(LOOP_QUESTION_TEXT);
             mIsLastLoopQuestion = (boolean) getArguments().getSerializable(IS_LAST_LOOP_QUESTION);
         }
-        
+
         if (mIsLoopQuestion && mIsLastLoopQuestion) {
             nextQuestion.setText("Next Question");
         }

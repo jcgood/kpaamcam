@@ -177,8 +177,8 @@ public class AudioFragment extends QuestionFragment{
     protected boolean validateEntry() {
         boolean valid = true;
 
-        if (mCurrentPath.isEmpty()){
-            Toast.makeText(this.getActivity(), "Please Fill in All Required Fields", Toast.LENGTH_SHORT).show();
+        if (mCurrentPath == null || mCurrentPath.isEmpty()){
+            Toast.makeText(this.getActivity(), "Please Record an Audio Snippet", Toast.LENGTH_SHORT).show();
             valid = false;
         }
 

@@ -8,8 +8,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,9 +23,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
-import edu.buffalo.cse.ubcollecting.SessionActivity;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
+import edu.buffalo.cse.ubcollecting.ui.LoginActivity;
 
 import static edu.buffalo.cse.ubcollecting.EntryActivity.REQUEST_CODE_EDIT_ENTRY;
 import static edu.buffalo.cse.ubcollecting.SessionActivity.getFieldTrip;
@@ -49,6 +53,9 @@ public class UserSelectSessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_select_session);
 
+        Toolbar toolbar = findViewById(R.id.user_select_session_toolbar);
+        setSupportActionBar(toolbar);
+
         entryRecyclerView = findViewById(R.id.session_recycler_view);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -65,6 +72,26 @@ public class UserSelectSessionActivity extends AppCompatActivity {
                 startActivityForResult(i, REQUEST_CODE_ADD_ENTRY);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(UserSelectSessionActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override

@@ -7,13 +7,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.tables.AnswerTable;
+import edu.buffalo.cse.ubcollecting.ui.LoginActivity;
 
 import static edu.buffalo.cse.ubcollecting.SessionActivity.getSession;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.getQuestionnaire;
@@ -44,30 +47,47 @@ public class ViewQuestionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_questions);
 
+        Toolbar toolbar = findViewById(R.id.view_questions_toolbar);
+        setSupportActionBar(toolbar);
 
         questionnaireTitle = (TextView) findViewById(R.id.questionnaireName);
-        questionView =(RecyclerView) findViewById(R.id.questionList);
+        questionView = (RecyclerView) findViewById(R.id.questionList);
         questionView.setLayoutManager(new LinearLayoutManager(this));
-
 
         questionnaire = DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE.getAllQuestions(getQuestionnaire(getIntent()).getId());
         questionnaireTitle.setText(getQuestionnaire(getIntent()).name);
-
 
         ArrayList<String> listofQuestions = new ArrayList<>();
 
         entryAdapter = new ViewQuestionsActivity.EntryAdapter(questionnaire);
         questionView.setAdapter(entryAdapter);
 
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_logout) {
+            Intent intent = new Intent(ViewQuestionsActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return true;
+        }
+
+        return false;
     }
 
 
     private class EntryHolder extends RecyclerView.ViewHolder {
 
-
         private Button selectButton;
-
 
         public EntryHolder(View view) {
             super(view);
@@ -81,11 +101,11 @@ public class ViewQuestionsActivity extends AppCompatActivity {
             selectButton.setText(questionText);
 
             // GET ANSWER IF IT EXISTS
-            String selection = AnswerTable.KEY_QUESTION_ID +  " = ?  AND "
-                               +AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
-            String [] selectionArgs = {questionId, getQuestionnaire(getIntent()).getId()};
+            String selection = AnswerTable.KEY_QUESTION_ID + " = ?  AND "
+                    + AnswerTable.KEY_QUESTIONNAIRE_ID + " = ? ";
+            String[] selectionArgs = {questionId, getQuestionnaire(getIntent()).getId()};
             final ArrayList<Answer> answerList = DatabaseHelper.ANSWER_TABLE.getAll(selection, selectionArgs, null);
-            if(answerList.size()!=0){
+            if (answerList.size() != 0) {
 
                 selectButton.setTextColor(Color.rgb(22, 135, 14));
             }
@@ -95,7 +115,7 @@ public class ViewQuestionsActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     Intent k = TakeQuestionnaireActivity.newIntent(ViewQuestionsActivity.this);
-                    k.putExtra(SELECTED_SESSION,getSession(getIntent()));
+                    k.putExtra(SELECTED_SESSION, getSession(getIntent()));
                     k.putExtra(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()));
                     k.putExtra(QUESTION_INDEX, position);
                     startActivity(k);
@@ -118,7 +138,7 @@ public class ViewQuestionsActivity extends AppCompatActivity {
         @Override
         public ViewQuestionsActivity.EntryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater                    .inflate(R.layout.questionnaire_item_view, parent, false);
+            View view = layoutInflater.inflate(R.layout.questionnaire_item_view, parent, false);
             return new ViewQuestionsActivity.EntryHolder(view);
         }
 

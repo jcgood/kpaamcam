@@ -38,9 +38,9 @@ import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionTable;
 import edu.buffalo.cse.ubcollecting.data.tables.SessionQuestionnaireTable;
 import edu.buffalo.cse.ubcollecting.data.tables.SessionTable;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
+import edu.buffalo.cse.ubcollecting.utils.Constants;
 
 import static edu.buffalo.cse.ubcollecting.data.tables.LanguageTable.ENGLISH_LANG_NAME;
-import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -105,69 +105,72 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static void populateData() {
         Role admin = new Role();
-        admin.setName("Admin");
+        admin.setName(Constants.ROLE_ADMIN);
         admin.setIntroRequired(0);
         admin.setPhotoRequired(0);
         admin.setOnClient(0);
         ROLE_TABLE.insert(admin);
 
         Role consultant = new Role();
-        consultant.setName("Consultant");
+        consultant.setName(Constants.ROLE_CONSULTANT);
         consultant.setIntroRequired(1);
         consultant.setPhotoRequired(1);
         consultant.setOnClient(1);
         ROLE_TABLE.insert(consultant);
 
         Role interviewer = new Role();
-        interviewer.setName("Interviewer");
+        interviewer.setName(Constants.ROLE_INTERVIEWER);
         interviewer.setIntroRequired(0);
         interviewer.setPhotoRequired(0);
         interviewer.setOnClient(1);
         ROLE_TABLE.insert(interviewer);
 
         QuestionnaireType regType = new QuestionnaireType();
-        regType.setName("Regular");
+        regType.setName(Constants.REGULAR);
         QUESTIONNAIRE_TYPE_TABLE.insert(regType);
 
         QuestionnaireType introType = new QuestionnaireType();
-        introType.setName("Introductory");
+        introType.setName(Constants.INTRODUCTORY);
         QUESTIONNAIRE_TYPE_TABLE.insert(introType);
 
         QuestionnaireType sclType = new QuestionnaireType();
-        sclType.setName("Sociolinguistic");
+        sclType.setName(Constants.SOCIOLINGUISTIC);
         QUESTIONNAIRE_TYPE_TABLE.insert(sclType);
 
         QuestionnaireType emrType = new QuestionnaireType();
-        emrType.setName("Emergency");
+        emrType.setName(Constants.EMERGENCY);
         QUESTIONNAIRE_TYPE_TABLE.insert(emrType);
 
         QuestionnaireType testType = new QuestionnaireType();
-        testType.setName("Test");
+        testType.setName(Constants.TEST);
         QUESTIONNAIRE_TYPE_TABLE.insert(testType);
 
         QuestionPropertyDef audProperty = new QuestionPropertyDef();
-        audProperty.setName("Audio");
+        audProperty.setName(Constants.AUDIO);
         QUESTION_PROPERTY_DEF_TABLE.insert(audProperty);
 
         QuestionPropertyDef vidProperty = new QuestionPropertyDef();
-        vidProperty.setName("Video");
+        vidProperty.setName(Constants.VIDEO);
         QUESTION_PROPERTY_DEF_TABLE.insert(vidProperty);
 
         QuestionPropertyDef phtProperty = new QuestionPropertyDef();
-        phtProperty.setName("Photo");
+        phtProperty.setName(Constants.PHOTO);
         QUESTION_PROPERTY_DEF_TABLE.insert(phtProperty);
 
         QuestionPropertyDef freeProperty = new QuestionPropertyDef();
-        freeProperty.setName("Text");
+        freeProperty.setName(Constants.TEXT);
         QUESTION_PROPERTY_DEF_TABLE.insert(freeProperty);
 
+        //Roopa
         QuestionPropertyDef listProperty = new QuestionPropertyDef();
-        listProperty.setName("List");
+        listProperty.setName(Constants.LIST);
         QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
 
         QuestionPropertyDef loopProperty = new QuestionPropertyDef();
-        loopProperty.setName(LOOP);
+        loopProperty.setName(Constants.LOOP);
         QUESTION_PROPERTY_DEF_TABLE.insert(loopProperty);
+
+        //Roopa
 //
 //        QuestionPropertyDef fileProperty = new QuestionPropertyDef();
 //        fileProperty.setName("File");

@@ -40,4 +40,8 @@
         <item>@string/list</item>
     </string-array>
 
+    <string name="type_question_hint">Type Question Here</string>
+    <string name="type_question_option_hint">Type option</string>
+    <string name="action_logout">Logout</string>
+
 </resources>

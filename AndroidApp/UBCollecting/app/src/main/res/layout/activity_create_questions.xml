@@ -8,6 +8,10 @@
     android:paddingRight="16dp"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/create_question_toolbar"
+        layout="@layout/activity_toolbar" />
+
     <TextView
         android:id="@+id/select_question_properties"
         android:paddingTop="10dp"

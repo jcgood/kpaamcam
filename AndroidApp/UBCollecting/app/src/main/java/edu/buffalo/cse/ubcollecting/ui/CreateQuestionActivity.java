@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -243,7 +244,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_select, parent, false);
             }
 
-            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+            final ConstraintLayout.LayoutParams listViewParams = (ConstraintLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
 
             //Edit Text for entering the question for the selected lang
             final EditText questionText = new EditText(getApplicationContext());

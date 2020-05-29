@@ -44,7 +44,7 @@ import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
 public class UpdateQuestionActivity extends AppCompatActivity {
 
     private ListView questionPropertiesListView;
-    //private QuestionPropertyAdapter questionPropertyAdapter;
+//    private QuestionPropertyAdapter questionPropertyAdapter;
     private QuestionPropertyDef chosenQuestionProperty;
     private ListView questionLanguagesListView;
     private QuestionLanguageAdapter questionLanguageAdapter;
@@ -90,6 +90,8 @@ public class UpdateQuestionActivity extends AppCompatActivity {
         selectQuestionProperties = findViewById(R.id.select_question_properties);
 
         selectQuestionLanguages = findViewById(R.id.select_question_languages);
+
+        UiUtils.setListViewHeightBasedOnItems(questionLanguagesListView);
 
         update = findViewById(R.id.update_question_button);
 

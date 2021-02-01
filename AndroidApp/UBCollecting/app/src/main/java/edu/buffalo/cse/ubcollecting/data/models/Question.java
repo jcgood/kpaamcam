@@ -15,6 +15,9 @@ public class Question extends Model {
     public String notes;
     public int deleted;
 
+    public int minLength;
+    public int maxLength;
+
     public double getVersion(){
         return version;
     }
@@ -59,5 +62,20 @@ public class Question extends Model {
         this.displayText = displayText;
     }
 
+    public void setMinLength(int min_length) {
+      this.minLength = min_length;
+    }
+
+    public void setMaxLength(int max_length) {
+    this.maxLength = max_length;
+  }
+
+    public int getMinLength() {
+      return minLength;
+    }
+
+    public int getMaxLength() {
+    return maxLength;
+  }
 
 }

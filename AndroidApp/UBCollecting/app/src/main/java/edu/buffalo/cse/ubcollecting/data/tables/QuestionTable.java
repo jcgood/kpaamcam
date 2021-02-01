@@ -19,6 +19,8 @@ public class QuestionTable extends Table<Question> {
     public static final String KEY_VERSION ="VersionNumber";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
+    public static final String KEY_MIN_LENGTH = "MinLength";
+    public static final String KEY_MAX_LENGTH = "MaxLength";
 
 
     public QuestionTable() {
@@ -35,7 +37,9 @@ public class QuestionTable extends Table<Question> {
                 + KEY_DISPLAY_TEXT + " VARCHAR,"
                 + KEY_VERSION + " NUMERIC DEFAULT 1.0 NOT NULL,"
                 + KEY_NOTES + " VARCHAR DEFAULT '',"
-                + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL"+ ")";
+                + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
+                + KEY_MIN_LENGTH + " INTEGER,"
+                + KEY_MAX_LENGTH + " INTEGER" + ")";
     }
 
     @Override

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:orientation="vertical">
 
     <include
         android:id="@+id/create_question_toolbar"
@@ -39,9 +41,54 @@
         android:text="@string/select_question_languages"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/question_property_spinner"/>
+        app:layout_constraintTop_toBottomOf="@+id/null_check_spinner"/>
 
-    <ListView
+
+
+    <TextView
+      android:id="@+id/answer_length"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="16dp"
+      android:text="the length of answer"
+      app:layout_constraintTop_toBottomOf="@id/question_property_spinner"
+      tools:ignore="HardcodedText" />
+
+
+
+
+    <EditText
+      android:id="@+id/min_input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="300dp"
+      app:layout_constraintTop_toBottomOf="@+id/answer_length"
+      />
+
+
+    <EditText
+      android:id="@+id/max_input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="300dp"
+      app:layout_constraintTop_toBottomOf="@+id/min_input"
+      />
+
+  <Spinner
+    android:id="@+id/null_check_spinner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:spinnerMode="dropdown"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    app:layout_constraintTop_toBottomOf="@id/max_input"/>
+
+  <ListView
         android:id="@+id/question_languages_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -21,6 +21,7 @@ public class Constants {
     public static final String TEXT = "Text";
     public static final String LIST = "List";
     public static final String LOOP = "Loop";
+    public static final String MULTI_CHOICE = "Multi_Choice";
 
     //Language Type
     public static final String LWC = "LWC";

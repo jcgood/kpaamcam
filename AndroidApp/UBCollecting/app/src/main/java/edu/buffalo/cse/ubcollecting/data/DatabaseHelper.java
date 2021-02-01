@@ -170,6 +170,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         loopProperty.setName(Constants.LOOP);
         QUESTION_PROPERTY_DEF_TABLE.insert(loopProperty);
 
+        QuestionPropertyDef MultiChoiceProperty = new QuestionPropertyDef();
+        MultiChoiceProperty.setName(Constants.MULTI_CHOICE);
+        QUESTION_PROPERTY_DEF_TABLE.insert(MultiChoiceProperty);
+
         //Roopa
 //
 //        QuestionPropertyDef fileProperty = new QuestionPropertyDef();

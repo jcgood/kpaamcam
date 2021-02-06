@@ -1,13 +1,20 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.Serializable;
 
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
+import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
 import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
@@ -29,6 +36,7 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
     /**
      * Function that updates the view's fields/UI based on the entry from the SQlite Table.
      * Used for updating entries in the database.
+     *
      * @param entry The entry from the database by which to update the view's fields
      */
     abstract void setUI(E entry);
@@ -38,8 +46,10 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
      * can be populated appropriately
      */
     abstract void setEntryByUI();
+
     /**
      * Helper function that validates user submission
+     *
      * @return {@link Boolean}
      */
     abstract boolean isValidEntry();
@@ -57,6 +67,7 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
 
     /**
      * Helper function to extract a {@link Model} extra from and {@link Intent}
+     *
      * @param data {@link Intent} holding the extra
      * @return {@link Model} extra from {@link Intent}
      */
@@ -103,6 +114,7 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
         public void onClick(View view) {
             setEntryByUI();
             if (isValidEntry()) {
+
                 table.insert(entry);
                 setEntryResult(entry);
                 finish();

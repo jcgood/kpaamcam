@@ -55,6 +55,7 @@ public class FileActivity extends AppCompatActivity {
                 file.setStartTime(fileStartTimeField.getText().toString());
                 file.setEndTime(fileEndTimeField.getText().toString());
 
+                /* INSERT */
                 FILE_TABLE.insert(file);
             }
         });

@@ -42,6 +42,7 @@ public class QuestionOptionActivity extends AppCompatActivity {
                 option.setQuestionLanguageId(""); // TODO
                 option.setOptionText(optionTextField.getText().toString());
 
+                /* INSERT */
                 QUESTION_OPTION_TABLE.insert(option);
             }
         });

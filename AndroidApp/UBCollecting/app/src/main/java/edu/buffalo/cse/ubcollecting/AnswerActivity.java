@@ -48,6 +48,7 @@ public class AnswerActivity extends AppCompatActivity {
                 answer.setLabel(answerLabelField.getText().toString());
                 answer.setText(answerTextField.getText().toString());
 
+                /* INSERT */
                 ANSWER_TABLE.insert(answer);
             }
         });

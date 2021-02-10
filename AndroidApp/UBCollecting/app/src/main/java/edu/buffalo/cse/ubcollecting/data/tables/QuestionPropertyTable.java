@@ -91,6 +91,7 @@ public class QuestionPropertyTable extends Table<QuestionProperty> {
 
         String[] selectionArgs = {id};
 
+        /* DELETE */
         db.delete(this.getTableName(), selection, selectionArgs);
 
         DatabaseManager.getInstance().closeDatabase();

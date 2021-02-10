@@ -123,6 +123,7 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                                 quesLang.setQuestionId(question.getId());
                                 quesLang.setQuestionLanguageId(lang.getId());
                                 quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
+                                /* INSERT */
                                 DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
                             }
                         }

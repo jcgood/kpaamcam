@@ -40,6 +40,7 @@ public class SessionAnswerActivity extends AppCompatActivity {
                 sessionAnswer.setQuestionId(""); // TODO
                 sessionAnswer.setAnswerId(""); // TODO
 
+                /* INSERT */
                 SESSION_ANSWER_TABLE.insert(sessionAnswer);
             }
         });

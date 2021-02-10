@@ -99,7 +99,7 @@ public class LoopFragment extends QuestionFragment {
            if(answer.getText()==null){
                answer.setText(answerTextList.get(i).getText().toString());
            }
-
+            /* INSERT */
             DatabaseHelper.ANSWER_TABLE.insert(answer);
         }
     }

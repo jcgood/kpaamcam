@@ -45,6 +45,7 @@ public class QuestionnaireContentActivity extends AppCompatActivity {
                 content.setQuestionId(""); // TODO
                 content.setQuestionOrder(Integer.valueOf(orderField.getText().toString()));
 
+                /* INSERT */
                 QUESTIONNAIRE_CONTENT_TABLE.insert(content);
             }
         });

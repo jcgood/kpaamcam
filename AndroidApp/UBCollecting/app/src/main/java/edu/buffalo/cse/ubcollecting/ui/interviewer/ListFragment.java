@@ -147,6 +147,7 @@ public class ListFragment extends QuestionFragment {
                 answer.setQuestionId(questionnaireContent.getQuestionId());
                 answer.setText(selectedOption);
                 answer.setVersion(version + 1);
+                /* INSERT */
                 DatabaseHelper.ANSWER_TABLE.insert(answer);
             }
         }

@@ -39,6 +39,7 @@ public class SessionPersonActivity extends AppCompatActivity {
                 person.setSessionId(""); // TODO
                 person.setRoleId(""); // TODO
 
+                /* INSERT */
                 SESSION_PERSON_TABLE.insert(person);
             }
         });

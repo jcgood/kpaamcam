@@ -156,11 +156,13 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             List<EditText> listOptions) {
 
         question.setType(propertyDef.getName());
+        /* INSERT */
         DatabaseHelper.QUESTION_TABLE.insert(question);
 
         QuestionProperty quesProp = new QuestionProperty();
         quesProp.setQuestionId(question.getId());
         quesProp.setPropertyId(propertyDef.getId());
+        /* INSERT */
         DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
 
         for (Language lang : questionTexts.keySet()) {
@@ -172,6 +174,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             quesLang.setQuestionId(question.getId());
             quesLang.setQuestionLanguageId(lang.getId());
             quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
+            /* INSERT */
             DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
 
             if (propertyDef.getName().equals(Constants.LIST)) {
@@ -182,6 +185,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                     questionOption.setQuestionId(question.getId());
                     questionOption.setQuestionLanguageId(lang.getId());
                     questionOption.setOptionText(preDefinedAnswer);
+                    /* INSERT */
                     DatabaseHelper.QUESTION_OPTION_TABLE.insert(questionOption);
                 }
             }

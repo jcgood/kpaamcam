@@ -45,6 +45,7 @@ public class QuestionPropertyActivity extends AppCompatActivity {
                 property.setQuestionId(""); // TODO
                 property.setValue(0); //TODO
 
+                /* INSERT */
                 QUESTION_PROPERTY_TABLE.insert(property);
             }
         });

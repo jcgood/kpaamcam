@@ -162,6 +162,7 @@ public class UserSelectSessionActivity extends AppCompatActivity {
                             .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    /* DELETE */
                                     DatabaseHelper.SESSION_TABLE.delete(EntryHolder.this.session.id);
                                     entryAdapter.setEntryList(DatabaseHelper.SESSION_TABLE.getFieldTripSessions(getFieldTrip(getIntent())));
                                     entryAdapter.notifyDataSetChanged();

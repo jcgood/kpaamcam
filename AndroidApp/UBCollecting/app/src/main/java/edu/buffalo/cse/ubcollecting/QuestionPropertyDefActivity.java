@@ -34,6 +34,7 @@ public class QuestionPropertyDefActivity extends AppCompatActivity {
                 QuestionPropertyDef propertyDef = new QuestionPropertyDef();
                 propertyDef.setName(nameField.getText().toString());
 
+                /* INSERT */
                 QUESTION_PROPERTY_DEF_TABLE.insert(propertyDef);
 
             }

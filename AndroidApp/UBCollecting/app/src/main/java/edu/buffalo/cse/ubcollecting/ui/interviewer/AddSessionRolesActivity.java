@@ -181,6 +181,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
 
                     for (SessionPerson sp : rolesAlreadyAssigned.keySet()) {
                         if (!assignedRoles.contains(sp)) {
+                            /* DELETE */
                             DatabaseHelper.SESSION_PERSON_TABLE.delete(sp.getId());
                             Log.i(sp.getPersonId(), "DELETING PERSON");
                         }
@@ -188,6 +189,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
 
                     for (SessionPerson sp : assignedRoles) {
                         if (!rolesAlreadyAssigned.containsKey(sp)) {
+                            /* INSERT */
                             DatabaseHelper.SESSION_PERSON_TABLE.insert(sp);
                             Log.i(sp.getPersonId(), "ADDING PERSON");
 

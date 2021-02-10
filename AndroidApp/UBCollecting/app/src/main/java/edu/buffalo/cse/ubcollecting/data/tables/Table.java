@@ -216,6 +216,7 @@ public abstract class Table<E extends Model> implements Serializable {
 
             SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
+            /* QUERY */ /* not sure, might be UI-specific */
             Cursor cursor = db.query(this.getTableName(),
                     null,
                     selection,

@@ -32,6 +32,7 @@ public class LanguageTypeActivity extends AppCompatActivity {
                 LanguageType langType = new LanguageType();
                 langType.setName(nameField.getText().toString());
 
+                /* INSERT */
                 LANGUAGE_TYPE_TABLE.insert(langType);
             }
         });

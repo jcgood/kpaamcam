@@ -43,6 +43,7 @@ public class QuestionLangVersionActivity extends AppCompatActivity {
                 questionLangVersion.setQuestionId(""); // TODO
                 questionLangVersion.setQuestionText(questionTextField.getText().toString());
 
+                /* INSERT */
                 QUESTION_LANG_VERSION_TABLE.insert(questionLangVersion);
             }
         });

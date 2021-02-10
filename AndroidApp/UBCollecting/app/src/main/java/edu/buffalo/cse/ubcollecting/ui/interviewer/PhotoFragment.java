@@ -191,6 +191,7 @@ public class PhotoFragment extends QuestionFragment {
         answer.setText(mCurrentPath);
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         answer.setVersion(version+1);
+        /* INSERT */
         DatabaseHelper.ANSWER_TABLE.insert(answer);
 
     }

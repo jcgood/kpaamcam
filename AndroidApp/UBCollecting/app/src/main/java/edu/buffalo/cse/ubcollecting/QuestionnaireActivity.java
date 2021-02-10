@@ -144,15 +144,18 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
         public void onClick(View view) {
             setEntryByUI();
             if (isValidEntry()) {
+                /* INSERT */
                 table.insert(entry);
                 setEntryResult(entry);
                 for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
+                    /* INSERT */
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 Hashtable<String, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
                 for(String qcId: loopContentTable.keySet()){
                     ArrayList <QuestionnaireContent> loopContent = loopContentTable.get(qcId);
                     for(QuestionnaireContent qcEntry: loopContent){
+                        /* INSERT */
                         QUESTIONNAIRE_CONTENT_TABLE.insert(qcEntry);
                     }
                 }
@@ -178,16 +181,19 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
 
             setEntryByUI();
             if (isValidEntry()) {
+                /* UPDATE */ /*not sure about this one, might just be a UI element */
                 table.update(entry);
                 setEntryResult(entry);
                 for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
                     content.setIsParent(0);
+                    /* INSERT */
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 Hashtable<String, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
                 for(String qcId: loopContentTable.keySet()){
                     ArrayList <QuestionnaireContent> loopContent = loopContentTable.get(qcId);
                     for(QuestionnaireContent qcEntry: loopContent){
+                        /* INSERT */
                         QUESTIONNAIRE_CONTENT_TABLE.insert(qcEntry);
                     }
                 }

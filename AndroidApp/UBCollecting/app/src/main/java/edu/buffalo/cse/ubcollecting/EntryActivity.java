@@ -115,6 +115,7 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
             setEntryByUI();
             if (isValidEntry()) {
 
+                /* INSERT */
                 table.insert(entry);
                 setEntryResult(entry);
                 finish();

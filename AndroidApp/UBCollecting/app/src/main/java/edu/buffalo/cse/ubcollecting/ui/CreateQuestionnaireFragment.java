@@ -2,9 +2,9 @@ package edu.buffalo.cse.ubcollecting.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+//import android.support.annotation.Nullable;
+//import androidx.core.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
-import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireType;
 

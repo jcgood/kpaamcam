@@ -1,178 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="36669120-998b-4340-9d47-be35445c7f15" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/AndroidApp/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/assetWizardSettings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/caches/gradle_models.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/LoopActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/LoopActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kpaamcam.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kpaamcam.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/AnswerActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/AnswerActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/EntryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/EntryActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/FileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/FileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/LanguageTypeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/LanguageTypeActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionLangVersionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionLangVersionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionOptionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionOptionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionPropertyActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionPropertyActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionPropertyDefActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionPropertyDefActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionnaireActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionnaireActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionnaireContentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionnaireContentActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/SessionAnswerActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/SessionAnswerActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/SessionPersonActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/SessionPersonActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/DatabaseHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/AddQuestionsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/AddQuestionsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/QuestionnaireQuestionsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/QuestionnaireQuestionsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/tables/QuestionPropertyTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/tables/QuestionPropertyTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/tables/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/tables/Table.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/CreateQuestionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/CreateQuestionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/UpdateQuestionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/UpdateQuestionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/AddSessionRolesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/AddSessionRolesActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/AudioFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/AudioFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/ListFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/ListFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/LoopFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/LoopFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/PhotoFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/PhotoFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/TextFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/TextFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/UserSelectSessionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/UserSelectSessionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/VideoFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/VideoFragment.java" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-1525123102">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="2" />
-          <entry key="project.open.time.0" value="2" />
-          <entry key="project.opened" value="2" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
-  <component name="FavoritesManager">
-    <favorites_list name="kpaamcam" />
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="178" />
-    <option name="y" value="56" />
-    <option name="width" value="1056" />
-    <option name="height" value="531" />
-  </component>
+  <component name="ProjectId" id="1o7OKORv8a4IWqL80l9BCOTEnUz" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope">
-        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
-          <expand>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="app" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="app" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="app" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="app" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="app" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="edu" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="app" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="edu" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="buffalo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="app" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="edu" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="buffalo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="cse" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="kpaamcam" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="AndroidApp" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="UBCollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="app" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="main" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="edu" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="buffalo" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="cse" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="ubcollecting" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/AndroidApp/UBCollecting" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -187,26 +70,18 @@
     </task>
     <servers />
   </component>
-  <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1299" height="743" extended-state="6" />
-    <layout>
-      <window_info id="Captures" order="0" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49918434" visible="true" weight="0.3299373" />
-      <window_info id="Structure" order="2" side_tool="true" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" sideWeight="0.5008157" side_tool="true" weight="0.3299373" />
-      <window_info anchor="bottom" id="Version Control" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TODO" order="1" />
-      <window_info anchor="bottom" id="Terminal" order="2" />
-      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
-      <window_info anchor="right" id="Capture Analysis" order="0" />
-      <window_info anchor="right" id="Theme Preview" order="1" />
-      <window_info anchor="right" id="Palette&#9;" order="2" />
-    </layout>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="WindowStateProjectService">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1612634202969">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/-1920.283.1536.864@0.0.1920.1040" timestamp="1612634202969" />
+    <state x="1039" y="449" width="2018" height="1484" key="SettingsEditor" timestamp="1612979066406">
+      <screen x="0" y="54" width="4096" height="2250" />
+    </state>
+    <state x="1039" y="449" width="2018" height="1484" key="SettingsEditor/0.54.4096.2250@0.54.4096.2250" timestamp="1612979066406" />
+    <state x="1699" y="436" width="1742" height="1530" key="find.popup" timestamp="1612981011141">
+      <screen x="0" y="54" width="4096" height="2250" />
+    </state>
+    <state x="1699" y="436" width="1742" height="1530" key="find.popup/0.54.4096.2250@0.54.4096.2250" timestamp="1612981011141" />
   </component>
 </project>

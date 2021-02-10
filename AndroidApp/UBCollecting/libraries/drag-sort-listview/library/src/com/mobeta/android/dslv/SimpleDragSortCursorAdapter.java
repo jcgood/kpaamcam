@@ -19,8 +19,11 @@ package com.mobeta.android.dslv;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
+
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+//import androidx.core.widget.CursorAdapter;
+//import androidx.core.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

@@ -1,10 +1,12 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 
@@ -32,6 +34,7 @@ public class QuestionPropertyDefActivity extends AppCompatActivity {
                 QuestionPropertyDef propertyDef = new QuestionPropertyDef();
                 propertyDef.setName(nameField.getText().toString());
 
+                /* INSERT */
                 QUESTION_PROPERTY_DEF_TABLE.insert(propertyDef);
 
             }

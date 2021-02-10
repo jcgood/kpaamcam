@@ -21,6 +21,7 @@ public class QuestionTable extends Table<Question> {
     public static final String KEY_DELETED ="Deleted";
     public static final String KEY_MIN_LENGTH = "MinLength";
     public static final String KEY_MAX_LENGTH = "MaxLength";
+    public static final String KEY_NULL_CHECK_TYPE = "NullCheckType";
 
 
     public QuestionTable() {
@@ -39,7 +40,8 @@ public class QuestionTable extends Table<Question> {
                 + KEY_NOTES + " VARCHAR DEFAULT '',"
                 + KEY_DELETED + " INTEGER DEFAULT 0 NOT NULL,"
                 + KEY_MIN_LENGTH + " INTEGER,"
-                + KEY_MAX_LENGTH + " INTEGER" + ")";
+                + KEY_MAX_LENGTH + " INTEGER,"
+                + KEY_NULL_CHECK_TYPE + " VARCHAR" + ")";
     }
 
     @Override

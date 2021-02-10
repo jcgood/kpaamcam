@@ -1,5 +1,7 @@
 package edu.buffalo.cse.ubcollecting.ui;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -63,22 +65,24 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
     private TextView selectQuestionProperties;
     private TextView selectQuestionLanguages;
     private Spinner propertySpinner;
-//    private Spinner nullCheckSpinner;
     private TextView answerLength;
     private ArrayAdapter<QuestionPropertyDef> propertyAdapter;
-//    private ArrayAdapter<String> nullCheckAdapter;
     private EditText minLength;
     private EditText maxLength;
+    private CheckBox charCheckBox;
+    private CheckBox numCheckBox;
+    private CheckBox noneCheckBox;
 
     private List<EditText> optionsList = new ArrayList<>();
     private QuestionPropertyDef questionPropertyDef;
     private List<EditText> allListOptions;
     private boolean checkSelected = false;
+    private String nullCheckType;
     private int listOptionsCounter = 0;
     private int multipleOptionsCounter = 0;
 
-//    private List<String> nullCheckList;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkSelected = false;
@@ -97,20 +101,15 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         answerLength = findViewById(R.id.answer_length);
         minLength = findViewById(R.id.min_input);
         maxLength = findViewById(R.id.max_input);
+        charCheckBox = findViewById(R.id.char_check_box);
+        numCheckBox = findViewById(R.id.num_check_box);
+        noneCheckBox = findViewById(R.id.none_check_box);
+        charCheckBox.setText("Character Only");
+        numCheckBox.setText("Number Only");
+        noneCheckBox.setText("Anything is fine");
 
         final ArrayList<QuestionPropertyDef> quesPropDefs = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.getAll();
-//        nullCheckList = new ArrayList<>();
-//        nullCheckList.add("Character only");
-//        nullCheckList.add("Number only");
-//        nullCheckList.add("None");
-//
-//        nullCheckSpinner = findViewById(R.id.null_check_spinner);
-//        nullCheckAdapter = new ArrayAdapter<>(this,
-//                android.R.layout.simple_spinner_item,
-//                nullCheckList);
-//        nullCheckSpinner.setAdapter(nullCheckAdapter);
-//        nullCheckSpinner.setSelected(false);
-//        nullCheckSpinner.setOnItemClickListener();
+
 
 
         propertySpinner = findViewById(R.id.question_property_spinner);
@@ -133,10 +132,12 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onClick(View view) {
-                if(validateLengthOfAnswer()) {
+              System.out.println(nullCheckType);
+                if(validateLengthOfAnswer() && validateCheckBox()) {
                   if (validateEntry()) {
                     question.setMinLength(Integer.parseInt(minLength.getText().toString()));
                     question.setMaxLength(Integer.parseInt(maxLength.getText().toString()));
+                    question.setNullCheckType(nullCheckType);
                     questionPropertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
 
                     if (checkIsLoopQuestionAndOneLanguageSelected()) {
@@ -150,7 +151,55 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
         mAddLoopQuestionLevel = findViewById(R.id.create_question_add_list_level_button);
         mAddLoopQuestionLevel.setOnClickListener(this);
+
+
+        // Null Check Box Listener for each Box and Only can set one box checked.
+        // Create 3 Null Check Box
+        numCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked) {
+              if(charCheckBox.isChecked() || noneCheckBox.isChecked()) {
+                Toast.makeText(CreateQuestionActivity.this,"only one box is able to click",Toast.LENGTH_SHORT).show();
+                numCheckBox.toggle();
+              }
+              else {
+                nullCheckType = "Number";
+              }
+            }
+          }
+        });
+        charCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked) {
+              if(numCheckBox.isChecked() || noneCheckBox.isChecked()) {
+                Toast.makeText(CreateQuestionActivity.this,"only one box is able to click",Toast.LENGTH_SHORT).show();
+                charCheckBox.toggle();
+              }
+              else {
+                nullCheckType = "Character";
+              }
+            }
+          }
+        });
+
+        noneCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked) {
+              if(numCheckBox.isChecked() || charCheckBox.isChecked()) {
+                Toast.makeText(CreateQuestionActivity.this,"only one box is able to click",Toast.LENGTH_SHORT).show();
+                noneCheckBox.toggle();
+              }
+              else {
+                nullCheckType = "None";
+              }
+            }
+          }
+        });
     }
+
 
     // If a Question is selected to be a Loop Question then this will allow you to
     // create Loop Question Levels
@@ -398,29 +447,52 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
     }
 
 
+    /**
+     * Helper function that validate user expect answer's length
+     *
+     * @return {@link Boolean}
+     */
     private boolean validateLengthOfAnswer() {
-      String minInputLength = minLength.getText().toString();
-      String maxInputLength = maxLength.getText().toString();
-      for(int i = 0; i < minInputLength.length(); i++) {
-        if(!Character.isDigit(minInputLength.charAt(i))) {
-          minLength.setError("the minimum length of answer should be number");
-          Toast.makeText(this, "length of answer should be all number", Toast.LENGTH_SHORT).show();
+        String minInputLength = minLength.getText().toString();
+        String maxInputLength = maxLength.getText().toString();
+        if(minInputLength == null || minInputLength.isEmpty()) minInputLength = "1";
+        if(minInputLength == null || maxInputLength.isEmpty()) maxInputLength = String.valueOf(Integer.MAX_VALUE);
+        for(int i = 0; i < minInputLength.length(); i++) {
+          if(!Character.isDigit(minInputLength.charAt(i))) {
+            minLength.setError("the minimum length of answer should be number");
+            Toast.makeText(this, "length of answer should be all number", Toast.LENGTH_SHORT).show();
+            return false;
+          }
+        }
+        for(int i = 0; i < maxInputLength.length(); i++) {
+          if(!Character.isDigit(maxInputLength.charAt(i))) {
+            maxLength.setError("the maximum length of answer should be number");
+            Toast.makeText(this, "length of answer should be all number", Toast.LENGTH_SHORT).show();
+            return false;
+          }
+        }
+        if(Integer.parseInt(maxInputLength) <= Integer.parseInt(minInputLength)) {
+          Toast.makeText(this, "maximum length can't larger than minimum length", Toast.LENGTH_SHORT).show();
           return false;
         }
+        minLength.setText(minInputLength);
+        maxLength.setText(maxInputLength);
+        return true;
       }
-      for(int i = 0; i < maxInputLength.length(); i++) {
-        if(!Character.isDigit(maxInputLength.charAt(i))) {
-          maxLength.setError("the maximum length of answer should be number");
-          Toast.makeText(this, "length of answer should be all number", Toast.LENGTH_SHORT).show();
-          return false;
-        }
-      }
-      if(Integer.parseInt(maxInputLength) <= Integer.parseInt(minInputLength)) {
-        Toast.makeText(this, "maximum length can't larger than minimum length", Toast.LENGTH_SHORT).show();
+
+    /**
+     * Helper function that validate the Null CheckBox have to selected
+     *
+     * @return {@link Boolean}
+     */
+    private boolean validateCheckBox() {
+      if(nullCheckType == null || nullCheckType.isEmpty()) {
+        Toast.makeText(this, "At Least Select one type of answer check", Toast.LENGTH_SHORT).show();
         return false;
       }
       return true;
     }
+
 
     /**
      * Helper function that validates user submission

@@ -89,14 +89,14 @@ public class FireBaseCloudHelper<E extends Model> extends Application{
 
     };
 
-    //The methods below were written by Blake to generalize the insert/delete/update process. They still need to be tested!
+    //The methods below were written by Blake to generalize the insert/delete/update process. They're still being tested.
     public void insert (Table<E> table, E entry) throws InvocationTargetException, IllegalAccessException {
         String name = table.getTableName();
         List<Method> entryMethods = entry.getGetters();
 
         for (Method method: entryMethods) {
             String key = method.getName().substring(GET, method.getName().length());
-            String value = (String) method.invoke(null);
+            Object value = method.invoke(entry);
 
             mDatabase.child(name).child(entry.getIdentifier()).child(key).setValue(value);
         };

@@ -98,7 +98,7 @@ public class FireBaseCloudHelper<E extends Model> extends Application{
             String key = method.getName().substring(GET, method.getName().length());
             Object value = method.invoke(entry);
 
-            mDatabase.child(name).child(entry.getIdentifier()).child(key).setValue(value);
+            mDatabase.child(name).child(entry.getId()).child(key).setValue(value);
         };
     };
 

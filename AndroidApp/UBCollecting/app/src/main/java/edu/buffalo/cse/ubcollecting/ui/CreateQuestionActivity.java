@@ -104,9 +104,6 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         charCheckBox = findViewById(R.id.char_check_box);
         numCheckBox = findViewById(R.id.num_check_box);
         noneCheckBox = findViewById(R.id.none_check_box);
-        charCheckBox.setText("Character Only");
-        numCheckBox.setText("Number Only");
-        noneCheckBox.setText("Anything is fine");
 
         final ArrayList<QuestionPropertyDef> quesPropDefs = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.getAll();
 

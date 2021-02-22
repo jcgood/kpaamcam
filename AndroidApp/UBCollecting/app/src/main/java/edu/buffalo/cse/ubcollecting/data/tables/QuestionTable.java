@@ -4,8 +4,11 @@ package edu.buffalo.cse.ubcollecting.data.tables;
  * Created by aamel786 on 2/17/18.
  */
 
+import java.util.ArrayList;
+
 import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.ui.AddQuestionsActivity;
+import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 
 public class QuestionTable extends Table<Question> {
 
@@ -47,5 +50,19 @@ public class QuestionTable extends Table<Question> {
     @Override
     public String getTableName() {
         return TABLE;
+    }
+
+    public String[] getNullCheckAndLength(String id) {
+
+      ArrayList<Question> questionTexts = DatabaseHelper.QUESTION_TABLE.getAll();
+      Question questionText = null;
+      for(int i = 0; i < questionTexts.size(); i++) {
+        if(questionTexts.get(i).id.equals(id)) {
+          questionText = questionTexts.get(i);
+          break;
+        }
+      }
+      String[] nullCheckAndLength = new String[]{Integer.toString(questionText.getMinLength()),  Integer.toString(questionText.getMaxLength()), questionText.getNullCheckType()};
+      return nullCheckAndLength;
     }
 }

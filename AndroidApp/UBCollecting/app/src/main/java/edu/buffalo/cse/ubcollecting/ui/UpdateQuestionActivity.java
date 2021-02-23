@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,6 +123,7 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                                 quesLang.setQuestionId(question.getId());
                                 quesLang.setQuestionLanguageId(lang.getId());
                                 quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
+                                /* INSERT */
                                 DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
                             }
                         }

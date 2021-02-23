@@ -1,7 +1,7 @@
 package com.mobeta.android.demodslv;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import androidx.core.app.FragmentActivity;
 
 public class BGHandle extends FragmentActivity {
 

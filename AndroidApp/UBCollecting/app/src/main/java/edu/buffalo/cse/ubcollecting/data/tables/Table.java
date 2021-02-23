@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+//import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -214,6 +216,7 @@ public abstract class Table<E extends Model> implements Serializable {
 
             SQLiteDatabase db = DatabaseManager.getInstance().openDatabase();
 
+            /* QUERY */ /* not sure, might be UI-specific */
             Cursor cursor = db.query(this.getTableName(),
                     null,
                     selection,

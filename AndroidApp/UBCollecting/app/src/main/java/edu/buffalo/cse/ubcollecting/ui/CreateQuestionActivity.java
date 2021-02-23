@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import androidx.constraintlayout.ConstraintLayout;
+//import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +29,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +47,6 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionOption;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireType;
-import edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity;
 import edu.buffalo.cse.ubcollecting.utils.Constants;
 
 import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
@@ -229,11 +232,13 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
 
         question.setType(propertyDef.getName());
+        /* INSERT */
         DatabaseHelper.QUESTION_TABLE.insert(question);
 
         QuestionProperty quesProp = new QuestionProperty();
         quesProp.setQuestionId(question.getId());
         quesProp.setPropertyId(propertyDef.getId());
+        /* INSERT */
         DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
 
         for (Language lang : questionTexts.keySet()) {
@@ -245,6 +250,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             quesLang.setQuestionId(question.getId());
             quesLang.setQuestionLanguageId(lang.getId());
             quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
+            /* INSERT */
             DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
 
             if (propertyDef.getName().equals(Constants.LIST)) {
@@ -255,6 +261,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                     questionOption.setQuestionId(question.getId());
                     questionOption.setQuestionLanguageId(lang.getId());
                     questionOption.setOptionText(preDefinedAnswer);
+                    /* INSERT */
                     DatabaseHelper.QUESTION_OPTION_TABLE.insert(questionOption);
                 }
             }

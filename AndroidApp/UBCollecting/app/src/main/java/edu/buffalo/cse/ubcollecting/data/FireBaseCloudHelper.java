@@ -4,16 +4,31 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.OnPausedListener;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.buffalo.cse.ubcollecting.EntryActivity;
 import edu.buffalo.cse.ubcollecting.app.App;
@@ -25,6 +40,7 @@ import edu.buffalo.cse.ubcollecting.data.tables.Table;
 public class FireBaseCloudHelper<E extends Model> extends Application{
 
     public FirebaseDatabase database;
+    public FirebaseStorage storage;
     public DatabaseReference mDatabase;
     public DatabaseReference connRef;
     private Context context;
@@ -38,6 +54,7 @@ public class FireBaseCloudHelper<E extends Model> extends Application{
         this.TAG = App.getContext().toString();
         this.isConnected = false;
         this.database = FirebaseDatabase.getInstance();
+        this.storage = FirebaseStorage.getInstance();
         this.mDatabase = database.getReference();
         this.getConnectionStateRef();
     }
@@ -90,27 +107,93 @@ public class FireBaseCloudHelper<E extends Model> extends Application{
     };
 
     //The methods below were written by Blake to generalize the insert/delete/update process. They're still being tested.
+
+    /**
+     * Handles any data model extending Entry, parses the table name and inserts into the server database
+     *
+     * @param table the table into which the data is being inserted
+     * @param entry the data being inserted
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     public void insert (Table<E> table, E entry) throws InvocationTargetException, IllegalAccessException {
-        String name = table.getTableName();
+        String tableName = table.getTableName();
+        String entryId = entry.getId();
         List<Method> entryMethods = entry.getGetters();
 
         for (Method method: entryMethods) {
             String key = method.getName().substring(GET, method.getName().length());
             Object value = method.invoke(entry);
-
-            mDatabase.child(name).child(entry.getId()).child(key).setValue(value);
-        };
+            if(value != null) {
+                if (value.getClass().isArray()) {
+                    storeMedia(tableName, entryId, key, value);
+                } else {
+                    mDatabase.child(tableName).child(entryId).child(key).setValue(value);
+                }
+            }
+        }
     };
 
+    /**
+     * Deletes an entry from the database
+     *
+     * @param table the table from which the entry is being removed
+     * @param entryID the id of the entry being removed
+     */
     public void delete (Table<E> table, String entryID) {
         String name = table.getTableName();
-        mDatabase.child(name).child(entryID).removeValue();
+
+        if (mDatabase.child(name).child(entryID).get() != null) {
+            mDatabase.child(name).child(entryID).removeValue();
+        }
     };
 
-    //NOTE: this is a lazy implementation, it just deletes and re-inserts an entry. It should probably iterate over the values in the existing entry and only replace those values that have changed.
-    // I'm not sure the app even uses updates?
+    /**
+     * Updates an existing entry in the database; if entry doesn't exist, it inserts it instead
+     *
+     * @param table table where the value(s) to update is(are)
+     * @param entry the entry to update
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     public void update (Table<E> table, E entry) throws InvocationTargetException, IllegalAccessException {
-        this.delete(table, entry.getIdentifier());
-        this.insert(table,entry);
+        String tableName = table.getTableName();
+        String entryId = entry.getId();
+        List<Method> entryMethods = entry.getGetters();
+
+        if (mDatabase.child(tableName).child(entryId).get() != null) {
+            Map<String, Object> updates = new HashMap<>();
+            for (Method method : entryMethods) {
+                String key = method.getName().substring(GET, method.getName().length());
+                Object value = method.invoke(entry);
+                if (value != null) {
+                    updates.put(tableName + "/" + entryId + "/" + key, value);
+                }
+            }
+
+            mDatabase.updateChildren(updates);
+        } else {
+            insert(table, entry);
+        }
+    };
+
+    public void storeMedia(String name, String entryId, String key, Object value) {
+        //TODO: Generalize storageReferencePath for instances that aren't bmp!
+        String storageReferencePath = name + "/" + entryId + "/" + key + ".bmp";
+        StorageReference storageLocation = storage.getReference(storageReferencePath);
+
+        UploadTask uploadTask = storageLocation.putBytes((byte[]) value);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+            }
+        });
     };
 }

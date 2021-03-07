@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "88063196203",
+    "firebase_url": "https://kpaam-cam-default-rtdb.firebaseio.com",
+    "project_id": "kpaam-cam",
+    "storage_bucket": "kpaam-cam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88063196203:android:dd438b0a99300542ae3e6e",
+        "android_client_info": {
+          "package_name": "edu.buffalo.cse.ubcollecting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88063196203-laete2eid7uhbfkgr6l4ktmf1401l6um.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcbY67GeDB3H_22q5uKPVTD1-lGgnOuco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88063196203-laete2eid7uhbfkgr6l4ktmf1401l6um.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

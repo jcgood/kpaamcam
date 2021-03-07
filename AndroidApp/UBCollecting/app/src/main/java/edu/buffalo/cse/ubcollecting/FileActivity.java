@@ -1,7 +1,8 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +55,7 @@ public class FileActivity extends AppCompatActivity {
                 file.setStartTime(fileStartTimeField.getText().toString());
                 file.setEndTime(fileEndTimeField.getText().toString());
 
+                /* INSERT */
                 FILE_TABLE.insert(file);
             }
         });

@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:id="@+id/questionnaire_tabs"></com.google.android.material.tabs.TabLayout>
 
-    <android.support.design.widget.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/questionnaire_tabs">
-    </android.support.design.widget.TabLayout>
-
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/questionnaire_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        >
+        android:layout_height="350dp">
 
-    </android.support.v4.view.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text = "Update Questionnaire"
-        android:id="@+id/questionnaire_update_button"/>
+        android:text="Update Questionnaire"
+        android:id="@+id/questionnaire_update_button" />
 
     <Button
         android:id="@+id/questionnaire_submit_button"

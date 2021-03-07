@@ -1,7 +1,7 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -148,6 +150,7 @@ public class ListFragment extends QuestionFragment {
                 answer.setQuestionId(questionnaireContent.getQuestionId());
                 answer.setText(selectedOption);
                 answer.setVersion(version + 1);
+                /* INSERT */
                 DatabaseHelper.ANSWER_TABLE.insert(answer);
             }
         }

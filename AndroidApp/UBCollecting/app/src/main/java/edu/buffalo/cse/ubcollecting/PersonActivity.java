@@ -8,9 +8,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -21,13 +21,15 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.text.ParseException;
 
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.models.Role;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
@@ -46,6 +48,7 @@ public class PersonActivity extends EntryActivity<Person> {
     private static final String TAG = PersonActivity.class.getSimpleName().toString();
     private static final int REQUEST_CODE_ROLE = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    FireBaseCloudHelper fireBaseCloudHelper;
 
 
     private EditText nameField;
@@ -98,6 +101,11 @@ public class PersonActivity extends EntryActivity<Person> {
         entry.setIntroQuestDesc(questionnaireDescriptionField.getText().toString());
         entry.setEmail(emailField.getText().toString());
         entry.setPassword(genHash(passwordField.getText().toString()));
+
+        //create person object to send to cloud
+        Person person = entry;
+        fireBaseCloudHelper.WriteNewPerson(person);
+
     }
 
     @SuppressLint("WrongConstant")
@@ -105,7 +113,10 @@ public class PersonActivity extends EntryActivity<Person> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
+
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        fireBaseCloudHelper = new FireBaseCloudHelper(PersonActivity.this);
 
 
         nameField = this.findViewById(R.id.person_name_field);

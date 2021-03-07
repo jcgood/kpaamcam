@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    compile 'com.android.support:support-v4:23.0.1'
+    compile 'androidx.legacy:legacy-support-v4:1.0.0'
 }
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '26.0.3'
 
     sourceSets {
         main {

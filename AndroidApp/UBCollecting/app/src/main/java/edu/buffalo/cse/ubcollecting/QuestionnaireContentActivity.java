@@ -1,11 +1,13 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 
@@ -43,6 +45,7 @@ public class QuestionnaireContentActivity extends AppCompatActivity {
                 content.setQuestionId(""); // TODO
                 content.setQuestionOrder(Integer.valueOf(orderField.getText().toString()));
 
+                /* INSERT */
                 QUESTIONNAIRE_CONTENT_TABLE.insert(content);
             }
         });

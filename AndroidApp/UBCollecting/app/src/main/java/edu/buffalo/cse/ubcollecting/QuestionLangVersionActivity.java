@@ -1,11 +1,12 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
 
@@ -42,6 +43,7 @@ public class QuestionLangVersionActivity extends AppCompatActivity {
                 questionLangVersion.setQuestionId(""); // TODO
                 questionLangVersion.setQuestionText(questionTextField.getText().toString());
 
+                /* INSERT */
                 QUESTION_LANG_VERSION_TABLE.insert(questionLangVersion);
             }
         });

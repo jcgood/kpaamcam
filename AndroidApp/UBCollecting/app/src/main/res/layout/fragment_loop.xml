@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:id="@+id/question_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="5dp"
+        android:text="Language:"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <Spinner
+        android:id="@+id/question_language_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_language"
+        app:layout_constraintTop_toBottomOf="@id/question_language"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </Spinner>
+
+
+    <TextView
+            android:id="@+id/question_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/question_language_spinner"
+            android:paddingStart="5dp"
+            android:text="List Question"
+            android:layout_marginTop="50dp"
+            android:textSize="25sp"
+            app:layout_constraintTop_toBottomOf="@id/question_language_spinner"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <EditText
+            android:id="@+id/answer_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:visibility="invisible"
+            />
+    <LinearLayout
+        android:id="@+id/list_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        >
+
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/answer_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/question_text">
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/list_add_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add an Answer"
+            app:layout_constraintTop_toBottomOf="@id/answer_list"
+            app:layout_constraintStart_toStartOf="parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/upload_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        >
+
+        <Button
+            android:id="@+id/upload_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Take Photo"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="View Photo"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/next_question"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:text="Next" />
+    <Button
+        android:id="@+id/save_and_quit_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save and Quit "
+        android:layout_gravity="right|bottom"
+        />
+
+    <Button
+        android:id="@+id/skip_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Skip "
+        android:layout_gravity="left|bottom"
+        />
+
+
+</FrameLayout>
+

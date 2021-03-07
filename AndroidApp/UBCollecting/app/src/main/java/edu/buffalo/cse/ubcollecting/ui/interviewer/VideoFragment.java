@@ -138,7 +138,9 @@ public class VideoFragment extends QuestionFragment{
                 }
             }
         });
+        Button nextQuestion = view.findViewById(R.id.next_question);
 
+        nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
 
         return view;
     }
@@ -205,6 +207,15 @@ public class VideoFragment extends QuestionFragment{
         answer.setVersion(version+1);
         DatabaseHelper.ANSWER_TABLE.insert(answer);
 
+    }
+    protected class NextQuestionOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            if(validateEntry()){
+                submitAnswer();
+                questionManager.getNextQuestion();
+            }
+        }
     }
 
 }

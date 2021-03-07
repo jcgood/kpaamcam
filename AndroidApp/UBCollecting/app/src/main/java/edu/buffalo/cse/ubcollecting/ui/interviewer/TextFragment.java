@@ -78,6 +78,9 @@ public class TextFragment extends QuestionFragment{
         } else {
             answerList = new ArrayList<>();
         }
+        Button nextQuestion = view.findViewById(R.id.next_question);
+
+        nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
         return view;
     }
 
@@ -122,6 +125,14 @@ public class TextFragment extends QuestionFragment{
         DatabaseHelper.ANSWER_TABLE.insert(answer);
 
     }
-
+    protected class NextQuestionOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            if(validateEntry()){
+                submitAnswer();
+                questionManager.getNextQuestion();
+            }
+        }
+    }
 
 }

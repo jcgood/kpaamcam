@@ -1,26 +1,44 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
+import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.IS_LAST_LOOP_QUESTION;
+import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.IS_LOOP_QUESTION_SET;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.LOOP_QUESTION_ID;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.TakeQuestionnaireActivity.QUESTIONNAIRE_CONTENT;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
@@ -30,20 +48,46 @@ public class LoopFragment extends QuestionFragment {
     private RecyclerView answerViewList;
     private Button addQuestionsButton;
     private Button mSaveAndQuitButton;
+    private Button mediauploadButton;
+    private Button viewMediaButton;
+    private EditText answerText;
     private EntryAdapter entryAdapter;
     private QuestionnaireContent questionnaireContent;
     private ArrayList<Answer> answerList;
+    private LinearLayout listQuestionGroup;
+    private LinearLayout mediaQuestionGroup;
     private Session session;
-
+    private boolean mIsLastLoopQuestion = true;
+    private boolean isLoopQuestion = false;
     private String mLoopQuestionId;
+    private HashMap<String,String> questionSet;
+    private HashMap<String,Answer> answerSet;
+    private String currentPath;
+    private Iterator questionIterator;
+    private int answerIndex;
+
+    static final int REQUEST_MEDIA_CAPTURE = 1;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
-        answerViewList = view.findViewById(R.id.answer_list);
+        StrictMode.VmPolicy.Builder newBuilder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(newBuilder.build());
 
+        View view = inflater.inflate(R.layout.fragment_loop, container, false);
+        answerViewList = view.findViewById(R.id.answer_list);
+        answerText = view.findViewById(R.id.answer_text);
+        listQuestionGroup = view.findViewById(R.id.list_group);
+        mediaQuestionGroup = view.findViewById(R.id.upload_group);
+        mediauploadButton =  view.findViewById(R.id.upload_button);
+        viewMediaButton = view.findViewById(R.id.view);
+
+
+        viewMediaButton.setVisibility(View.INVISIBLE);
+        listQuestionGroup.setVisibility(View.VISIBLE);
         super.setIsLoopQuestion(true);
+
         mLoopQuestionId = (String) getArguments().getSerializable(LOOP_QUESTION_ID);
         questionnaireContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
         session = (Session) getArguments().getSerializable(SELECTED_SESSION);
@@ -65,6 +109,11 @@ public class LoopFragment extends QuestionFragment {
         mSaveAndQuitButton.setOnClickListener(new SaveAndExitQuestionOnClickListener());
 
         questionManager.isLastQuestion();
+
+        Button nextQuestion = view.findViewById(R.id.next_question);
+        nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
+        mIsLastLoopQuestion = (boolean) getArguments().getSerializable(IS_LAST_LOOP_QUESTION);
+        isLoopQuestion = (boolean)getArguments().getSerializable(IS_LOOP_QUESTION_SET);
         return view;
     }
 
@@ -89,7 +138,11 @@ public class LoopFragment extends QuestionFragment {
 
     @Override
     public void submitAnswer() {
+//        Check if question is already answered in the database
         ArrayList<EditText> answerTextList = entryAdapter.getAnswerList();
+        ArrayList<Answer> previousAnswers = DatabaseHelper.ANSWER_TABLE.getAnswers(mLoopQuestionId, questionnaireContent.getQuestionnaireId());
+
+//        Update answer at loop position with current answer
         for (int i=0; i<answerList.size();i++) {
             Answer answer = answerList.get(i);
            if(answer.getText()==null){
@@ -99,6 +152,162 @@ public class LoopFragment extends QuestionFragment {
             DatabaseHelper.ANSWER_TABLE.insert(answer);
         }
     }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String videoFile = "MP4_" + timeStamp + "_";
+
+        File image = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(), videoFile);
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPath = "file:" + image.getAbsolutePath();
+        Log.d("VideoFrag","file location: "+ currentPath);
+        return image;
+    }
+
+
+    public void setNextQuestion(String rootAnswer,String questionId,String subQuestionText){
+        QuestionPropertyDef questionProperty = DatabaseHelper.QUESTION_PROPERTY_TABLE.getQuestionProperty(questionId);
+        String typeofQuestion = questionProperty.getName();
+
+        this.questionText.setText(rootAnswer + "\n" + subQuestionText);
+        if(typeofQuestion.equals("Photo")){
+            mediaQuestionGroup.setVisibility(View.VISIBLE);
+            mediauploadButton.setText("Take Photo");
+            viewMediaButton.setText("View Photo");
+
+            mediauploadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                            viewMediaButton.setVisibility(View.VISIBLE);
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                            Log.i("PhotoFragment", "IOException");
+                        }
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                            startActivityForResult(cameraIntent, REQUEST_MEDIA_CAPTURE);
+                        }
+                    }
+                }
+            });
+            viewMediaButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try{
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(currentPath), "image/*");
+                        startActivity(intent);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        else if(typeofQuestion.equals("Video")){
+            mediaQuestionGroup.setVisibility(View.VISIBLE);
+            mediauploadButton.setText("Take Video");
+            viewMediaButton.setText("View Video");
+            mediauploadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                    if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                            viewMediaButton.setVisibility(View.VISIBLE);
+
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                            Log.i("VideoFragment", "IOException");
+                        }
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                            startActivityForResult(cameraIntent, REQUEST_MEDIA_CAPTURE);
+                        }
+                    }
+                }
+            });
+            viewMediaButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try{
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(currentPath), "video/*");
+                        startActivity(intent);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+        else if(typeofQuestion.equals("Audio")){
+
+        }
+        else{
+            answerText.setVisibility(View.VISIBLE);
+            answerText.setText("");
+        }
+
+    }
+    public void resetUI(){
+        mediaQuestionGroup.setVisibility(View.INVISIBLE);
+        listQuestionGroup.setVisibility(View.INVISIBLE);
+        answerText.setVisibility(View.INVISIBLE);
+        viewMediaButton.setVisibility(View.INVISIBLE);
+
+    }
+    protected class NextQuestionOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            if(validateEntry()){
+                resetUI();
+                if(isLoopQuestion){
+                    ArrayList<EditText> answerTextList = entryAdapter.getAnswerList();
+                    questionSet = questionManager.askRepeatQuestions(answerTextList);
+                    questionIterator = questionSet.entrySet().iterator();
+                    answerIndex = 0;
+                    Map.Entry<String,String> firstQuestion = (Map.Entry)questionIterator.next();
+                    String firstAnswer = answerTextList.get(answerIndex).getText().toString();
+                    setNextQuestion(firstAnswer,firstQuestion.getKey(),firstQuestion.getValue());
+                    isLoopQuestion = false;
+                }
+                else if(!mIsLastLoopQuestion){
+
+                    Map.Entry<String,String> question = (Map.Entry)questionIterator.next();
+                    String rootAnswer = entryAdapter.getAnswerList().get(answerIndex).getText().toString();
+                    setNextQuestion(rootAnswer,question.getKey(),question.getValue());
+                    if(!questionIterator.hasNext()){
+                        answerIndex++;
+                        if(answerIndex >= entryAdapter.getAnswerList().size()){
+                            mIsLastLoopQuestion = true;
+                        }
+                        questionIterator = questionSet.entrySet().iterator();
+                    }
+                }
+                else{
+                    questionManager.getNextQuestion();
+                  //  submitAnswer();
+
+                }
+            }
+        }
+    }
+
 
     private class EntryHolder extends RecyclerView.ViewHolder {
 
@@ -181,4 +390,5 @@ public class LoopFragment extends QuestionFragment {
             return list.size();
         }
     }
+
 }

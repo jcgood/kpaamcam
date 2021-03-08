@@ -15,6 +15,11 @@ public class Question extends Model {
     public String notes;
     public int deleted;
 
+    public int minLength;
+    public int maxLength;
+
+    public String nullCheckType;
+
     public double getVersion(){
         return version;
     }
@@ -59,5 +64,28 @@ public class Question extends Model {
         this.displayText = displayText;
     }
 
+    public void setMinLength(int min_length) {
+      this.minLength = min_length;
+    }
+
+    public int getMinLength() {
+    return minLength;
+  }
+
+    public void setMaxLength(int max_length) {
+    this.maxLength = max_length;
+  }
+
+    public int getMaxLength() {
+    return maxLength;
+  }
+
+    public void setNullCheckType(String nullCheckStr) {
+      this.nullCheckType = nullCheckStr;
+    }
+
+    public String getNullCheckType() {
+      return nullCheckType;
+    }
 
 }

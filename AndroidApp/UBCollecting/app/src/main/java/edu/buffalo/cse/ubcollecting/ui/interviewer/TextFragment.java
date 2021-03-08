@@ -78,6 +78,12 @@ public class TextFragment extends QuestionFragment{
 
         boolean valid = true;
 
+        String[] nullCheckAndLength = super.nullCheckAndLength;
+
+        if(!checkValidLengthAndNull(nullCheckAndLength,answerText.getText().toString())) {
+          valid = false;
+        }
+
         if (answerText.getText().toString().isEmpty()){
             valid = false;
             answerText.setError("A Text Answer is Required");
@@ -88,6 +94,55 @@ public class TextFragment extends QuestionFragment{
         }
 
         return valid;
+    }
+
+    public boolean checkValidLengthAndNull(String[] nullCheckAndLength, String answer){
+//      boolean valid = true;
+
+      int min = Integer.parseInt(nullCheckAndLength[0]);
+      int max = Integer.parseInt(nullCheckAndLength[1]);
+      String type = nullCheckAndLength[2];
+      String[] answerArray = answer.split(" ");
+//      if(answerArray.length < min || answerArray.length > max) {
+//        Toast.makeText(this.getActivity(), "this answer length should between " + min +" and " + max + " length", Toast.LENGTH_SHORT).show();
+//        return false;
+//      }
+
+      switch (type) {
+        case "Number" :
+          for(int i = 0; i < answer.length(); i++) {
+            if(!Character.isDigit(answer.charAt(i))) {
+              Toast.makeText(this.getActivity(), "The answer should be all digits", Toast.LENGTH_SHORT).show();
+              return false;
+            }
+          }
+          if(answer.length() <= min || answer.length() >= max) {
+            Toast.makeText(this.getActivity(), "this answer length should between " + min +" and " + max + " length" + "(exclusive)", Toast.LENGTH_SHORT).show();
+            return false;
+          }
+          break;
+        case "Character":
+          for(String i: answerArray) {
+            for(int j = 0; j < i.length(); j++) {
+              if(!Character.isLetter(i.charAt(j))) {
+                Toast.makeText(this.getActivity(), "The answer should be all letters or words", Toast.LENGTH_SHORT).show();
+                return false;
+              }
+            }
+          }
+          if(answerArray.length < min || answerArray.length > max) {
+            Toast.makeText(this.getActivity(), "this answer length should between " + min +" and " + max + " length", Toast.LENGTH_SHORT).show();
+            return false;
+          }
+          break;
+        case "mix":
+          if(answerArray.length < min || answerArray.length > max) {
+            Toast.makeText(this.getActivity(), "this answer length should between " + min +" and " + max + " length", Toast.LENGTH_SHORT).show();
+            return false;
+          }
+          break;
+      }
+      return true;
     }
 
     @Override

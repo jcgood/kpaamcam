@@ -327,7 +327,8 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_select, parent, false);
             }
 
-            final ConstraintLayout.LayoutParams listViewParams = (ConstraintLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+
 
             //Edit Text for entering the question for the selected lang
             final EditText questionText = new EditText(getApplicationContext());

@@ -37,6 +37,8 @@ public abstract class QuestionFragment extends Fragment {
     private Spinner questionLangSpinner;
     private HashMap<Language, QuestionLangVersion> questionTexts;
     private String mLoopQuestionText;
+
+
     public String[] nullCheckAndLength;
     public static String[] mcq_notes;
 

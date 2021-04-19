@@ -35,6 +35,11 @@ import edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity;
 
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserSelectSessionActivity.SELECTED_SESSION;
 
+/**
+ *  A fragment to represent a Multiple Choice (Single/All Applied) question in questionnaire
+ */
+
+
 public class MultiFragment extends QuestionFragment {
 
   public final static String SELECTED_ANSWER = "selected answer";

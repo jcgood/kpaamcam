@@ -170,7 +170,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
 
         // Null Check Box Listener for each Box and Only can set one box checked.
-        // Create 3 Null Check Box
+        // Create 4 Null Check Box and check status for each one.
         numCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
           @Override
           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

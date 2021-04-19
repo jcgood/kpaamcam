@@ -65,4 +65,18 @@ public class QuestionTable extends Table<Question> {
       String[] nullCheckAndLength = new String[]{Integer.toString(questionText.getMinLength()),  Integer.toString(questionText.getMaxLength()), questionText.getNullCheckType()};
       return nullCheckAndLength;
     }
+
+    public String[] mcqOptions(String id) {
+      ArrayList<Question> questionTexts = DatabaseHelper.QUESTION_TABLE.getAll();
+      Question questionText = null;
+      for(int i = 0; i < questionTexts.size(); i++) {
+        if(questionTexts.get(i).id.equals(id)) {
+          questionText = questionTexts.get(i);
+          break;
+        }
+      }
+
+      String[] options = questionText.getNotes().split(",");
+      return options;
+    }
 }

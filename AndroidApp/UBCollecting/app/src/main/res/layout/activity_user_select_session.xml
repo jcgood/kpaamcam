@@ -24,12 +24,11 @@
         android:textColor="#000000"
         android:text="@string/choose_session" />
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/session_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity"></android.support.v7.widget.RecyclerView>
+  <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/session_recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity" />
 
 
 </LinearLayout>

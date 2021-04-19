@@ -37,7 +37,9 @@ public abstract class QuestionFragment extends Fragment {
     private Spinner questionLangSpinner;
     private HashMap<Language, QuestionLangVersion> questionTexts;
     private String mLoopQuestionText;
-    String[] nullCheckAndLength;
+    public String[] nullCheckAndLength;
+    public static String[] mcq_notes;
+
 
     private boolean mIsLoopQuestion = false;
     private boolean mIsLastLoopQuestion = true;
@@ -68,6 +70,9 @@ public abstract class QuestionFragment extends Fragment {
         questionContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
         questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(questionContent.getQuestionId());
         nullCheckAndLength = DatabaseHelper.QUESTION_TABLE.getNullCheckAndLength(questionContent.getQuestionId());
+        mcq_notes = DatabaseHelper.QUESTION_TABLE.mcqOptions(questionContent.getQuestionId());
+
+
 
         questionLanguages = new ArrayList<>();
         questionLanguages.addAll(questionTexts.keySet());

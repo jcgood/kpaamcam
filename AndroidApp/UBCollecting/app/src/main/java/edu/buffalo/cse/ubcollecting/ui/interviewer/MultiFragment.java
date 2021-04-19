@@ -44,7 +44,6 @@ public class MultiFragment extends QuestionFragment {
 
   public final static String SELECTED_ANSWER = "selected answer";
   private Answer answer;
-  private EditText answerText;
 
   private LinearLayout optionLayout;
 
@@ -75,8 +74,6 @@ public class MultiFragment extends QuestionFragment {
 
     if(getArguments().containsKey(SELECTED_ANSWER)){
       answerList = (ArrayList<Answer>) getArguments().getSerializable(SELECTED_ANSWER);
-      Answer mostRecentAnswer = answerList.get(0);
-      answerText.setText(mostRecentAnswer.getText());
     } else {
       answerList = new ArrayList<>();
     }

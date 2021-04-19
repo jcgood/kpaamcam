@@ -47,6 +47,7 @@ public class TextFragment extends QuestionFragment{
         View view = inflater.inflate(R.layout.fragment_question, container, false);
         answer = new Answer();
 
+
         answerText = view.findViewById(R.id.answer_text);
 
 
@@ -103,10 +104,6 @@ public class TextFragment extends QuestionFragment{
       int max = Integer.parseInt(nullCheckAndLength[1]);
       String type = nullCheckAndLength[2];
       String[] answerArray = answer.split(" ");
-//      if(answerArray.length < min || answerArray.length > max) {
-//        Toast.makeText(this.getActivity(), "this answer length should between " + min +" and " + max + " length", Toast.LENGTH_SHORT).show();
-//        return false;
-//      }
 
       switch (type) {
         case "Number" :

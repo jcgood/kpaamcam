@@ -144,6 +144,9 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 questionFragment = new PhotoFragment();
 
             }
+            else if(typeOfQuestion.equals("Multi_Choice")){
+                questionFragment = new MultiFragment();
+            }
             else {
                 questionFragment = new TextFragment();
 

@@ -44,7 +44,6 @@ public class MultiFragment extends QuestionFragment {
 
   public final static String SELECTED_ANSWER = "selected answer";
   private Answer answer;
-  private EditText answerText;
 
   private LinearLayout optionLayout;
 

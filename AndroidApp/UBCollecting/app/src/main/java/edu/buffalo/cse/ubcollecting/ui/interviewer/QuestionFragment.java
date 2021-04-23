@@ -2,7 +2,8 @@ package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +38,11 @@ public abstract class QuestionFragment extends Fragment {
     private HashMap<Language, QuestionLangVersion> questionTexts;
     private String mLoopQuestionText;
 
+
+    public String[] nullCheckAndLength;
+    public static String[] mcq_notes;
+
+
     private boolean mIsLoopQuestion = false;
     private boolean mIsLastLoopQuestion = true;
 
@@ -65,6 +71,10 @@ public abstract class QuestionFragment extends Fragment {
 
         questionContent = (QuestionnaireContent) getArguments().getSerializable(QUESTIONNAIRE_CONTENT);
         questionTexts = DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(questionContent.getQuestionId());
+        nullCheckAndLength = DatabaseHelper.QUESTION_TABLE.getNullCheckAndLength(questionContent.getQuestionId());
+        mcq_notes = DatabaseHelper.QUESTION_TABLE.mcqOptions(questionContent.getQuestionId());
+
+
 
         questionLanguages = new ArrayList<>();
         questionLanguages.addAll(questionTexts.keySet());

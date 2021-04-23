@@ -1,13 +1,15 @@
 package edu.buffalo.cse.ubcollecting.ui;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import androidx.constraintlayout.ConstraintLayout;
+//import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +29,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +47,6 @@ import edu.buffalo.cse.ubcollecting.data.models.QuestionOption;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireType;
-import edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity;
 import edu.buffalo.cse.ubcollecting.utils.Constants;
 
 import static edu.buffalo.cse.ubcollecting.utils.Constants.LOOP;
@@ -63,13 +68,27 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
     private TextView selectQuestionProperties;
     private TextView selectQuestionLanguages;
     private Spinner propertySpinner;
+    private TextView answerLength;
     private ArrayAdapter<QuestionPropertyDef> propertyAdapter;
 
+
+    private EditText minLength;
+    private EditText maxLength;
+    private CheckBox charCheckBox;
+    private CheckBox numCheckBox;
+    private CheckBox noneCheckBox;
+    private CheckBox multCheckBox;
+
+    private List<EditText> optionsList = new ArrayList<>();
     private QuestionPropertyDef questionPropertyDef;
     private List<EditText> allListOptions;
     private boolean checkSelected = false;
+    private String nullCheckType;
     private int listOptionsCounter = 0;
+    private int multipleOptionsCounter = 0;
 
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkSelected = false;
@@ -85,8 +104,17 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         questionLanguagesListView = findViewById(R.id.question_languages_list_view);
         selectQuestionProperties = findViewById(R.id.select_question_properties);
         selectQuestionLanguages = findViewById(R.id.select_question_languages);
+        answerLength = findViewById(R.id.answer_length);
+        minLength = findViewById(R.id.min_input);
+        maxLength = findViewById(R.id.max_input);
+        charCheckBox = findViewById(R.id.char_check_box);
+        numCheckBox = findViewById(R.id.num_check_box);
+        noneCheckBox = findViewById(R.id.none_check_box);
+        multCheckBox = findViewById(R.id.mulChoice);
 
         final ArrayList<QuestionPropertyDef> quesPropDefs = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.getAll();
+
+
 
         propertySpinner = findViewById(R.id.question_property_spinner);
         propertyAdapter = new ArrayAdapter<QuestionPropertyDef>(this,
@@ -96,7 +124,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         propertySpinner.setSelected(false);
         propertySpinner.setOnItemSelectedListener(new OnItemSelectedListener<QuestionnaireType>());
 
-        ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getAll();
+        final ArrayList<Language> quesLangs = DatabaseHelper.LANGUAGE_TABLE.getAll();
         questionLanguageAdapter = new QuestionLanguageAdapter(this, quesLangs);
         questionLanguagesListView.setAdapter(questionLanguageAdapter);
 
@@ -108,20 +136,102 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onClick(View view) {
-                if (validateEntry()) {
+              for(int i = 0; i < optionsList.size(); i++){
+                System.out.println("this is optionlist options: " + optionsList.get(i).getText().toString());
+              }
+
+              for(int i = 0; i < allListOptions.size(); i++){
+                System.out.println("this is allListoption options: " + allListOptions.get(i).getText().toString());
+              }
+                if(validateLengthOfAnswer() && validateCheckBox()) {
+                  if (validateEntry()) {
+                    question.setMinLength(Integer.parseInt(minLength.getText().toString()));
+                    question.setMaxLength(Integer.parseInt(maxLength.getText().toString()));
+                    question.setNullCheckType(nullCheckType);
+                    StringBuilder mcq_options = new StringBuilder();
+                    for(int i = 0; i < allListOptions.size(); i++){
+                      mcq_options.append(allListOptions.get(i).getText().toString());
+                      mcq_options.append(",");
+                    }
+                    question.setNotes(mcq_options.toString());
                     questionPropertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
 
                     if (checkIsLoopQuestionAndOneLanguageSelected()) {
-                        insertInformationIntoDataBases(questionPropertyDef, question, questionTexts, allListOptions);
-                        finish();
+                      insertInformationIntoDataBases(questionPropertyDef, question, questionTexts, allListOptions);
+                      finish();
                     }
+                  }
                 }
             }
         });
 
         mAddLoopQuestionLevel = findViewById(R.id.create_question_add_list_level_button);
         mAddLoopQuestionLevel.setOnClickListener(this);
+
+
+        // Null Check Box Listener for each Box and Only can set one box checked.
+        // Create 4 Null Check Box and check status for each one.
+        numCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked) {
+              if(charCheckBox.isChecked() || noneCheckBox.isChecked()) {
+                Toast.makeText(CreateQuestionActivity.this,"only one box is able to click",Toast.LENGTH_SHORT).show();
+                numCheckBox.toggle();
+              }
+              else {
+                nullCheckType = "Number";
+              }
+            }
+          }
+        });
+        charCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked) {
+              if(numCheckBox.isChecked() || noneCheckBox.isChecked()) {
+                Toast.makeText(CreateQuestionActivity.this,"only one box is able to click",Toast.LENGTH_SHORT).show();
+                charCheckBox.toggle();
+              }
+              else {
+                nullCheckType = "Character";
+              }
+            }
+          }
+        });
+
+        noneCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if(isChecked) {
+              if(numCheckBox.isChecked() || charCheckBox.isChecked()) {
+                Toast.makeText(CreateQuestionActivity.this,"only one box is able to click",Toast.LENGTH_SHORT).show();
+                noneCheckBox.toggle();
+              }
+              else {
+                nullCheckType = "None";
+              }
+            }
+          }
+        });
+
+        multCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if(isChecked) {
+              if(numCheckBox.isChecked() || charCheckBox.isChecked() || noneCheckBox.isChecked()) {
+                Toast.makeText(CreateQuestionActivity.this,"only one box is able to click",Toast.LENGTH_SHORT).show();
+                multCheckBox.toggle();
+              }
+              else {
+                 nullCheckType= "MCQ";
+              }
+            }
+          }
+        });
+
     }
+
 
     // If a Question is selected to be a Loop Question then this will allow you to
     // create Loop Question Levels
@@ -152,12 +262,15 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             HashMap<Language, EditText> questionTexts,
             List<EditText> listOptions) {
 
+
         question.setType(propertyDef.getName());
+        /* INSERT */
         DatabaseHelper.QUESTION_TABLE.insert(question);
 
         QuestionProperty quesProp = new QuestionProperty();
         quesProp.setQuestionId(question.getId());
         quesProp.setPropertyId(propertyDef.getId());
+        /* INSERT */
         DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
 
         for (Language lang : questionTexts.keySet()) {
@@ -169,6 +282,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             quesLang.setQuestionId(question.getId());
             quesLang.setQuestionLanguageId(lang.getId());
             quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
+            /* INSERT */
             DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
 
             if (propertyDef.getName().equals(Constants.LIST)) {
@@ -179,6 +293,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                     questionOption.setQuestionId(question.getId());
                     questionOption.setQuestionLanguageId(lang.getId());
                     questionOption.setOptionText(preDefinedAnswer);
+                    /* INSERT */
                     DatabaseHelper.QUESTION_OPTION_TABLE.insert(questionOption);
                 }
             }
@@ -244,7 +359,8 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_select, parent, false);
             }
 
-            final ConstraintLayout.LayoutParams listViewParams = (ConstraintLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+
 
             //Edit Text for entering the question for the selected lang
             final EditText questionText = new EditText(getApplicationContext());
@@ -263,11 +379,19 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             buttonAdd.setImageResource(R.drawable.ic_add_black_24dp);
             buttonAdd.getBackground().setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
 
+            final ImageButton multipleChoiceButton = new ImageButton(getApplicationContext());
+            multipleChoiceButton.setMinimumHeight(50);
+            multipleChoiceButton.setMinimumWidth(50);
+            multipleChoiceButton.setRight(10);
+            multipleChoiceButton.setImageResource(R.drawable.ic_add_black_24dp);
+            multipleChoiceButton.getBackground().setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
 
             buttonAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     EditText editText = new EditText(getApplicationContext());
+                    EditText copyText = editText;
+                    optionsList.add(copyText);
                     listOptionsCounter += 1;
                     editText.setTextColor(Color.BLACK);
                     editText.setHint("Type Option " + listOptionsCounter);
@@ -277,6 +401,21 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                 }
             });
 
+            multipleChoiceButton.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                EditText editText = new EditText(getApplicationContext());
+                EditText copyText = editText;
+                optionsList.add(copyText);
+                multipleOptionsCounter+=1;
+                editText.setTextColor(Color.BLACK);
+                editText.setHint("Type Multiple option " + multipleOptionsCounter);
+                editText.setHintTextColor(Color.GRAY);
+                linearView.addView(copyText);
+                allListOptions.add(editText);
+              }
+            });
+
             final CheckBox languageSelect = convertView.findViewById(R.id.entry_list_select_box);
             languageSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -284,21 +423,36 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                     questionPropertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
                     //final String questionType = propertyDef.getName();
                     question.setType(questionPropertyDef.getName());
-                    if (isChecked) {
-                        if (question.getType().equals(Constants.LIST)) {
-                            buttonAdd.setVisibility(View.VISIBLE);
-                            linearView.addView(questionText, params);
-                            linearView.addView(buttonAdd);
-                            questionTexts.put(language, questionText);
-                        } else {
-                            linearView.addView(questionText, params);
-                            questionTexts.put(language, questionText);
-                        }
-                    } else {
-                        linearView.removeView(questionText);
-                        listViewParams.height -= 100;
-                        questionTexts.remove(language);
+                  if (isChecked) {
+                    if (question.getType().equals(Constants.LIST) || question.getType().equals(Constants.MULTI_CHOICE)) {
+                      linearView.addView(questionText, params);
+
+                      if(question.getType().equals(Constants.LIST)) {
+                        linearView.addView(buttonAdd);
+                        buttonAdd.setVisibility(View.VISIBLE);
+                      }
+                      if(question.getType().equals(Constants.MULTI_CHOICE)) {
+                        linearView.addView(multipleChoiceButton);
+                        multipleChoiceButton.setVisibility(View.VISIBLE);
+                      }
+
+                      questionTexts.put(language, questionText);
                     }
+                    else {
+                      linearView.addView(questionText, params);
+                      questionTexts.put(language, questionText);
+                    }
+                  }
+                  else {
+                    buttonTextDisappear(buttonAdd, linearView);
+                    buttonTextDisappear(multipleChoiceButton, linearView);
+                    linearView.removeView(questionText);
+                    listViewParams.height -= 100;
+                    questionTexts.remove(language);
+                    removeOptions(optionsList, linearView);
+                    listOptionsCounter = 0;
+                    multipleOptionsCounter = 0;
+                  }
                 }
             });
 
@@ -310,6 +464,70 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
         }
 
+    }
+
+    /**
+     * Helper function that helper remove button and text field
+     */
+    public void buttonTextDisappear(ImageButton button, LinearLayout linearView) {
+      button.setVisibility(View.GONE);
+      linearView.removeView(button);
+
+    }
+
+    public void removeOptions(List<EditText> optionsList, LinearLayout linearView) {
+      for (int idx = 0; idx < optionsList.size(); idx++) {
+        EditText option = optionsList.get(idx);
+        linearView.removeView(option);
+      }
+      optionsList.clear();
+    }
+
+
+    /**
+     * Helper function that validate user expect answer's length
+     *
+     * @return {@link Boolean}
+     */
+    private boolean validateLengthOfAnswer() {
+        String minInputLength = minLength.getText().toString();
+        String maxInputLength = maxLength.getText().toString();
+        if(minInputLength == null || minInputLength.isEmpty()) minInputLength = "1";
+        if(minInputLength == null || maxInputLength.isEmpty()) maxInputLength = String.valueOf(Integer.MAX_VALUE);
+        for(int i = 0; i < minInputLength.length(); i++) {
+          if(!Character.isDigit(minInputLength.charAt(i))) {
+            minLength.setError("the minimum length of answer should be number");
+            Toast.makeText(this, "length of answer should be all number", Toast.LENGTH_SHORT).show();
+            return false;
+          }
+        }
+        for(int i = 0; i < maxInputLength.length(); i++) {
+          if(!Character.isDigit(maxInputLength.charAt(i))) {
+            maxLength.setError("the maximum length of answer should be number");
+            Toast.makeText(this, "length of answer should be all number", Toast.LENGTH_SHORT).show();
+            return false;
+          }
+        }
+        if(Integer.parseInt(maxInputLength) <= Integer.parseInt(minInputLength)) {
+          Toast.makeText(this, "maximum length can't larger than minimum length", Toast.LENGTH_SHORT).show();
+          return false;
+        }
+        minLength.setText(minInputLength);
+        maxLength.setText(maxInputLength);
+        return true;
+      }
+
+    /**
+     * Helper function that validate the Null CheckBox have to selected
+     *
+     * @return {@link Boolean}
+     */
+    private boolean validateCheckBox() {
+      if(nullCheckType == null || nullCheckType.isEmpty()) {
+        Toast.makeText(this, "At Least Select one type of answer check", Toast.LENGTH_SHORT).show();
+        return false;
+      }
+      return true;
     }
 
 

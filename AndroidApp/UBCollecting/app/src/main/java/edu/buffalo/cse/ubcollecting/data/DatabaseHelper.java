@@ -109,6 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         admin.setIntroRequired(0);
         admin.setPhotoRequired(0);
         admin.setOnClient(0);
+        /* INSERT */
         ROLE_TABLE.insert(admin);
 
         Role consultant = new Role();
@@ -116,6 +117,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         consultant.setIntroRequired(1);
         consultant.setPhotoRequired(1);
         consultant.setOnClient(1);
+        /* INSERT */
         ROLE_TABLE.insert(consultant);
 
         Role interviewer = new Role();
@@ -123,52 +125,68 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         interviewer.setIntroRequired(0);
         interviewer.setPhotoRequired(0);
         interviewer.setOnClient(1);
+        /* INSERT */
         ROLE_TABLE.insert(interviewer);
 
         QuestionnaireType regType = new QuestionnaireType();
         regType.setName(Constants.REGULAR);
+        /* INSERT */
         QUESTIONNAIRE_TYPE_TABLE.insert(regType);
 
         QuestionnaireType introType = new QuestionnaireType();
         introType.setName(Constants.INTRODUCTORY);
+        /* INSERT */
         QUESTIONNAIRE_TYPE_TABLE.insert(introType);
 
         QuestionnaireType sclType = new QuestionnaireType();
         sclType.setName(Constants.SOCIOLINGUISTIC);
+        /* INSERT */
         QUESTIONNAIRE_TYPE_TABLE.insert(sclType);
 
         QuestionnaireType emrType = new QuestionnaireType();
         emrType.setName(Constants.EMERGENCY);
+        /* INSERT */
         QUESTIONNAIRE_TYPE_TABLE.insert(emrType);
 
         QuestionnaireType testType = new QuestionnaireType();
         testType.setName(Constants.TEST);
+        /* INSERT */
         QUESTIONNAIRE_TYPE_TABLE.insert(testType);
 
         QuestionPropertyDef audProperty = new QuestionPropertyDef();
         audProperty.setName(Constants.AUDIO);
+        /* INESRT */
         QUESTION_PROPERTY_DEF_TABLE.insert(audProperty);
 
         QuestionPropertyDef vidProperty = new QuestionPropertyDef();
         vidProperty.setName(Constants.VIDEO);
+        /* INSERT */
         QUESTION_PROPERTY_DEF_TABLE.insert(vidProperty);
 
         QuestionPropertyDef phtProperty = new QuestionPropertyDef();
         phtProperty.setName(Constants.PHOTO);
+        /* INSERT */
         QUESTION_PROPERTY_DEF_TABLE.insert(phtProperty);
 
         QuestionPropertyDef freeProperty = new QuestionPropertyDef();
         freeProperty.setName(Constants.TEXT);
+        /* INSERT */
         QUESTION_PROPERTY_DEF_TABLE.insert(freeProperty);
 
         //Roopa
         QuestionPropertyDef listProperty = new QuestionPropertyDef();
         listProperty.setName(Constants.LIST);
+        /* INSERT */
         QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
 
         QuestionPropertyDef loopProperty = new QuestionPropertyDef();
         loopProperty.setName(Constants.LOOP);
+        /* INSERT */
         QUESTION_PROPERTY_DEF_TABLE.insert(loopProperty);
+
+        QuestionPropertyDef MultiChoiceProperty = new QuestionPropertyDef();
+        MultiChoiceProperty.setName(Constants.MULTI_CHOICE);
+        QUESTION_PROPERTY_DEF_TABLE.insert(MultiChoiceProperty);
 
         //Roopa
 //
@@ -206,24 +224,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         LanguageType lwc = new LanguageType();
         lwc.setName("LWC");
+        /* INSERT */
         LANGUAGE_TYPE_TABLE.insert(lwc);
 
         LanguageType researchLang = new LanguageType();
         researchLang.setName("Research Language");
+        /* INSERT */
         LANGUAGE_TYPE_TABLE.insert(researchLang);
 
         LanguageType reg = new LanguageType();
         reg.setName("Regional");
+        /* INSERT */
         LANGUAGE_TYPE_TABLE.insert(reg);
 
         Language english = new Language();
         english.setName(ENGLISH_LANG_NAME);
         english.setTypeId(researchLang.getId());
+        /* INSERT */
         LANGUAGE_TABLE.insert(english);
 
         Language french = new Language();
         french.setName("French");
         french.setTypeId(researchLang.getId());
+        /* INSERT */
         LANGUAGE_TABLE.insert(french);
 
     }

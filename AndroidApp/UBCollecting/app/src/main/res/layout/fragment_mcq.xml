@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+
+  <TextView
+    android:id="@+id/question_language"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:paddingStart="5dp"
+    android:text="Language:"
+    android:textSize="15sp" />
+
+  <Spinner
+    android:id="@+id/question_language_spinner"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBottom="@+id/next_question"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="4dp"
+    android:layout_marginBottom="271dp">
+
+  </Spinner>
+
+  <TextView
+    android:id="@+id/question_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="70dp"
+    android:textSize="18sp"
+    android:text="Question Text Goes Here"/>
+
+  <TextView
+    android:id="@+id/mcq_instructions"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/question_text"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="50dp"
+    android:textSize="12sp"
+    android:text="Please pick the answer based on reuqirement"/>
+
+
+<!--  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:id="@+id/mcq_options_view"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_alignParentTop="true"-->
+<!--    android:layout_alignParentEnd="true"-->
+<!--    android:layout_below="@+id/mcq_instructions"-->
+<!--    android:layout_marginTop="164dp"-->
+<!--    android:layout_marginEnd="180dp"></LinearLayout>-->
+
+  <Button
+    android:id="@+id/show_option"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/question_language"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="162dp"
+    android:layout_marginEnd="139dp"
+    android:text="Show options">
+
+  </Button>
+
+  <LinearLayout
+    android:id="@+id/mcq_options_view"
+    android:layout_width="226dp"
+    android:layout_height="195dp"
+    android:layout_below="@+id/mcq_instructions"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="211dp"
+    android:layout_marginEnd="81dp"
+    android:orientation="vertical">
+
+  </LinearLayout>
+
+  <Button
+    android:id="@+id/next_question"
+    android:layout_width="244dp"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="420dp"
+    android:layout_marginEnd="67dp"
+    android:text="Next" />
+
+  <Button
+    android:id="@+id/skip_question"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignEnd="@+id/question_text"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="0dp"
+    android:layout_marginEnd="33dp"
+    android:text="Skip " />
+
+  <Button
+    android:id="@+id/saveandexit_question"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignEnd="@+id/question_text"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="0dp"
+    android:layout_marginEnd="-91dp"
+    android:text="Save and Exit" />
+
+
+</RelativeLayout>

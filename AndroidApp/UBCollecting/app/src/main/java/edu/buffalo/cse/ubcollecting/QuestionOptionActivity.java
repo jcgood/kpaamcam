@@ -1,11 +1,13 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import edu.buffalo.cse.ubcollecting.data.models.QuestionOption;
 
@@ -40,6 +42,7 @@ public class QuestionOptionActivity extends AppCompatActivity {
                 option.setQuestionLanguageId(""); // TODO
                 option.setOptionText(optionTextField.getText().toString());
 
+                /* INSERT */
                 QUESTION_OPTION_TABLE.insert(option);
             }
         });

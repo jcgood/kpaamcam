@@ -1,6 +1,8 @@
 package edu.buffalo.cse.ubcollecting.data;
 import android.app.Application;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -69,14 +71,15 @@ public class FireBaseCloudHelper<E extends Model> extends Application{
         this.database = FirebaseDatabase.getInstance();
         this.storage = FirebaseStorage.getInstance();
         this.mDatabase = database.getReference();
-        this.getConnectionStateRef();
+       // this.getConnectionStateRef();
+        isNetworkAvailable(context);
 
         //Initialize the SchemaValidator and create a listener query that triggers the Validator
         this.mSchemaValidator = new SchemaValidator();
         this.attachListenerToDatabaseRef();
 
     }
-
+    //LISTENER FOR CONNECTION STATE
     public void getConnectionStateRef() {
         // [START rtdb_listen_connected]
         this.connRef = FirebaseDatabase.getInstance().getReference(".info/connected");
@@ -99,6 +102,25 @@ public class FireBaseCloudHelper<E extends Model> extends Application{
             }
 
         });
+    }
+    //single use method way of checking connection
+    public static boolean isNetworkAvailable(Context con) {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) con
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
+            if (networkInfo != null && networkInfo.isConnected()) {
+
+                Toast.makeText(con, "connected", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Toast.makeText(con, "not connected", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     public void attachListenerToDatabaseRef() {

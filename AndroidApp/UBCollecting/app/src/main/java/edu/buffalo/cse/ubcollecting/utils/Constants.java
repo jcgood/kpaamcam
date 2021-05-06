@@ -21,7 +21,12 @@ public class Constants {
     public static final String TEXT = "Text";
     public static final String LIST = "List";
     public static final String LOOP = "Loop";
-    public static final String MULTI_CHOICE = "Multi_Choice";
+    public static final String MULTI_CHOICE = "Multiple Choice";
+
+    //Additional Answer Types
+    public static final String NUMERIC = "Numeric";
+    public static final String DATE = "Date";
+    public static final String PHONE = "Phone";
 
     //Language Type
     public static final String LWC = "LWC";
@@ -31,4 +36,8 @@ public class Constants {
     //Language Name
     public static final String ENGLISH = "English";
     public static final String FRENCH = "French";
+
+    //Answer default length
+    public static final int MIN_LENGTH = 0;
+    public static final int MAX_LENGTH = Integer.MAX_VALUE;
 }

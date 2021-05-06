@@ -7,8 +7,8 @@
     <string name="login_button_label">Login</string>
     <string name="done_button_label">Done</string>
     <string name="login_error">Incorrect Email or Password</string>
-    <string name="select_question_property">Please Select Desired Question Property: </string>
-    <string name="select_question_languages">Please Select All Question Languages: </string>
+    <string name="select_question_property">Question Type: </string>
+    <string name="select_question_languages">Question Text: </string>
     <string name="languages">Languages</string>
     <string name="title_activity_view_questions">ViewQuestions</string>
 
@@ -43,5 +43,7 @@
     <string name="type_question_hint">Type Question Here</string>
     <string name="type_question_option_hint">Type option</string>
     <string name="action_logout">Logout</string>
+    <string name="answer_length">Min/Max Answer Length</string>
+    <string name="answer_type">Answer Type: </string>
 
 </resources>

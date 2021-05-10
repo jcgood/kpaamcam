@@ -14,10 +14,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.tables.QuestionnaireContentTable;
@@ -42,6 +45,7 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
     private ViewPager viewPager;
     private QuestionnaireQuestionsFragment questionsFragment;
     private CreateQuestionnaireFragment createQuestionnaireFragment;
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
 
     @SuppressLint("WrongConstant")
     private void setupViewPager(ViewPager viewPager){
@@ -145,10 +149,26 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
             setEntryByUI();
             if (isValidEntry()) {
                 /* INSERT */
+                try {
+                    fireBaseCloudHelper.insert(table, entry);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    Log.i(TAG, "Could not access server database (Firebase)");
+                    e.printStackTrace();
+                }
                 table.insert(entry);
                 setEntryResult(entry);
                 for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
                     /* INSERT */
+                    try {
+                        fireBaseCloudHelper.insert(QUESTIONNAIRE_CONTENT_TABLE, content);
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        Log.i(TAG, "Could not access server database (Firebase)");
+                        e.printStackTrace();
+                    }
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 Hashtable<String, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
@@ -156,6 +176,14 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                     ArrayList <QuestionnaireContent> loopContent = loopContentTable.get(qcId);
                     for(QuestionnaireContent qcEntry: loopContent){
                         /* INSERT */
+                        try {
+                            fireBaseCloudHelper.insert(QUESTIONNAIRE_CONTENT_TABLE, qcEntry);
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            Log.i(TAG, "Could not access server database (Firebase)");
+                            e.printStackTrace();
+                        }
                         QUESTIONNAIRE_CONTENT_TABLE.insert(qcEntry);
                     }
                 }
@@ -187,6 +215,14 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                 for (QuestionnaireContent content : questionsFragment.getQuestionnaireContent()) {
                     content.setIsParent(0);
                     /* INSERT */
+                    try {
+                        fireBaseCloudHelper.insert(QUESTIONNAIRE_CONTENT_TABLE, content);
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        Log.i(TAG, "Could not access server database (Firebase)");
+                        e.printStackTrace();
+                    }
                     QUESTIONNAIRE_CONTENT_TABLE.insert(content);
                 }
                 Hashtable<String, ArrayList<QuestionnaireContent>> loopContentTable =questionsFragment.getLoopContent();
@@ -194,6 +230,14 @@ public class QuestionnaireActivity extends EntryActivity<Questionnaire> implemen
                     ArrayList <QuestionnaireContent> loopContent = loopContentTable.get(qcId);
                     for(QuestionnaireContent qcEntry: loopContent){
                         /* INSERT */
+                        try {
+                            fireBaseCloudHelper.insert(QUESTIONNAIRE_CONTENT_TABLE, qcEntry);
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            Log.i(TAG, "Could not access server database (Firebase)");
+                            e.printStackTrace();
+                        }
                         QUESTIONNAIRE_CONTENT_TABLE.insert(qcEntry);
                     }
                 }

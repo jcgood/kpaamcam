@@ -5,11 +5,16 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 //import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.lang.reflect.InvocationTargetException;
+
+import edu.buffalo.cse.ubcollecting.app.App;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.ANSWER_TABLE;
@@ -27,6 +32,7 @@ public class AnswerActivity extends AppCompatActivity {
     private EditText answerLabelField;
     private EditText answerTextField;
     private Button submitButton;
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,14 @@ public class AnswerActivity extends AppCompatActivity {
                 answer.setText(answerTextField.getText().toString());
 
                 /* INSERT */
+                try {
+                    fireBaseCloudHelper.insert(ANSWER_TABLE, answer);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    Log.i(TAG, "Could not access server database (Firebase)");
+                    e.printStackTrace();
+                }
                 ANSWER_TABLE.insert(answer);
             }
         });

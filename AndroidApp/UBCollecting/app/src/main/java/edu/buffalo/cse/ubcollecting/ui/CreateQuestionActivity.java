@@ -8,6 +8,7 @@ import android.os.Bundle;
 //import androidx.constraintlayout.ConstraintLayout;
 //import android.support.v7.app.AppCompatActivity;
 //import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,12 +32,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.R;
+import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.models.Question;
@@ -72,6 +76,8 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
     private List<EditText> allListOptions;
     private boolean checkSelected = false;
     private int listOptionsCounter = 0;
+
+    private static String TAG = "CreateQuestionActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,19 +161,45 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             HashMap<Language, EditText> questionTexts,
             List<EditText> listOptions) {
 
+        FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
+
         question.setType(propertyDef.getName());
         /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(DatabaseHelper.QUESTION_TABLE, question);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         DatabaseHelper.QUESTION_TABLE.insert(question);
 
         QuestionProperty quesProp = new QuestionProperty();
         quesProp.setQuestionId(question.getId());
         quesProp.setPropertyId(propertyDef.getId());
         /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(DatabaseHelper.QUESTION_PROPERTY_TABLE, quesProp);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         DatabaseHelper.QUESTION_PROPERTY_TABLE.insert(quesProp);
 
         for (Language lang : questionTexts.keySet()) {
             if (lang.getName().equals("English")) {
                 question.setDisplayText(questionTexts.get(lang).getText().toString());
+                try {
+                    fireBaseCloudHelper.update(DatabaseHelper.QUESTION_TABLE, question);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    Log.i(TAG, "Could not access server database (Firebase)");
+                    e.printStackTrace();
+                }
                 DatabaseHelper.QUESTION_TABLE.update(question);
             }
             QuestionLangVersion quesLang = new QuestionLangVersion();
@@ -175,6 +207,14 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             quesLang.setQuestionLanguageId(lang.getId());
             quesLang.setQuestionText(questionTexts.get(lang).getText().toString());
             /* INSERT */
+            try {
+                fireBaseCloudHelper.insert(DatabaseHelper.QUESTION_LANG_VERSION_TABLE, quesLang);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                Log.i(TAG, "Could not access server database (Firebase)");
+                e.printStackTrace();
+            }
             DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
 
             if (propertyDef.getName().equals(Constants.LIST)) {
@@ -186,6 +226,14 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                     questionOption.setQuestionLanguageId(lang.getId());
                     questionOption.setOptionText(preDefinedAnswer);
                     /* INSERT */
+                    try {
+                        fireBaseCloudHelper.insert(DatabaseHelper.QUESTION_OPTION_TABLE, questionOption);
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        Log.i(TAG, "Could not access server database (Firebase)");
+                        e.printStackTrace();
+                    }
                     DatabaseHelper.QUESTION_OPTION_TABLE.insert(questionOption);
                 }
             }

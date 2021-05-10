@@ -4,6 +4,7 @@ import android.os.Bundle;
 //import android.support.annotation.Nullable;
 //import android.support.v7.widget.LinearLayoutManager;
 //import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,12 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
@@ -40,6 +43,9 @@ public class LoopFragment extends QuestionFragment {
     private Session session;
 
     private String mLoopQuestionId;
+
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(this.getContext());
+    private final String TAG = "LoopFragment";
 
     @Nullable
     @Override
@@ -100,6 +106,14 @@ public class LoopFragment extends QuestionFragment {
                answer.setText(answerTextList.get(i).getText().toString());
            }
             /* INSERT */
+            try {
+                fireBaseCloudHelper.insert(DatabaseHelper.ANSWER_TABLE, answer);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                Log.i(TAG, "Could not access server database (Firebase)");
+                e.printStackTrace();
+            }
             DatabaseHelper.ANSWER_TABLE.insert(answer);
         }
     }

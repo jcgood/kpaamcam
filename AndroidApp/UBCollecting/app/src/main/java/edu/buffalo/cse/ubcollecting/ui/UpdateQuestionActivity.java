@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.buffalo.cse.ubcollecting.R;
+import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Language;
 import edu.buffalo.cse.ubcollecting.data.models.Question;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionLangVersion;
@@ -58,6 +62,9 @@ public class UpdateQuestionActivity extends AppCompatActivity {
     private ArrayList<EditText> allQuestionOptionsList;
     private TextView selectQuestionProperties;
     private TextView selectQuestionLanguages;
+
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
+    private final String TAG = "UpdateQuestionActivity";
 
 
     @Override
@@ -124,6 +131,14 @@ public class UpdateQuestionActivity extends AppCompatActivity {
                                 quesLang.setQuestionLanguageId(lang.getId());
                                 quesLang.setQuestionText(newQuestionTexts.get(lang).getText().toString());
                                 /* INSERT */
+                                try {
+                                    fireBaseCloudHelper.insert(DatabaseHelper.QUESTION_LANG_VERSION_TABLE, quesLang);
+                                } catch (InvocationTargetException e) {
+                                    e.printStackTrace();
+                                } catch (IllegalAccessException e) {
+                                    Log.i(TAG, "Could not access server database (Firebase)");
+                                    e.printStackTrace();
+                                }
                                 DatabaseHelper.QUESTION_LANG_VERSION_TABLE.insert(quesLang);
                             }
                         }

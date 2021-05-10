@@ -3,11 +3,16 @@ package edu.buffalo.cse.ubcollecting;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 //import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.lang.reflect.InvocationTargetException;
+
+import edu.buffalo.cse.ubcollecting.app.App;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.File;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.FILE_TABLE;
@@ -28,6 +33,7 @@ public class FileActivity extends AppCompatActivity {
     private EditText fileStartTimeField;
     private EditText fileEndTimeField;
     private Button submitButton;
+    private final FireBaseCloudHelper fireBaseCloudHelper  = new FireBaseCloudHelper(App.getContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,14 @@ public class FileActivity extends AppCompatActivity {
                 file.setEndTime(fileEndTimeField.getText().toString());
 
                 /* INSERT */
+                try {
+                    fireBaseCloudHelper.insert(FILE_TABLE, file);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    Log.i(TAG, "Could not access server database (Firebase)");
+                    e.printStackTrace();
+                }
                 FILE_TABLE.insert(file);
             }
         });

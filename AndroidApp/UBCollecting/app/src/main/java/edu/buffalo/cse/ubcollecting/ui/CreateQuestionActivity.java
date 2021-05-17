@@ -70,11 +70,14 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
     private Spinner propertySpinner;
     private TextView answerLength;
     private ArrayAdapter<QuestionPropertyDef> propertyAdapter;
+
+
     private EditText minLength;
     private EditText maxLength;
     private CheckBox charCheckBox;
     private CheckBox numCheckBox;
     private CheckBox noneCheckBox;
+    private CheckBox multCheckBox;
 
     private List<EditText> optionsList = new ArrayList<>();
     private QuestionPropertyDef questionPropertyDef;
@@ -107,6 +110,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
         charCheckBox = findViewById(R.id.char_check_box);
         numCheckBox = findViewById(R.id.num_check_box);
         noneCheckBox = findViewById(R.id.none_check_box);
+        multCheckBox = findViewById(R.id.mulChoice);
 
         final ArrayList<QuestionPropertyDef> quesPropDefs = DatabaseHelper.QUESTION_PROPERTY_DEF_TABLE.getAll();
 
@@ -132,12 +136,24 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onClick(View view) {
-              System.out.println(nullCheckType);
+              for(int i = 0; i < optionsList.size(); i++){
+                System.out.println("this is optionlist options: " + optionsList.get(i).getText().toString());
+              }
+
+              for(int i = 0; i < allListOptions.size(); i++){
+                System.out.println("this is allListoption options: " + allListOptions.get(i).getText().toString());
+              }
                 if(validateLengthOfAnswer() && validateCheckBox()) {
                   if (validateEntry()) {
                     question.setMinLength(Integer.parseInt(minLength.getText().toString()));
                     question.setMaxLength(Integer.parseInt(maxLength.getText().toString()));
                     question.setNullCheckType(nullCheckType);
+                    StringBuilder mcq_options = new StringBuilder();
+                    for(int i = 0; i < allListOptions.size(); i++){
+                      mcq_options.append(allListOptions.get(i).getText().toString());
+                      mcq_options.append(",");
+                    }
+                    question.setNotes(mcq_options.toString());
                     questionPropertyDef = (QuestionPropertyDef) propertySpinner.getSelectedItem();
 
                     if (checkIsLoopQuestionAndOneLanguageSelected()) {
@@ -154,7 +170,7 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
 
 
         // Null Check Box Listener for each Box and Only can set one box checked.
-        // Create 3 Null Check Box
+        // Create 4 Null Check Box and check status for each one.
         numCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
           @Override
           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -198,6 +214,22 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
             }
           }
         });
+
+        multCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+          @Override
+          public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+            if(isChecked) {
+              if(numCheckBox.isChecked() || charCheckBox.isChecked() || noneCheckBox.isChecked()) {
+                Toast.makeText(CreateQuestionActivity.this,"only one box is able to click",Toast.LENGTH_SHORT).show();
+                multCheckBox.toggle();
+              }
+              else {
+                 nullCheckType= "MCQ";
+              }
+            }
+          }
+        });
+
     }
 
 
@@ -327,7 +359,8 @@ public class CreateQuestionActivity extends AppCompatActivity implements View.On
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.entry_list_item_select, parent, false);
             }
 
-            final ConstraintLayout.LayoutParams listViewParams = (ConstraintLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+            final LinearLayout.LayoutParams listViewParams = (LinearLayout.LayoutParams) questionLanguagesListView.getLayoutParams();
+
 
             //Edit Text for entering the question for the selected lang
             final EditText questionText = new EditText(getApplicationContext());

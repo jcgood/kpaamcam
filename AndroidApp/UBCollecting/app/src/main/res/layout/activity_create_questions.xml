@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<LinearLayout
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical">
+  android:layout_height="wrap_content"
+  android:orientation ="vertical" >
 
   <include
     android:id="@+id/create_question_toolbar"
     layout="@layout/activity_toolbar" />
-
-
   <TextView
     android:id="@+id/select_question_properties"
     android:layout_width="match_parent"
@@ -35,83 +33,70 @@
     android:spinnerMode="dropdown"
     app:layout_constraintTop_toBottomOf="@id/select_question_properties" />
 
-
-  <TextView
-    android:id="@+id/answer_length"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:text="the length of answer"
-    app:layout_constraintTop_toBottomOf="@id/question_property_spinner"
-    tools:ignore="HardcodedText" />
+    android:orientation="horizontal" >
+
+    <TextView
+      android:id="@+id/answer_length"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:text="the_length_of_answer" />
 
 
-  <EditText
-    android:id="@+id/min_input"
+    <EditText
+      android:id="@+id/min_input"
+      android:layout_width="80dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="15dp" />
 
-    android:layout_width="80dp"
+    <EditText
+      android:id="@+id/max_input"
+      android:layout_width="80dp"
+      android:layout_height="wrap_content" />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="30dp"
-    android:layout_marginEnd="300dp"
-    app:layout_constraintTop_toBottomOf="@+id/answer_length"
-    tools:ignore="MissingConstraints"
-    tools:layout_editor_absoluteX="16dp"/>
-
-
-  <EditText
-    android:id="@+id/max_input"
-    android:layout_width="80dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="300dp"
-    app:layout_constraintLeft_toRightOf="@id/min_input"
-    app:layout_constraintTop_toBottomOf="@+id/answer_length" />
-
-
-
+    android:orientation="horizontal" >
 
     <CheckBox
       android:id="@+id/char_check_box"
-      android:layout_width="100dp"
-      android:layout_height="30dp"
-      android:layout_marginStart="30dp"
-      android:text="Character"
-      android:textColor="#000000"
-      android:orientation="horizontal"
-      app:layout_constraintTop_toBottomOf="@+id/max_input"
-      tools:ignore="HardcodedText,MissingConstraints"
-      tools:layout_editor_absoluteX="16dp" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:text="character"
+      android:textColor="#000000" />
 
     <CheckBox
       android:id="@+id/num_check_box"
-      android:layout_width="100dp"
-      android:layout_height="30dp"
-      android:layout_marginStart="40dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
       android:text="number"
-      android:textColor="#000000"
-      android:orientation="horizontal"
-      app:layout_constraintTop_toBottomOf="@+id/max_input"
-      app:layout_constraintLeft_toRightOf="@id/char_check_box"
-      tools:ignore="HardcodedText,MissingConstraints"
-      tools:layout_editor_absoluteX="16dp" />
-
+      android:textColor="#000000"/>
     <CheckBox
       android:id="@+id/none_check_box"
-      android:layout_width="100dp"
-      android:layout_height="30dp"
-      android:layout_marginStart="40dp"
-      android:text="mix"
-      android:textColor="#000000"
-      android:orientation="horizontal"
-      app:layout_constraintTop_toBottomOf="@+id/max_input"
-      app:layout_constraintLeft_toRightOf="@id/num_check_box"
-      tools:ignore="HardcodedText,MissingConstraints"
-      tools:layout_editor_absoluteX="16dp" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:text="none"
+      android:textColor="#000000"/>
+
+    <CheckBox
+      android:id="@+id/mulChoice"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:text="MCQ(All)"
+      android:textColor="#000000"/>
 
 
+  </LinearLayout>
 
   <TextView
     android:id="@+id/select_question_languages"
@@ -124,37 +109,195 @@
     android:text="@string/select_question_languages"
     app:layout_constraintTop_toBottomOf="@+id/char_check_box" />
 
-
   <ListView
     android:id="@+id/question_languages_list_view"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
+    android:layout_height="350dp"
     android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"/>
+
+  <Button
+    android:id="@+id/create_question_add_list_level_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="10dp"
     android:layout_marginEnd="16dp"
-    app:layout_constraintBottom_toTopOf="@id/create_question_add_list_level_button"
-    app:layout_constraintTop_toBottomOf="@id/select_question_languages" />
+    android:enabled="false"
+    android:text="@string/add_question_list_level"
+    app:layout_constraintBottom_toTopOf="@id/create_question_submit_button" />
+
+  <Button
+    android:id="@+id/create_question_submit_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="10dp"
+    android:text="Submit"
+    app:layout_constraintBottom_toBottomOf="parent" />
+
+</LinearLayout>
+</ScrollView>
+
+  <!--<?xml version="1.0" encoding="utf-8"?>-->
 
 
-    <Button
-      android:id="@+id/create_question_add_list_level_button"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginEnd="16dp"
-      android:enabled="false"
-      android:text="@string/add_question_list_level"
-      app:layout_constraintBottom_toTopOf="@id/create_question_submit_button" />
 
-    <Button
-      android:id="@+id/create_question_submit_button"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="10dp"
-      android:layout_marginEnd="16dp"
-      android:layout_marginBottom="10dp"
-      android:text="Submit"
-      app:layout_constraintBottom_toBottomOf="parent" />
+  <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+  <!--  xmlns:app="http://schemas.android.com/apk/res-auto"-->
+  <!--  xmlns:tools="http://schemas.android.com/tools"-->
+  <!--  android:layout_width="match_parent"-->
+  <!--  android:layout_height="match_parent"-->
+  <!--  android:orientation="vertical">-->
+  <!--  -->
+  <!--  <include-->
+  <!--    android:id="@+id/create_question_toolbar"-->
+  <!--    layout="@layout/activity_toolbar" />-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+  <!--  <TextView-->
+  <!--    android:id="@+id/select_question_properties"-->
+  <!--    android:layout_width="match_parent"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:layout_marginStart="16dp"-->
+  <!--    android:layout_marginEnd="16dp"-->
+  <!--    android:paddingTop="10dp"-->
+  <!--    android:paddingBottom="10dp"-->
+  <!--    android:text="@string/select_question_property"-->
+  <!--    app:layout_constraintTop_toBottomOf="@id/create_question_toolbar" />-->
+
+  <!--  <Spinner-->
+  <!--    android:id="@+id/question_property_spinner"-->
+  <!--    android:layout_width="match_parent"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:layout_marginStart="16dp"-->
+  <!--    android:layout_marginEnd="16dp"-->
+  <!--    android:spinnerMode="dropdown"-->
+  <!--    app:layout_constraintTop_toBottomOf="@id/select_question_properties" />-->
+
+
+  <!--  <TextView-->
+  <!--    android:id="@+id/answer_length"-->
+  <!--    android:layout_width="match_parent"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:layout_marginStart="16dp"-->
+  <!--    android:layout_marginEnd="250dp"-->
+  <!--    android:paddingTop="10dp"-->
+  <!--    android:paddingBottom="10dp"-->
+  <!--    android:text="the length of answer"-->
+  <!--    app:layout_constraintTop_toBottomOf="@id/question_property_spinner"-->
+  <!--    tools:ignore="HardcodedText" />-->
+
+
+  <!--  <EditText-->
+  <!--    android:id="@+id/min_input"-->
+  <!--    android:layout_width="80dp"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:layout_marginStart="30dp"-->
+  <!--    android:layout_marginEnd="300dp"-->
+  <!--    app:layout_constraintTop_toBottomOf="@id/question_property_spinner"-->
+  <!--    app:layout_constraintLeft_toRightOf="@id/answer_length"-->
+  <!--    tools:ignore="MissingConstraints"-->
+  <!--    tools:layout_editor_absoluteX="16dp"/>-->
+
+
+  <!--  <EditText-->
+  <!--    android:id="@+id/max_input"-->
+  <!--    android:layout_width="80dp"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:layout_marginStart="16dp"-->
+  <!--    android:layout_marginEnd="300dp"-->
+  <!--    app:layout_constraintLeft_toRightOf="@id/min_input"-->
+  <!--    app:layout_constraintTop_toBottomOf="@id/question_property_spinner" />-->
+
+
+
+
+  <!--    <CheckBox-->
+  <!--      android:id="@+id/char_check_box"-->
+  <!--      android:layout_width="100dp"-->
+  <!--      android:layout_height="30dp"-->
+  <!--      android:layout_marginStart="30dp"-->
+  <!--      android:text="Character"-->
+  <!--      android:textColor="#000000"-->
+  <!--      android:orientation="horizontal"-->
+  <!--      app:layout_constraintTop_toBottomOf="@+id/max_input"-->
+  <!--      tools:ignore="HardcodedText,MissingConstraints"-->
+  <!--      tools:layout_editor_absoluteX="16dp" />-->
+
+  <!--    <CheckBox-->
+  <!--      android:id="@+id/num_check_box"-->
+  <!--      android:layout_width="100dp"-->
+  <!--      android:layout_height="30dp"-->
+  <!--      android:layout_marginStart="40dp"-->
+  <!--      android:text="number"-->
+  <!--      android:textColor="#000000"-->
+  <!--      android:orientation="horizontal"-->
+  <!--      app:layout_constraintTop_toBottomOf="@+id/max_input"-->
+  <!--      app:layout_constraintLeft_toRightOf="@id/char_check_box"-->
+  <!--      tools:ignore="HardcodedText,MissingConstraints"-->
+  <!--      tools:layout_editor_absoluteX="16dp" />-->
+
+  <!--    <CheckBox-->
+  <!--      android:id="@+id/none_check_box"-->
+  <!--      android:layout_width="100dp"-->
+  <!--      android:layout_height="30dp"-->
+  <!--      android:layout_marginStart="40dp"-->
+  <!--      android:text="mix"-->
+  <!--      android:textColor="#000000"-->
+  <!--      android:orientation="horizontal"-->
+  <!--      app:layout_constraintTop_toBottomOf="@+id/max_input"-->
+  <!--      app:layout_constraintLeft_toRightOf="@id/num_check_box"-->
+  <!--      tools:ignore="HardcodedText,MissingConstraints"-->
+  <!--      tools:layout_editor_absoluteX="16dp" />-->
+
+
+
+
+  <!--  <TextView-->
+  <!--    android:id="@+id/select_question_languages"-->
+  <!--    android:layout_width="match_parent"-->
+  <!--    android:layout_height="wrap_content"-->
+  <!--    android:layout_marginStart="16dp"-->
+  <!--    android:layout_marginEnd="16dp"-->
+  <!--    android:paddingTop="10dp"-->
+  <!--    android:paddingBottom="10dp"-->
+  <!--    android:text="@string/select_question_languages"-->
+  <!--    app:layout_constraintTop_toBottomOf="@+id/char_check_box" />-->
+
+
+  <!--  <ListView-->
+  <!--    android:id="@+id/question_languages_list_view"-->
+  <!--    android:layout_width="match_parent"-->
+  <!--    android:layout_height="0dp"-->
+  <!--    android:layout_marginStart="16dp"-->
+  <!--    android:layout_marginEnd="16dp"-->
+  <!--    app:layout_constraintBottom_toTopOf="@id/create_question_add_list_level_button"-->
+  <!--    app:layout_constraintTop_toBottomOf="@id/select_question_languages" />-->
+
+
+  <!--    <Button-->
+  <!--      android:id="@+id/create_question_add_list_level_button"-->
+  <!--      android:layout_width="match_parent"-->
+  <!--      android:layout_height="wrap_content"-->
+  <!--      android:layout_marginStart="16dp"-->
+  <!--      android:layout_marginTop="10dp"-->
+  <!--      android:layout_marginEnd="16dp"-->
+  <!--      android:enabled="false"-->
+  <!--      android:text="@string/add_question_list_level"-->
+  <!--      app:layout_constraintBottom_toTopOf="@id/create_question_submit_button" />-->
+
+  <!--    <Button-->
+  <!--      android:id="@+id/create_question_submit_button"-->
+  <!--      android:layout_width="match_parent"-->
+  <!--      android:layout_height="wrap_content"-->
+  <!--      android:layout_marginStart="16dp"-->
+  <!--      android:layout_marginTop="10dp"-->
+  <!--      android:layout_marginEnd="16dp"-->
+  <!--      android:layout_marginBottom="10dp"-->
+  <!--      android:text="Submit"-->
+  <!--      app:layout_constraintBottom_toBottomOf="parent" />-->
+
+  <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

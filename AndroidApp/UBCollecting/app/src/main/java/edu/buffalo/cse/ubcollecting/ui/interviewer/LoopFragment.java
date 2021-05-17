@@ -1,14 +1,19 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +23,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -50,6 +56,7 @@ public class LoopFragment extends QuestionFragment {
     private Button mSaveAndQuitButton;
     private Button mediauploadButton;
     private Button viewMediaButton;
+    private TextView timer;
     private EditText answerText;
     private EntryAdapter entryAdapter;
     private QuestionnaireContent questionnaireContent;
@@ -65,8 +72,13 @@ public class LoopFragment extends QuestionFragment {
     private String currentPath;
     private Iterator questionIterator;
     private int answerIndex;
+    private MediaRecorder myAudioRecorder;
+    private String mCurrentPath;
+    private boolean recording;
+    private boolean permissionGranted;
 
     static final int REQUEST_MEDIA_CAPTURE = 1;
+    private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
 
 
     @Nullable
@@ -81,8 +93,8 @@ public class LoopFragment extends QuestionFragment {
         listQuestionGroup = view.findViewById(R.id.list_group);
         mediaQuestionGroup = view.findViewById(R.id.upload_group);
         mediauploadButton =  view.findViewById(R.id.upload_button);
-        viewMediaButton = view.findViewById(R.id.view);
-
+        viewMediaButton = view.findViewById(R.id.view_media);
+        timer = view.findViewById(R.id.timer);
 
         viewMediaButton.setVisibility(View.INVISIBLE);
         listQuestionGroup.setVisibility(View.VISIBLE);
@@ -175,85 +187,25 @@ public class LoopFragment extends QuestionFragment {
             mediaQuestionGroup.setVisibility(View.VISIBLE);
             mediauploadButton.setText("Take Photo");
             viewMediaButton.setText("View Photo");
-
-            mediauploadButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                            viewMediaButton.setVisibility(View.VISIBLE);
-                        } catch (IOException ex) {
-                            // Error occurred while creating the File
-                            Log.i("PhotoFragment", "IOException");
-                        }
-                        // Continue only if the File was successfully created
-                        if (photoFile != null) {
-                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-                            startActivityForResult(cameraIntent, REQUEST_MEDIA_CAPTURE);
-                        }
-                    }
-                }
-            });
-            viewMediaButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try{
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.parse(currentPath), "image/*");
-                        startActivity(intent);
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            });
+            mediauploadButton.setOnClickListener(new MediaButtonListener(MediaStore.ACTION_IMAGE_CAPTURE));
+            viewMediaButton.setOnClickListener(new ViewMediaListener("image"));
         }
         else if(typeofQuestion.equals("Video")){
             mediaQuestionGroup.setVisibility(View.VISIBLE);
             mediauploadButton.setText("Take Video");
             viewMediaButton.setText("View Video");
-            mediauploadButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                    if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                            viewMediaButton.setVisibility(View.VISIBLE);
+            mediauploadButton.setOnClickListener(new MediaButtonListener(MediaStore.ACTION_VIDEO_CAPTURE));
+            viewMediaButton.setOnClickListener(new ViewMediaListener("video"));
+        }
+        else if(typeofQuestion.equals("Audio")){
+            mediaQuestionGroup.setVisibility(View.VISIBLE);
+            mediauploadButton.setText("Start Recording");
+            viewMediaButton.setText("View Audio");
+            if (!permissionGranted){
+                requestAudioPermissions();
+            }
+            mediauploadButton.setOnClickListener(new AudioButtonListener());
 
-                        } catch (IOException ex) {
-                            // Error occurred while creating the File
-                            Log.i("VideoFragment", "IOException");
-                        }
-                        // Continue only if the File was successfully created
-                        if (photoFile != null) {
-                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-                            startActivityForResult(cameraIntent, REQUEST_MEDIA_CAPTURE);
-                        }
-                    }
-                }
-            });
-            viewMediaButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try{
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.parse(currentPath), "video/*");
-                        startActivity(intent);
-                    }
-                    catch(Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            });
         }
         else if(typeofQuestion.equals("Audio")){
 
@@ -277,6 +229,7 @@ public class LoopFragment extends QuestionFragment {
             if(validateEntry()){
                 resetUI();
                 if(isLoopQuestion){
+                    // Add answer set to question based on how many answers are in answerlist
                     ArrayList<EditText> answerTextList = entryAdapter.getAnswerList();
                     questionSet = questionManager.askRepeatQuestions(answerTextList);
                     questionIterator = questionSet.entrySet().iterator();
@@ -390,5 +343,147 @@ public class LoopFragment extends QuestionFragment {
             return list.size();
         }
     }
+    private class MediaButtonListener implements View.OnClickListener{
 
+        String REQUEST_TYPE;
+        public MediaButtonListener(String capture_Type){
+            REQUEST_TYPE = capture_Type;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent cameraIntent = new Intent(this.REQUEST_TYPE);
+            if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                    viewMediaButton.setVisibility(View.VISIBLE);
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
+                    Log.i("PhotoFragment", "IOException");
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                    startActivityForResult(cameraIntent, REQUEST_MEDIA_CAPTURE);
+                }
+            }
+        }
+    }
+    private class ViewMediaListener implements  View.OnClickListener{
+
+        String media_type;
+        public ViewMediaListener(String media){
+            media_type = media + "*/";
+        }
+
+        @Override
+        public void onClick(View view) {
+            try{
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse(currentPath), media_type);
+                startActivity(intent);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+    private class AudioButtonListener implements View.OnClickListener{
+
+
+        @Override
+        public void onClick(View view) {
+
+            if(!permissionGranted){
+                return;
+            }
+            if(!recording){
+
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String audioFile = "MP3_" + timeStamp + "_";
+
+                mCurrentPath = getActivity().getExternalCacheDir().getAbsolutePath() + "/"+audioFile+".3gp";
+                myAudioRecorder = new MediaRecorder();
+                myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+                myAudioRecorder.setOutputFile(mCurrentPath);
+
+                try {
+                    myAudioRecorder.prepare();
+                    myAudioRecorder.start();
+                } catch (Exception ise) {
+                    Log.e("AudioFragment","Exception: "+ise.toString());
+                }
+                timer.setVisibility(View.VISIBLE);
+
+                recording =true;
+                mediauploadButton.setText("STOP RECORDING");
+                viewMediaButton.setVisibility(View.INVISIBLE);
+
+            }
+            else{
+                myAudioRecorder.stop();
+                myAudioRecorder.release();
+                myAudioRecorder = null;
+                timer.setVisibility(View.INVISIBLE);
+
+                mediauploadButton.setText("START RECORDING");
+                viewMediaButton.setVisibility(View.VISIBLE);
+                recording = false;
+            }
+
+        }
+    }
+    private void requestAudioPermissions() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            //When permissionGranted is not granted by user, show them message why this permissionGranted is needed.
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.RECORD_AUDIO)) {
+                Toast.makeText(getContext(), "Please grant permissions to recording audio", Toast.LENGTH_LONG).show();
+
+                //Give user option to still opt-in the permissions
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+
+            } else {
+                // Show user dialog to grant permissionGranted to recording audio
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        MY_PERMISSIONS_RECORD_AUDIO);
+            }
+        }
+        //If permissionGranted is granted, then go ahead recording audio
+        else if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.RECORD_AUDIO)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            //Go ahead with recording audio now
+            permissionGranted = true;
+        }
+    }
+    //Handling callback
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_RECORD_AUDIO: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permissionGranted was granted, yay!
+                    permissionGranted = true;
+                } else {
+                    // permissionGranted denied, boo! Disable the functionality that depends on this permissionGranted.
+                    Toast.makeText(getActivity(), "Permissions Denied to recording audio", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
 }

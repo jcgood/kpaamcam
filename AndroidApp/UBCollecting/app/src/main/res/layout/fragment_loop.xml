@@ -56,13 +56,13 @@
         android:visibility="visible"
         >
 
-        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/answer_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/question_text">
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <Button
             android:id="@+id/list_add_answer"
@@ -90,13 +90,22 @@
             android:textSize="12sp" />
 
         <Button
-            android:id="@+id/view"
+            android:id="@+id/view_media"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="View Photo"
             android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="140dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="10dp"
+            android:text="Recording In Progress..."
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#00BCD4"
+            android:visibility="invisible" />
     </LinearLayout>
 
         <Button

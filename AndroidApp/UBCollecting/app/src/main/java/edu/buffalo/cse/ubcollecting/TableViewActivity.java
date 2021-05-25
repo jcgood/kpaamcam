@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.Serializable;
 import java.util.List;
 
+import edu.buffalo.cse.ubcollecting.app.App;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
@@ -38,6 +40,7 @@ public class TableViewActivity extends AppCompatActivity {
     private Table<? extends Model> table;
     private RecyclerView entryRecyclerView;
     private EntryAdapter entryAdapter;
+    private FireBaseCloudHelper fireBaseCloudHelper;
 
 
     public static Intent newIntent(Context packageContext, Table table) {
@@ -59,7 +62,7 @@ public class TableViewActivity extends AppCompatActivity {
             Log.e(TAG, "Extra was not of type Table");
             finish();
         }
-
+        fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
         entryRecyclerView = findViewById(R.id.entry_list_view);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -94,17 +97,17 @@ public class TableViewActivity extends AppCompatActivity {
             editButton = view.findViewById(R.id.entry_list_edit_button);
             deleteButton = view.findViewById(R.id.entry_list_delete_button);
 
-            if(table.getTableName()=="Question"){
+            if(table.getTableName() == "Question"){
                 deleteButton.setVisibility(View.INVISIBLE);
             }
 
-            if(table.getTableName()=="Answer"){
+            if(table.getTableName() == "Answer"){
 
             }
 
         }
 
-        public void bindEntry(Model entry1) {
+        public void bindEntry(final Model entry1) {
             entry = entry1;
             entryNameView.setText(entry.getIdentifier());
 
@@ -124,10 +127,15 @@ public class TableViewActivity extends AppCompatActivity {
                             .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    //deleting from local
                                     table.delete(entry.id);
                                     entryAdapter.setEntryList(table.getAll());
                                     entryAdapter.notifyDataSetChanged();
+
+                                    //deleting from firebase
+                                    fireBaseCloudHelper.delete(table,entry.id);
                                     Toast.makeText(getApplicationContext(), "Entry Deleted", Toast.LENGTH_SHORT).show();
+
                                 }
                             })
                             .setNegativeButton("Cancel",null);

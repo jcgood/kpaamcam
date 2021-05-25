@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -48,7 +49,6 @@ public class PersonActivity extends EntryActivity<Person> {
     private static final String TAG = PersonActivity.class.getSimpleName().toString();
     private static final int REQUEST_CODE_ROLE = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    FireBaseCloudHelper fireBaseCloudHelper;
 
 
     private EditText nameField;
@@ -89,7 +89,7 @@ public class PersonActivity extends EntryActivity<Person> {
     }
 
     @Override
-    public void setEntryByUI() {
+    public void setEntryByUI()  {
         Role role = (Role) roleSpinner.getSelectedItem();
 
         entry.setName(nameField.getText().toString());
@@ -102,9 +102,6 @@ public class PersonActivity extends EntryActivity<Person> {
         entry.setEmail(emailField.getText().toString());
         entry.setPassword(genHash(passwordField.getText().toString()));
 
-        //create person object to send to cloud
-        Person person = entry;
-        fireBaseCloudHelper.WriteNewPerson(person);
 
     }
 
@@ -116,7 +113,6 @@ public class PersonActivity extends EntryActivity<Person> {
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        fireBaseCloudHelper = new FireBaseCloudHelper(PersonActivity.this);
 
 
         nameField = this.findViewById(R.id.person_name_field);

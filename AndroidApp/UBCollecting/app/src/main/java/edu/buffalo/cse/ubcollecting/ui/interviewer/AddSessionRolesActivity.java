@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,12 +23,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import edu.buffalo.cse.ubcollecting.R;
+import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.models.Role;
 import edu.buffalo.cse.ubcollecting.data.models.SessionPerson;
@@ -64,6 +70,9 @@ public class AddSessionRolesActivity extends AppCompatActivity {
     private ArrayList<String> assignedRolesUI;
     private HashMap<String, SessionPerson> uiMapping;
     private AssignedRolesAdapter assignedRolesAdapter;
+
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
+    private final String TAG = "AddSessionRolesActivity";
 
 
     private HashMap<SessionPerson, ArrayList<Role>> rolesAlreadyAssigned;
@@ -178,6 +187,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
 
                     for (SessionPerson sp : rolesAlreadyAssigned.keySet()) {
                         if (!assignedRoles.contains(sp)) {
+                            /* DELETE */
                             DatabaseHelper.SESSION_PERSON_TABLE.delete(sp.getId());
                             Log.i(sp.getPersonId(), "DELETING PERSON");
                         }
@@ -185,10 +195,27 @@ public class AddSessionRolesActivity extends AppCompatActivity {
 
                     for (SessionPerson sp : assignedRoles) {
                         if (!rolesAlreadyAssigned.containsKey(sp)) {
+                            /* INSERT */
+                            try {
+                                fireBaseCloudHelper.insert(DatabaseHelper.SESSION_PERSON_TABLE, sp);
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                Log.i(TAG, "Could not access server database (Firebase)");
+                                e.printStackTrace();
+                            }
                             DatabaseHelper.SESSION_PERSON_TABLE.insert(sp);
                             Log.i(sp.getPersonId(), "ADDING PERSON");
 
                         } else {
+                            try {
+                                fireBaseCloudHelper.update(DatabaseHelper.SESSION_PERSON_TABLE, sp);
+                            } catch (InvocationTargetException e) {
+                                e.printStackTrace();
+                            } catch (IllegalAccessException e) {
+                                Log.i(TAG, "Could not access server database (Firebase)");
+                                e.printStackTrace();
+                            }
                             DatabaseHelper.SESSION_PERSON_TABLE.update(sp);
                             Log.i(sp.getPersonId(), "UPDATING PERSON");
 
@@ -281,6 +308,7 @@ public class AddSessionRolesActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
         }

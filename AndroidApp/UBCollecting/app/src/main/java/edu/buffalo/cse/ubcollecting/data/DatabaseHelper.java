@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -104,11 +105,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
 
     public static void populateData() {
+        FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
         Role admin = new Role();
         admin.setName(Constants.ROLE_ADMIN);
         admin.setIntroRequired(0);
         admin.setPhotoRequired(0);
         admin.setOnClient(0);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(ROLE_TABLE, admin);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         ROLE_TABLE.insert(admin);
 
         Role consultant = new Role();
@@ -116,6 +127,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         consultant.setIntroRequired(1);
         consultant.setPhotoRequired(1);
         consultant.setOnClient(1);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(ROLE_TABLE, consultant);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         ROLE_TABLE.insert(consultant);
 
         Role interviewer = new Role();
@@ -123,51 +143,159 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         interviewer.setIntroRequired(0);
         interviewer.setPhotoRequired(0);
         interviewer.setOnClient(1);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(ROLE_TABLE, interviewer);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         ROLE_TABLE.insert(interviewer);
 
         QuestionnaireType regType = new QuestionnaireType();
         regType.setName(Constants.REGULAR);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTIONNAIRE_TYPE_TABLE, regType);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTIONNAIRE_TYPE_TABLE.insert(regType);
 
         QuestionnaireType introType = new QuestionnaireType();
         introType.setName(Constants.INTRODUCTORY);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTIONNAIRE_TYPE_TABLE, introType);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTIONNAIRE_TYPE_TABLE.insert(introType);
 
         QuestionnaireType sclType = new QuestionnaireType();
         sclType.setName(Constants.SOCIOLINGUISTIC);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTIONNAIRE_TYPE_TABLE, sclType);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTIONNAIRE_TYPE_TABLE.insert(sclType);
 
         QuestionnaireType emrType = new QuestionnaireType();
         emrType.setName(Constants.EMERGENCY);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTIONNAIRE_TYPE_TABLE, emrType);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTIONNAIRE_TYPE_TABLE.insert(emrType);
 
         QuestionnaireType testType = new QuestionnaireType();
         testType.setName(Constants.TEST);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTIONNAIRE_TYPE_TABLE, testType);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTIONNAIRE_TYPE_TABLE.insert(testType);
 
         QuestionPropertyDef audProperty = new QuestionPropertyDef();
         audProperty.setName(Constants.AUDIO);
+        /* INESRT */
+        try {
+            fireBaseCloudHelper.insert(QUESTION_PROPERTY_DEF_TABLE, audProperty);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTION_PROPERTY_DEF_TABLE.insert(audProperty);
 
         QuestionPropertyDef vidProperty = new QuestionPropertyDef();
         vidProperty.setName(Constants.VIDEO);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTION_PROPERTY_DEF_TABLE, vidProperty);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTION_PROPERTY_DEF_TABLE.insert(vidProperty);
 
         QuestionPropertyDef phtProperty = new QuestionPropertyDef();
         phtProperty.setName(Constants.PHOTO);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTION_PROPERTY_DEF_TABLE, phtProperty);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTION_PROPERTY_DEF_TABLE.insert(phtProperty);
 
         QuestionPropertyDef freeProperty = new QuestionPropertyDef();
         freeProperty.setName(Constants.TEXT);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTION_PROPERTY_DEF_TABLE, freeProperty);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTION_PROPERTY_DEF_TABLE.insert(freeProperty);
 
         //Roopa
         QuestionPropertyDef listProperty = new QuestionPropertyDef();
         listProperty.setName(Constants.LIST);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTION_PROPERTY_DEF_TABLE, listProperty);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTION_PROPERTY_DEF_TABLE.insert(listProperty);
 
         QuestionPropertyDef loopProperty = new QuestionPropertyDef();
         loopProperty.setName(Constants.LOOP);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(QUESTION_PROPERTY_DEF_TABLE, loopProperty);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         QUESTION_PROPERTY_DEF_TABLE.insert(loopProperty);
 
         //Roopa
@@ -206,24 +334,69 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         LanguageType lwc = new LanguageType();
         lwc.setName("LWC");
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(LANGUAGE_TYPE_TABLE, lwc);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         LANGUAGE_TYPE_TABLE.insert(lwc);
 
         LanguageType researchLang = new LanguageType();
         researchLang.setName("Research Language");
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(LANGUAGE_TYPE_TABLE, researchLang);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         LANGUAGE_TYPE_TABLE.insert(researchLang);
 
         LanguageType reg = new LanguageType();
         reg.setName("Regional");
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(LANGUAGE_TYPE_TABLE, reg);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         LANGUAGE_TYPE_TABLE.insert(reg);
 
         Language english = new Language();
         english.setName(ENGLISH_LANG_NAME);
         english.setTypeId(researchLang.getId());
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(LANGUAGE_TYPE_TABLE, english);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         LANGUAGE_TABLE.insert(english);
 
         Language french = new Language();
         french.setName("French");
         french.setTypeId(researchLang.getId());
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(LANGUAGE_TYPE_TABLE, french);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         LANGUAGE_TABLE.insert(french);
 
     }

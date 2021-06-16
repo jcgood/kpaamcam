@@ -2,16 +2,16 @@ package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+//import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+//import androidx.core.app.Fragment;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +19,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +30,7 @@ import java.util.Date;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 
@@ -56,6 +57,8 @@ public class AudioFragment extends QuestionFragment{
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
     private boolean permissionGranted;
     private TextView timer;
+
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(this.getContext());
 
 
 
@@ -198,6 +201,15 @@ public class AudioFragment extends QuestionFragment{
         answer.setText(mCurrentPath);
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         answer.setVersion(version+1);
+        /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(DatabaseHelper.ANSWER_TABLE, answer);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         DatabaseHelper.ANSWER_TABLE.insert(answer);
 
     }

@@ -2,10 +2,10 @@ package edu.buffalo.cse.ubcollecting;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.widget.LinearLayoutManager;
+//import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +15,17 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
+import edu.buffalo.cse.ubcollecting.app.App;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 import edu.buffalo.cse.ubcollecting.ui.CreateQuestionActivity;
@@ -28,6 +37,7 @@ public abstract class TableListActivity extends AppCompatActivity {
 
     private RecyclerView tableRecyclerView;
     private RecyclerView.Adapter tableAdapter;
+    private FireBaseCloudHelper fireBaseCloudHelper;
 
     protected abstract List<Table<? extends Model>> getTables();
 
@@ -38,6 +48,8 @@ public abstract class TableListActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.table_list_toolbar);
         setSupportActionBar(toolbar);
+
+        fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
 
         tableRecyclerView = findViewById(R.id.table_recycler_view);
         tableRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -76,7 +88,6 @@ public abstract class TableListActivity extends AppCompatActivity {
 
         public TableHolder(View view) {
             super(view);
-
             tableNameView = view.findViewById(R.id.table_item_name_view);
             insertButton = view.findViewById(R.id.table_item_insert_button);
             viewButton = view.findViewById(R.id.table_item_view_button);

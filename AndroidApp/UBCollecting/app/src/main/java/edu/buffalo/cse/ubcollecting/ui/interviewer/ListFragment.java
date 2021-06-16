@@ -1,7 +1,8 @@
 package edu.buffalo.cse.ubcollecting.ui.interviewer;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,14 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionOption;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
@@ -31,6 +36,8 @@ public class ListFragment extends QuestionFragment {
     String questionnaireId;
     ArrayList<Answer> answerList;
     ArrayList<CheckBox> selectedCheckBoxList;
+
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(this.getContext());
 
     private Answer initAnswer;
     private static final String TAG = ListFragment.class.getSimpleName();
@@ -145,6 +152,15 @@ public class ListFragment extends QuestionFragment {
                 answer.setQuestionId(questionnaireContent.getQuestionId());
                 answer.setText(selectedOption);
                 answer.setVersion(version + 1);
+                /* INSERT */
+                try {
+                    fireBaseCloudHelper.insert(DatabaseHelper.ANSWER_TABLE, answer);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    Log.i(TAG, "Could not access server database (Firebase)");
+                    e.printStackTrace();
+                }
                 DatabaseHelper.ANSWER_TABLE.insert(answer);
             }
         }

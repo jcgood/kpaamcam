@@ -1,12 +1,19 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.lang.reflect.InvocationTargetException;
+
+import edu.buffalo.cse.ubcollecting.app.App;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionProperty;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_PROPERTY_TABLE;
@@ -23,6 +30,7 @@ public class QuestionPropertyActivity extends AppCompatActivity {
     private TextView questionField;
     private EditText valueField;
     private Button submitButton;
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,15 @@ public class QuestionPropertyActivity extends AppCompatActivity {
                 property.setQuestionId(""); // TODO
                 property.setValue(0); //TODO
 
+                /* INSERT */
+                try {
+                    fireBaseCloudHelper.insert(QUESTION_PROPERTY_TABLE, property);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    Log.i(TAG, "Could not access server database (Firebase)");
+                    e.printStackTrace();
+                }
                 QUESTION_PROPERTY_TABLE.insert(property);
             }
         });

@@ -1,13 +1,23 @@
 package edu.buffalo.cse.ubcollecting;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+//import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.Serializable;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+
+import edu.buffalo.cse.ubcollecting.app.App;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
+import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
 import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
@@ -22,13 +32,16 @@ import static edu.buffalo.cse.ubcollecting.data.tables.Table.EXTRA_MODEL;
 public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
 
     public final static int REQUEST_CODE_EDIT_ENTRY = 0;
+    private static final String TAG = "EntryActivity";
     protected E entry;
     private Button updateButton;
     private Button submitButton;
+    private FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
 
     /**
      * Function that updates the view's fields/UI based on the entry from the SQlite Table.
      * Used for updating entries in the database.
+     *
      * @param entry The entry from the database by which to update the view's fields
      */
     abstract void setUI(E entry);
@@ -38,8 +51,10 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
      * can be populated appropriately
      */
     abstract void setEntryByUI();
+
     /**
      * Helper function that validates user submission
+     *
      * @return {@link Boolean}
      */
     abstract boolean isValidEntry();
@@ -57,6 +72,7 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
 
     /**
      * Helper function to extract a {@link Model} extra from and {@link Intent}
+     *
      * @param data {@link Intent} holding the extra
      * @return {@link Model} extra from {@link Intent}
      */
@@ -103,6 +119,16 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
         public void onClick(View view) {
             setEntryByUI();
             if (isValidEntry()) {
+
+                /* INSERT */
+                try {
+                    fireBaseCloudHelper.insert(table, entry);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    Log.i(TAG, "Could not access server database (Firebase)");
+                    e.printStackTrace();
+                }
                 table.insert(entry);
                 setEntryResult(entry);
                 finish();

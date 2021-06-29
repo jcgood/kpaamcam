@@ -29,14 +29,17 @@ import java.util.List;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
+import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseSynch;
 import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.models.Role;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.PERSON_TABLE;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.ROLE_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity.FLAG_INTERVIEWER_EDIT;
 import static edu.buffalo.cse.ubcollecting.ui.LoginActivity.genHash;
 
@@ -49,6 +52,8 @@ public class PersonActivity extends EntryActivity<Person> {
     private static final String TAG = PersonActivity.class.getSimpleName().toString();
     private static final int REQUEST_CODE_ROLE = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
 
 
     private EditText nameField;
@@ -115,6 +120,9 @@ public class PersonActivity extends EntryActivity<Person> {
 
 
 
+
+
+
         nameField = this.findViewById(R.id.person_name_field);
         preferredNameField = this.findViewById(R.id.person_preferred_name_field);
         dobField = this.findViewById(R.id.person_dob_field);
@@ -124,11 +132,11 @@ public class PersonActivity extends EntryActivity<Person> {
         List<Role> roles;
 
         if (getIntent().getFlags() == FLAG_INTERVIEWER_EDIT) {
-            roles = DatabaseHelper.ROLE_TABLE.getOnClientRoles();
+            roles = ROLE_TABLE.getOnClientRoles();
 
         }
         else {
-            roles = DatabaseHelper.ROLE_TABLE.getAll();
+            roles = ROLE_TABLE.getAll();
         }
 
         roleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roles);

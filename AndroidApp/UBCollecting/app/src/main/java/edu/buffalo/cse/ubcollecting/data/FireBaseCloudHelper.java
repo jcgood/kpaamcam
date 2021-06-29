@@ -143,26 +143,6 @@ public class FireBaseCloudHelper<E extends Model> extends Application {
     }
 
 
-  //  public void WriteNewPerson(Person person) {
-  //      String name = person.getName();
-  //      String otherNames = person.getOtherNames();
-  //      String dob = person.getDob();
-  //      String photoDesc = person.getPhotoDesc();
-  //      String mainRoleId = person.getMainRoleId();
-  //      String introQuestDesc = person.getIntroQuestDesc();
-  //      String email = person.getEmail();
-  //      String password = person.getPassword();
-
-  //      mDatabase.child("People").child(person.id).child("Name").setValue(name);
-  //      mDatabase.child("People").child(person.id).child("Other Names").setValue(otherNames);
-  //      mDatabase.child("People").child(person.id).child("Date of Birth").setValue(dob);
-  //      mDatabase.child("People").child(person.id).child("Photo Desc").setValue(photoDesc);
-  //      mDatabase.child("People").child(person.id).child("Main Role Id").setValue(mainRoleId);
-  //      mDatabase.child("People").child(person.id).child("Intro Question Description").setValue(introQuestDesc);
-  //      mDatabase.child("People").child(person.id).child("Email").setValue(email);
-  //      mDatabase.child("People").child(person.id).child("password").setValue(password);
-
-  //  }
 
     //The methods below were written by Blake to generalize the insert/delete/update process. They're still being tested.
 

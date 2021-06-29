@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseSynch;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
@@ -37,6 +38,7 @@ public abstract class EntryActivity<E extends Model> extends AppCompatActivity {
     private Button updateButton;
     private Button submitButton;
     private FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
+
 
     /**
      * Function that updates the view's fields/UI based on the entry from the SQlite Table.

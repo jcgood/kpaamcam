@@ -26,6 +26,7 @@ import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseSynch;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 

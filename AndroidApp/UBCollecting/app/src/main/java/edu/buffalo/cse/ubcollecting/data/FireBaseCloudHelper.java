@@ -29,7 +29,7 @@ public class FireBaseCloudHelper extends Application{
 
     public FireBaseCloudHelper(Context context) {
         this.context = context;
-        this.TAG = App.getContext().toString();
+        this.TAG = context.toString();
         this.isConnected = false;
         this.database = FirebaseDatabase.getInstance();
         this.mDatabase = database.getReference();

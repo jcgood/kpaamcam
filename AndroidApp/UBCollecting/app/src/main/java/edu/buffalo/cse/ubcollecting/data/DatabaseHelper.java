@@ -96,7 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper() {
-        super(App.getContext(), DATABASE_NAME, null, DATABASE_VERSION);
+        super(null, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     /**

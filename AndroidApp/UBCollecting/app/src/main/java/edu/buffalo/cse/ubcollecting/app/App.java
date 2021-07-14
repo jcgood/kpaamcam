@@ -20,17 +20,11 @@ public class App extends Application {
     private static final String PREFERENCES_KEY = "edu.buffalo.cse.ubcollecting.app.preferences_key";
     private static final String FIRST_RUN_KEY = "edu.buffalo.cse.ubcollecting.app.firs_run_key";
 
-    private static Context context;
     private static DatabaseHelper dbHelper;
-
-    public static Context getContext() {
-        return context;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this.getApplicationContext();
         dbHelper = new DatabaseHelper();
         DatabaseManager.initializeInstance(dbHelper);
         FirebaseApp.initializeApp(this);

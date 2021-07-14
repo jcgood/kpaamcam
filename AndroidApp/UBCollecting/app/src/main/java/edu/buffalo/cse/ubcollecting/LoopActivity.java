@@ -36,7 +36,6 @@ import edu.buffalo.cse.ubcollecting.ui.UiUtils;
 
 
 import static android.view.View.GONE;
-import static edu.buffalo.cse.ubcollecting.app.App.getContext;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_LANG_VERSION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.tables.QuestionnaireTable.KEY_ID;
@@ -81,7 +80,7 @@ public class LoopActivity  extends AppCompatActivity {
                 String selection = QUESTIONNAIRE_CONTENT_TABLE.KEY_PARENT_QUESTIONNAIRE_CONTENT + "= ?";
                 String [] selectionArgs = {parentQC.getId()};
                 ArrayList<QuestionnaireContent> currentLoopContent = QUESTIONNAIRE_CONTENT_TABLE.getAll(selection, selectionArgs, null);
-                Intent intent = AddQuestionsActivity.newIntent(getContext(),parentQC.getQuestionnaireId(), currentLoopContent ) ;
+                Intent intent = AddQuestionsActivity.newIntent(getApplicationContext(),parentQC.getQuestionnaireId(), currentLoopContent ) ;
                 intent.putExtra(QUESTIONNAIRE_CONTENT,loopContent);
 
                 intent.putExtra(EXTRA_MODEL, parentQC);

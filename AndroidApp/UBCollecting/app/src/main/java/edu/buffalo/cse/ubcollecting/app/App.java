@@ -18,7 +18,11 @@ import edu.buffalo.cse.ubcollecting.data.DatabaseManager;
 import edu.buffalo.cse.ubcollecting.data.FireBaseSynch;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.FIELD_TRIP_TABLE;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.LANGUAGE_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.PERSON_TABLE;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_TABLE;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTION_TABLE;
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.ROLE_TABLE;
 
 public class App extends Application {
@@ -49,8 +53,12 @@ public class App extends Application {
             preferences.edit().putBoolean(FIRST_RUN_KEY, false).apply();
         }
 
-        FireBaseSynch pSynch = new FireBaseSynch(App.getContext(), PERSON_TABLE.findById("123").getClass(), PERSON_TABLE);
-        FireBaseSynch rSynch = new FireBaseSynch(App.getContext(), ROLE_TABLE.findById("123").getClass(), ROLE_TABLE);
+        FireBaseSynch personSync = new FireBaseSynch(App.getContext(), PERSON_TABLE.findById("123").getClass(), PERSON_TABLE);
+        FireBaseSynch roleSync = new FireBaseSynch(App.getContext(), ROLE_TABLE.findById("123").getClass(), ROLE_TABLE);
+        FireBaseSynch questionnaireSync = new FireBaseSynch(App.getContext(), QUESTIONNAIRE_TABLE.findById("123").getClass(), QUESTIONNAIRE_TABLE);
+        FireBaseSynch languageSync = new FireBaseSynch(App.getContext(), LANGUAGE_TABLE.findById("123").getClass(), LANGUAGE_TABLE);
+        FireBaseSynch questionSync = new FireBaseSynch(App.getContext(), QUESTION_TABLE.findById("123").getClass(), QUESTION_TABLE);
+        FireBaseSynch field_tripSync = new FireBaseSynch(App.getContext(), FIELD_TRIP_TABLE.findById("123").getClass(), FIELD_TRIP_TABLE);
     }
 
 }

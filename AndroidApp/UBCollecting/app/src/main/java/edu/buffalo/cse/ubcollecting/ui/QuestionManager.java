@@ -1,6 +1,9 @@
 package edu.buffalo.cse.ubcollecting.ui;
 
+import android.widget.EditText;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Questionnaire;
@@ -23,4 +26,5 @@ public interface QuestionManager {
 
     public void saveAndQuitQuestionnaire(QuestionnaireContent questionnaireContent);
 
+    public HashMap<String,String> askRepeatQuestions(ArrayList<EditText> answerTextList);
 }

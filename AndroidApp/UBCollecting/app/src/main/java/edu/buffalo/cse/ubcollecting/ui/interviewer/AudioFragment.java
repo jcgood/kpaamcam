@@ -151,7 +151,9 @@ public class AudioFragment extends QuestionFragment{
 
 
 
+        Button nextQuestion = view.findViewById(R.id.next_question);
 
+        nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
 
         saveAndExitQuestion.setOnClickListener(new AudioFragment.SaveAndExitQuestionOnClickListener());
         if (getArguments().containsKey(SELECTED_ANSWER)) {
@@ -248,6 +250,15 @@ public class AudioFragment extends QuestionFragment{
                     // permissionGranted denied, boo! Disable the functionality that depends on this permissionGranted.
                     Toast.makeText(getActivity(), "Permissions Denied to recording audio", Toast.LENGTH_LONG).show();
                 }
+            }
+        }
+    }
+    protected class NextQuestionOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            if(validateEntry()){
+                submitAnswer();
+                questionManager.getNextQuestion();
             }
         }
     }

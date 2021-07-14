@@ -47,7 +47,7 @@ public class ViewQuestionsActivity extends AppCompatActivity {
     private ArrayList<QuestionnaireContent> questionnaire;
 
     public static final String QUESTION_INDEX = "Question Index";
-
+    public static final String QUESTION_ID = "Question ID";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +102,7 @@ public class ViewQuestionsActivity extends AppCompatActivity {
         }
 
         public void bindEntry(final QuestionnaireContent questionnaireContent, final int position) {
-            String questionId = questionnaireContent.questionId;
+            final String questionId = questionnaireContent.questionId;
             String questionText = DatabaseHelper.QUESTION_TABLE.findById(questionId).getDisplayText();
             selectButton.setText(questionText);
 
@@ -124,6 +124,7 @@ public class ViewQuestionsActivity extends AppCompatActivity {
                     k.putExtra(SELECTED_SESSION, getSession(getIntent()));
                     k.putExtra(SELECTED_QUESTIONNAIRE, getQuestionnaire(getIntent()));
                     k.putExtra(QUESTION_INDEX, position);
+                    k.putExtra(QUESTION_ID,questionId);
                     startActivity(k);
                     finish();
                 }

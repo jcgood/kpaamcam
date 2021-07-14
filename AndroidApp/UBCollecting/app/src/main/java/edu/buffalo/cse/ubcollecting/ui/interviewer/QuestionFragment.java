@@ -33,7 +33,7 @@ public abstract class QuestionFragment extends Fragment {
     QuestionnaireContent questionContent;
     private ArrayList<Language> questionLanguages;
     private ArrayAdapter<Language> questionLanguagesAdapter;
-    private TextView questionText;
+    protected TextView questionText;
     private Spinner questionLangSpinner;
     private HashMap<Language, QuestionLangVersion> questionTexts;
     private String mLoopQuestionText;
@@ -54,7 +54,6 @@ public abstract class QuestionFragment extends Fragment {
         questionLangSpinner = getView().findViewById(R.id.question_language_spinner);
         questionText = getView().findViewById(R.id.question_text);
         skipQuestion.setOnClickListener(new AudioFragment.SkipQuestionOnClickListener());
-        nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
 
         if (mIsLoopQuestion) {
             mLoopQuestionText = (String) getArguments().getSerializable(LOOP_QUESTION_TEXT);
@@ -99,21 +98,6 @@ public abstract class QuestionFragment extends Fragment {
         mIsLoopQuestion = isLoopQuestion;
     }
 
-    protected class NextQuestionOnClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View view) {
-            if(validateEntry()){
-                submitAnswer();
-
-                if (mIsLastLoopQuestion) {
-                    questionManager.getNextQuestion();
-                }
-                else {
-                    questionManager.continueLoop();
-                }
-            }
-        }
-    }
 
 
     protected class SkipQuestionOnClickListener implements View.OnClickListener{

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -54,7 +55,9 @@ public class ListFragment extends QuestionFragment {
 
         answerList = new ArrayList<>();
         selectedCheckBoxList = new ArrayList<>();
+        Button nextQuestion = view.findViewById(R.id.next_question);
 
+        nextQuestion.setOnClickListener(new NextQuestionOnClickListener());
         getPreviousAnswers();
         showCheckBoxList(linearView);
 
@@ -149,6 +152,15 @@ public class ListFragment extends QuestionFragment {
                 answer.setVersion(version + 1);
                 /* INSERT */
                 DatabaseHelper.ANSWER_TABLE.insert(answer);
+            }
+        }
+    }
+    protected class NextQuestionOnClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            if(validateEntry()){
+                submitAnswer();
+                questionManager.getNextQuestion();
             }
         }
     }

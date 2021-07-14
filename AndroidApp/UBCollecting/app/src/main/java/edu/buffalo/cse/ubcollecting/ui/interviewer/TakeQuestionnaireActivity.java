@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 //import androidx.core.view.ViewPager;
 //import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.Serializable;
@@ -41,6 +42,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     static final String LOOP_QUESTION_TEXT = "loop_question_text";
     static final String LOOP_QUESTION_ID = "loop_question_id";
     static final String IS_LAST_LOOP_QUESTION = "is_last_loop_question";
+    static final String IS_LOOP_QUESTION_SET = "is_loop_set";
 
     private QuestionStatePagerAdapter questionStatePagerAdapter;
     private ViewPager questionViewPager;
@@ -53,6 +55,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
     private int iterationsCounter = 0;
     private int currentQuestionPosition = 0;
     private boolean mIsFirstQuestion = true;
+    public static final String QUESTION_ID = "Question ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,27 +102,18 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
             /* Takes care of loop question, by adding every question in the loop to the viewpager as
                a separate Fragment */
             if (typeOfQuestion.equals(LOOP)) {
-                HashMap<Language, QuestionLangVersion> questionTexts =
-                        DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(question.getQuestionId());
-                String loopQuestion = questionTexts.get(questionTexts.keySet().iterator().next()).getQuestionText();
-                HashMap<String, String> questionHashMap =
-                        LoopQuestionHelper.createQuestionHashMap(loopQuestion);
+                // Adding the root question to the loop
+                String rootID = (String) getIntent().getSerializableExtra(QUESTION_ID);
+                String rootText =  DatabaseHelper.QUESTION_TABLE.findById(questionId).getDisplayText();
+                Bundle root = createBundleArgs(question,typeOfQuestion);
+                root.putSerializable(LOOP_QUESTION_TEXT,rootText);
+                root.putSerializable(LOOP_QUESTION_ID,rootID);
+                root.putSerializable(IS_LAST_LOOP_QUESTION,false);
+                root.putSerializable(IS_LOOP_QUESTION_SET,true);
+                QuestionFragment rootFragment = new LoopFragment();
+                rootFragment.setArguments(root);
+                questionStatePagerAdapter.addFragement(rootFragment);
 
-                int counter = 0;
-                for (String loopQuestionId : questionHashMap.keySet()) {
-                    String loopQuestionText = questionHashMap.get(loopQuestionId);
-                    Bundle bundle = createBundleArgs(question, typeOfQuestion);
-                    bundle.putSerializable(LOOP_QUESTION_TEXT, loopQuestionText);
-                    bundle.putSerializable(LOOP_QUESTION_ID, loopQuestionId);
-                    bundle.putSerializable(IS_LAST_LOOP_QUESTION,
-                            counter == (questionHashMap.keySet().size() - 1));
-
-                    QuestionFragment loopFragment = new LoopFragment();
-                    loopFragment.setArguments(bundle);
-                    questionStatePagerAdapter.addFragement(loopFragment);
-                    System.out.println("Question Text: " + loopQuestionText);
-                    counter++;
-                }
                 questionStatePagerAdapter.notifyDataSetChanged();
 
                 if (!mIsFirstQuestion) {
@@ -127,7 +121,6 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 }
 
                 mIsFirstQuestion = false;
-                questionIndex++;
                 return;
             }
 
@@ -144,9 +137,7 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
                 questionFragment = new PhotoFragment();
 
             }
-            else if(typeOfQuestion.equals("Multi_Choice")){
-                questionFragment = new MultiFragment();
-            }
+
             else {
                 questionFragment = new TextFragment();
 
@@ -198,6 +189,24 @@ public class TakeQuestionnaireActivity extends AppCompatActivity implements Ques
         startActivity(i);
         finish();
     }
+    //Function to add the repeat questions related to the loop
+    public HashMap<String,String> askRepeatQuestions(ArrayList<EditText> answers){
+        QuestionnaireContent question = questionnaire.get(questionIndex);
+        String questionId = question.getQuestionId();
+
+        QuestionPropertyDef questionProperty = DatabaseHelper.QUESTION_PROPERTY_TABLE.getQuestionProperty(questionId);
+        String typeOfQuestion = questionProperty.getName();
+
+        HashMap<Language, QuestionLangVersion> questionTexts =
+                DatabaseHelper.QUESTION_LANG_VERSION_TABLE.getQuestionTexts(question.getQuestionId());
+        String loopQuestion = questionTexts.get(questionTexts.keySet().iterator().next()).getQuestionText();
+        HashMap<String, String> questionHashMap =
+                LoopQuestionHelper.createQuestionHashMap(loopQuestion);
+        questionIndex++;
+        return questionHashMap;
+
+    }
+
 
     /**
      * Helper function to extract a {@link edu.buffalo.cse.ubcollecting.data.models.Questionnaire} extra from and {@link Intent}

@@ -399,6 +399,7 @@ public abstract class Table<E extends Model> implements Serializable {
             Class<?> ptype = method.getParameterTypes()[0];
 
             if (Integer.TYPE.equals(ptype)) {
+
                 int value = cursor.getInt(cursor.getColumnIndex(key));
                 method.invoke(model, value);
             } else if (Double.TYPE.equals(ptype)) {

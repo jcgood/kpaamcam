@@ -180,7 +180,9 @@ public class FireBaseCloudHelper<E extends Model> extends Application {
      */
     public void delete(Table<E> table, String entryID) {
         String name = table.getTableName();
-        mDatabase.child(name).child(entryID).removeValue();
+        HashMap deleteMap = new HashMap();
+        deleteMap.put("Deleted", 1);
+        mDatabase.child(name).child(entryID).updateChildren(deleteMap);
     }
 
     /**

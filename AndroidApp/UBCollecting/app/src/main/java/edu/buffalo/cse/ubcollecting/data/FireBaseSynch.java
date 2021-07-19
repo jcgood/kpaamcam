@@ -89,7 +89,7 @@ public class FireBaseSynch<E extends Model> {
                             int sqlVersion = getVersionFromGeneric(sqlItem);
                             //get firebase version
                             int fbVersion = getVersionFromGeneric(sqlItem);
-                            if(fbVersion > sqlVersion){
+                            if(fbVersion >= sqlVersion){
                                 table.update(fbItem);
                             }
                         } catch (InvocationTargetException e) {

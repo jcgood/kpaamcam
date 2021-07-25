@@ -77,7 +77,7 @@ public class FireBaseSynch<E extends Model> {
 
                     //if the fbItem IS NOT in the sql lite table insert the fbItem
                     E sqlItem = table.findById(fbItem.id);
-                    if (!sqlItem.id.equals(fbItem.id)) {
+                    if (!sqlItem.id.equals(fbItem.id) && nonNullConstraintsMet(fbItem)) {
                         table.insert(fbItem);
                         Toast.makeText(context, "New Data has been added from cloud", Toast.LENGTH_SHORT).show();
                     }
@@ -114,6 +114,23 @@ public class FireBaseSynch<E extends Model> {
         });
 
     }
+
+    //Check for malformed Firebase data that breaks the NONNULL rule for inserting into a database
+    boolean nonNullConstraintsMet(E fbEntry) {
+        if (fbEntry.getId() == null) {
+            return false;
+        }
+
+        if (this.table.getTableName() == "Person") {
+            Person entry = (Person) fbEntry;
+            if (entry.getEmail() == null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     int getVersionFromGeneric(E model) throws InvocationTargetException, IllegalAccessException {
 

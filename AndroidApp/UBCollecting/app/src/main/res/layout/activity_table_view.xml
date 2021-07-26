@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/entry_list_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.buffalo.cse.ubcollecting.TableViewActivity"></androidx.recyclerview.widget.RecyclerView>
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/entry_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="85"
+        tools:context="edu.buffalo.cse.ubcollecting.TableViewActivity">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/updateButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80252525"
+        android:baselineAligned="false">
+
+        <TextView
+            android:id="@+id/updateBottomBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/update_textview"
+            android:textAlignment="center"
+            android:textColor="#E8E8E8" />
+
+        <Button
+            android:id="@+id/updateListButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/update_button" />
+
+    </LinearLayout>
+
+</LinearLayout>

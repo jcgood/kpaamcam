@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import edu.buffalo.cse.ubcollecting.data.FireBaseSynch;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
+import static android.view.View.INVISIBLE;
 import static edu.buffalo.cse.ubcollecting.EntryActivity.REQUEST_CODE_EDIT_ENTRY;
 
 public class TableViewActivity extends AppCompatActivity {
@@ -42,6 +44,7 @@ public class TableViewActivity extends AppCompatActivity {
     private RecyclerView entryRecyclerView;
     private EntryAdapter entryAdapter;
     private FireBaseCloudHelper fireBaseCloudHelper;
+    private Button updateButton;
 
 
     public static Intent newIntent(Context packageContext, Table table) {
@@ -69,10 +72,22 @@ public class TableViewActivity extends AppCompatActivity {
 
         entryAdapter = new TableViewActivity.EntryAdapter(table.getAll());
         entryRecyclerView.setAdapter(entryAdapter);
+
+        updateButton = this.findViewById(R.id.updateListButton);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                entryAdapter.setEntryList(table.getAll());
+                entryAdapter.notifyDataSetChanged();
+                //updateButton.setVisibility(INVISIBLE);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
         }
@@ -99,7 +114,7 @@ public class TableViewActivity extends AppCompatActivity {
             deleteButton = view.findViewById(R.id.entry_list_delete_button);
 
             if(table.getTableName() == "Question"){
-                deleteButton.setVisibility(View.INVISIBLE);
+                deleteButton.setVisibility(INVISIBLE);
             }
 
             if(table.getTableName() == "Answer"){

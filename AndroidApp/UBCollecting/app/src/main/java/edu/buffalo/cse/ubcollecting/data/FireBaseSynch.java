@@ -25,6 +25,7 @@ import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
+import edu.buffalo.cse.ubcollecting.ui.SyncCallback;
 
 import static edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper.GET;
 
@@ -34,6 +35,7 @@ public class FireBaseSynch<E extends Model> {
     public Context context;
     public Table<E> table;
     DatabaseReference mTableRef;
+    protected SyncCallback activity;
 
 
     public FireBaseSynch(Context context, Class<E> clazz, Table<E> table) {
@@ -42,6 +44,7 @@ public class FireBaseSynch<E extends Model> {
         this.table = table;
         this.mTableRef = FirebaseDatabase.getInstance().getReference(table.getTableName());
         this.getData();
+        this.activity = null;
 
     }
 
@@ -79,7 +82,8 @@ public class FireBaseSynch<E extends Model> {
                     E sqlItem = table.findById(fbItem.id);
                     if (!sqlItem.id.equals(fbItem.id) && nonNullConstraintsMet(fbItem)) {
                         table.insert(fbItem);
-                        Toast.makeText(context, "New Data has been added from cloud", Toast.LENGTH_SHORT).show();
+                        triggerUIUpdates();
+                        //Toast.makeText(context, "New Data has been added from cloud", Toast.LENGTH_SHORT).show();
                     }
                     //if fb IS already in the table
                     else {
@@ -91,6 +95,7 @@ public class FireBaseSynch<E extends Model> {
                             int fbVersion = getVersionFromGeneric(sqlItem);
                             if(fbVersion >= sqlVersion){
                                 table.update(fbItem);
+                                triggerUIUpdates();
                             }
                         } catch (InvocationTargetException e) {
                             e.printStackTrace();
@@ -148,13 +153,23 @@ public class FireBaseSynch<E extends Model> {
                 }catch(Exception e){
                     Log.w(context.toString(),"Error while getting version number");
                     Log.w(context.toString(),e.toString());
-                    Toast.makeText(context,  "exception"+ String.valueOf(retval), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,  "exception"+ String.valueOf(retval), Toast.LENGTH_SHORT).show();
                     return 0;
                 }
             }
 
         }
-        Toast.makeText(context,  "no exception"+ String.valueOf(retval), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context,  "no exception"+ String.valueOf(retval), Toast.LENGTH_SHORT).show();
         return retval;
+    }
+
+    public void setCallBack(SyncCallback callback) {
+        this.activity = callback;
+    }
+
+    public void triggerUIUpdates() {
+        if (this.activity != null) {
+            this.activity.displayUpdateBanner();
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,14 +28,15 @@ import java.util.List;
 
 import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
-import edu.buffalo.cse.ubcollecting.data.FireBaseSynch;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
+import edu.buffalo.cse.ubcollecting.ui.SyncCallback;
 
 import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import static edu.buffalo.cse.ubcollecting.EntryActivity.REQUEST_CODE_EDIT_ENTRY;
 
-public class TableViewActivity extends AppCompatActivity {
+public class TableViewActivity extends AppCompatActivity implements SyncCallback {
 
     private static final String TAG = AppCompatActivity.class.getSimpleName();
 
@@ -44,8 +46,8 @@ public class TableViewActivity extends AppCompatActivity {
     private RecyclerView entryRecyclerView;
     private EntryAdapter entryAdapter;
     private FireBaseCloudHelper fireBaseCloudHelper;
+    private LinearLayout updateBanner;
     private Button updateButton;
-
 
     public static Intent newIntent(Context packageContext, Table table) {
         Intent i = new Intent(packageContext, TableViewActivity.class);
@@ -73,6 +75,9 @@ public class TableViewActivity extends AppCompatActivity {
         entryAdapter = new TableViewActivity.EntryAdapter(table.getAll());
         entryRecyclerView.setAdapter(entryAdapter);
 
+        updateBanner = this.findViewById(R.id.updateButtonLayout);
+        updateBanner.setVisibility(INVISIBLE);
+
         updateButton = this.findViewById(R.id.updateListButton);
         updateButton.setOnClickListener(new View.OnClickListener() {
 
@@ -80,9 +85,12 @@ public class TableViewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 entryAdapter.setEntryList(table.getAll());
                 entryAdapter.notifyDataSetChanged();
-                //updateButton.setVisibility(INVISIBLE);
+                updateBanner.setVisibility(INVISIBLE);
             }
         });
+
+        //Tell the FireBaseSync to use this as a callback
+        App.getFireBaseSynch().setCallBack(this);
     }
 
     @Override
@@ -96,6 +104,11 @@ public class TableViewActivity extends AppCompatActivity {
             entryAdapter.setEntryList(table.getAll());
             entryAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void displayUpdateBanner() {
+        this.updateBanner.setVisibility(VISIBLE);
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {

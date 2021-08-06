@@ -91,10 +91,10 @@ public class FireBaseCloudHelper<E extends Model> extends Application {
                 boolean connected = snapshot.getValue(Boolean.class);
                 if (connected) {
                     isConnected = true;
-                    Toast.makeText(context, "connected", Toast.LENGTH_SHORT).show();
+ //                   Toast.makeText(context, "connected", Toast.LENGTH_SHORT).show();
                 } else {
                     isConnected = false;
-                    Toast.makeText(context, "not connected", Toast.LENGTH_SHORT).show();
+ //                   Toast.makeText(context, "not connected", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -132,7 +132,7 @@ public class FireBaseCloudHelper<E extends Model> extends Application {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mSnapshot = snapshot;
-                mSchemaValidator.testValidator();
+ //               mSchemaValidator.testValidator();
             }
 
             @Override

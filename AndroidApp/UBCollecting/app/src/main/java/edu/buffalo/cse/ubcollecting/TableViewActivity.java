@@ -90,7 +90,12 @@ public class TableViewActivity extends AppCompatActivity implements SyncCallback
         });
 
         //Tell the FireBaseSync to use this as a callback
-        App.getFireBaseSynch().setCallBack(this);
+        if (App.firebaseSynch.containsKey(table.getTableName())) {
+            Log.i(TAG, "FireBaseSynch object found!");
+            App.firebaseSynch.get(table.getTableName()).setCallBack(this);
+        } else {
+            Log.w(TAG, "No corresponding FireBaseSynch object found for activity!");
+        }
     }
 
     @Override

@@ -24,7 +24,7 @@ public class QuestionnaireContentTable extends Table<QuestionnaireContent> {
     public static final String KEY_QUESTION_ORDER = "QuestionOrder";
     public static final String KEY_IS_PARENT = "isParent";
     public static final String KEY_PARENT_QUESTIONNAIRE_CONTENT = "parentQuestionnaireContent";
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

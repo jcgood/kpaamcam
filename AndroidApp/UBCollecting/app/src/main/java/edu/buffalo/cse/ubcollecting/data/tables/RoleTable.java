@@ -25,7 +25,7 @@ public class RoleTable extends Table<Role> {
     public static final String KEY_PHOTO_REQUIRED = "PhotoRequired";
     public static final String KEY_ON_CLIENT = "OnClient";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

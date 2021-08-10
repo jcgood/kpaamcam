@@ -17,7 +17,7 @@ public class SessionAnswerTable extends Table<SessionAnswer> {
     public static final String KEY_QUESTION_ID = "QuestionId";
     public static final String KEY_ANSWER_ID = "AnswerId";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

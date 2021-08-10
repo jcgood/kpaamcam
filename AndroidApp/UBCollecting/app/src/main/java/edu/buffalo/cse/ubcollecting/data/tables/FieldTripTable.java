@@ -22,7 +22,7 @@ public class FieldTripTable extends Table<FieldTrip> {
     public static final String KEY_START_DATE = "StartDate";
     public static final String KEY_END_DATE = "EndDate";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

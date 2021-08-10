@@ -48,7 +48,7 @@ public class QuestionnaireQuestionsFragment extends Fragment {
     public static final int RESULT_ADD_LOOP_QUESTIONS = 2;
     public static final String IS_LOOP_QUESTION = "isLoopQuestion";
     public static final String QUESTIONNAIRE_CONTENT = "questionnaire content id";
-    public static final String EXTRA_PARENT_QC_ID = "extraParentQCId";
+    public static final String EXTRA_PARENT_QC_ID = "extraParentQuestionnaireContent";
     public static final String EXTRA_PARENT_QC = "extraParentQC";
     public static final String TAG = QuestionnaireQuestionsFragment.class.getSimpleName();
 

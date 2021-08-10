@@ -26,7 +26,7 @@ public class QuestionLangVersionTable extends Table<QuestionLangVersion> {
     public static final String KEY_QUESTION_LANG_ID = "QuestionLanguageId";
     public static final String KEY_QUESTION_TEXT = "QuestionText";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

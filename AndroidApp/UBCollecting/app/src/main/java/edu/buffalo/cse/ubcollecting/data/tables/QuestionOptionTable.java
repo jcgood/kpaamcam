@@ -20,7 +20,7 @@ public class QuestionOptionTable extends Table<QuestionOption> {
     public static final String KEY_QUESTION_LANGUAGE_ID = "QuestionLanguageId";
     public static final String KEY_OPTION_TEXT = "OptionText";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

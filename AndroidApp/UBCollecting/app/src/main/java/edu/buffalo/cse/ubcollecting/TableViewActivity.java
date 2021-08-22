@@ -48,6 +48,8 @@ public class TableViewActivity extends AppCompatActivity implements SyncCallback
     private FireBaseCloudHelper fireBaseCloudHelper;
     private LinearLayout updateBanner;
     private Button updateButton;
+    private Bundle bundle;
+    private boolean firstTime = false;
 
     public static Intent newIntent(Context packageContext, Table table) {
         Intent i = new Intent(packageContext, TableViewActivity.class);
@@ -56,8 +58,12 @@ public class TableViewActivity extends AppCompatActivity implements SyncCallback
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        if(!firstTime) {
+          super.onCreate(savedInstanceState);
+          firstTime = true;
+        }
+        this.bundle = savedInstanceState;
         setContentView(R.layout.activity_table_view);
 
         Serializable serializableExtra = getIntent().getSerializableExtra(EXTRA_TABLE);
@@ -113,7 +119,8 @@ public class TableViewActivity extends AppCompatActivity implements SyncCallback
 
     @Override
     public void displayUpdateBanner() {
-        this.updateBanner.setVisibility(VISIBLE);
+//        this.updateBanner.setVisibility(VISIBLE);
+        onCreate(this.bundle);
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {

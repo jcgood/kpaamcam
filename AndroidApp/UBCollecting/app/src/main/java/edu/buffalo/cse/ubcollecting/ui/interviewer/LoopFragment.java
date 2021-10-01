@@ -15,6 +15,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
+//import android.support.annotation.Nullable;
+//import android.support.v7.widget.LinearLayoutManager;
+//import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +34,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +43,7 @@ import java.util.Map;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionPropertyDef;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
@@ -80,6 +86,9 @@ public class LoopFragment extends QuestionFragment {
     static final int REQUEST_MEDIA_CAPTURE = 1;
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
 
+
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(this.getContext());
+    private final String TAG = "LoopFragment";
 
     @Nullable
     @Override
@@ -161,6 +170,15 @@ public class LoopFragment extends QuestionFragment {
                answer.setText(answerTextList.get(i).getText().toString());
            }
 
+            /* INSERT */
+            try {
+                fireBaseCloudHelper.insert(DatabaseHelper.ANSWER_TABLE, answer);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                Log.i(TAG, "Could not access server database (Firebase)");
+                e.printStackTrace();
+            }
             DatabaseHelper.ANSWER_TABLE.insert(answer);
         }
     }

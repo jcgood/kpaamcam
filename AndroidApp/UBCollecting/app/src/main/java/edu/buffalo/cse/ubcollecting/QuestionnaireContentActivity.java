@@ -2,6 +2,7 @@ package edu.buffalo.cse.ubcollecting;
 
 import android.os.Bundle;
 //import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +10,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.InvocationTargetException;
+
+import edu.buffalo.cse.ubcollecting.app.App;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.QuestionnaireContent;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.QUESTIONNAIRE_CONTENT_TABLE;
@@ -25,6 +30,7 @@ public class QuestionnaireContentActivity extends AppCompatActivity {
     private TextView questionField;
     private EditText orderField;
     private Button submitButton;
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,14 @@ public class QuestionnaireContentActivity extends AppCompatActivity {
                 content.setQuestionOrder(Integer.valueOf(orderField.getText().toString()));
 
                 /* INSERT */
+                try {
+                    fireBaseCloudHelper.insert(QUESTIONNAIRE_CONTENT_TABLE, content);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    Log.i(TAG, "Could not access server database (Firebase)");
+                    e.printStackTrace();
+                }
                 QUESTIONNAIRE_CONTENT_TABLE.insert(content);
             }
         });

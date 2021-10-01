@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,7 @@ import java.util.Date;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 
@@ -55,6 +57,8 @@ public class AudioFragment extends QuestionFragment{
     private final int MY_PERMISSIONS_RECORD_AUDIO = 1;
     private boolean permissionGranted;
     private TextView timer;
+
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(this.getContext());
 
 
 
@@ -200,6 +204,14 @@ public class AudioFragment extends QuestionFragment{
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         answer.setVersion(version+1);
         /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(DatabaseHelper.ANSWER_TABLE, answer);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         DatabaseHelper.ANSWER_TABLE.insert(answer);
 
     }

@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,12 +26,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.Serializable;
 import java.util.List;
 
+import edu.buffalo.cse.ubcollecting.app.App;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Model;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
+import edu.buffalo.cse.ubcollecting.ui.SyncCallback;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import static edu.buffalo.cse.ubcollecting.EntryActivity.REQUEST_CODE_EDIT_ENTRY;
 
-public class TableViewActivity extends AppCompatActivity {
+public class TableViewActivity extends AppCompatActivity implements SyncCallback {
 
     private static final String TAG = AppCompatActivity.class.getSimpleName();
 
@@ -38,7 +45,11 @@ public class TableViewActivity extends AppCompatActivity {
     private Table<? extends Model> table;
     private RecyclerView entryRecyclerView;
     private EntryAdapter entryAdapter;
-
+    private FireBaseCloudHelper fireBaseCloudHelper;
+    private LinearLayout updateBanner;
+    private Button updateButton;
+    private Bundle bundle;
+    private boolean firstTime = false;
 
     public static Intent newIntent(Context packageContext, Table table) {
         Intent i = new Intent(packageContext, TableViewActivity.class);
@@ -47,8 +58,12 @@ public class TableViewActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        if(!firstTime) {
+          super.onCreate(savedInstanceState);
+          firstTime = true;
+        }
+        this.bundle = savedInstanceState;
         setContentView(R.layout.activity_table_view);
 
         Serializable serializableExtra = getIntent().getSerializableExtra(EXTRA_TABLE);
@@ -59,12 +74,34 @@ public class TableViewActivity extends AppCompatActivity {
             Log.e(TAG, "Extra was not of type Table");
             finish();
         }
-
+        fireBaseCloudHelper = new FireBaseCloudHelper(App.getContext());
         entryRecyclerView = findViewById(R.id.entry_list_view);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         entryAdapter = new TableViewActivity.EntryAdapter(table.getAll());
         entryRecyclerView.setAdapter(entryAdapter);
+
+        updateBanner = this.findViewById(R.id.updateButtonLayout);
+        updateBanner.setVisibility(INVISIBLE);
+
+        updateButton = this.findViewById(R.id.updateListButton);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                entryAdapter.setEntryList(table.getAll());
+                entryAdapter.notifyDataSetChanged();
+                updateBanner.setVisibility(INVISIBLE);
+            }
+        });
+
+        //Tell the FireBaseSync to use this as a callback
+        if (App.firebaseSynch.containsKey(table.getTableName())) {
+            Log.i(TAG, "FireBaseSynch object found!");
+            App.firebaseSynch.get(table.getTableName()).setCallBack(this);
+        } else {
+            Log.w(TAG, "No corresponding FireBaseSynch object found for activity!");
+        }
     }
 
     @Override
@@ -78,6 +115,12 @@ public class TableViewActivity extends AppCompatActivity {
             entryAdapter.setEntryList(table.getAll());
             entryAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void displayUpdateBanner() {
+//        this.updateBanner.setVisibility(VISIBLE);
+        onCreate(this.bundle);
     }
 
     private class EntryHolder extends RecyclerView.ViewHolder {
@@ -95,17 +138,17 @@ public class TableViewActivity extends AppCompatActivity {
             editButton = view.findViewById(R.id.entry_list_edit_button);
             deleteButton = view.findViewById(R.id.entry_list_delete_button);
 
-            if(table.getTableName()=="Question"){
-                deleteButton.setVisibility(View.INVISIBLE);
+            if(table.getTableName() == "Question"){
+                deleteButton.setVisibility(INVISIBLE);
             }
 
-            if(table.getTableName()=="Answer"){
+            if(table.getTableName() == "Answer"){
 
             }
 
         }
 
-        public void bindEntry(Model entry1) {
+        public void bindEntry(final Model entry1) {
             entry = entry1;
             entryNameView.setText(entry.getIdentifier());
 
@@ -125,10 +168,15 @@ public class TableViewActivity extends AppCompatActivity {
                             .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    //deleting from local
                                     table.delete(entry.id);
                                     entryAdapter.setEntryList(table.getAll());
                                     entryAdapter.notifyDataSetChanged();
+
+                                    //deleting from firebase
+                                    fireBaseCloudHelper.delete(table,entry.id);
                                     Toast.makeText(getApplicationContext(), "Entry Deleted", Toast.LENGTH_SHORT).show();
+
                                 }
                             })
                             .setNegativeButton("Cancel",null);

@@ -202,7 +202,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
                 QuestionnaireContent parentQC = (QuestionnaireContent) getIntent().getExtras().getSerializable(EXTRA_MODEL);
                 if(getIntent().getBooleanExtra(IS_LOOP_QUESTION, false)){
 
-                    questionnaireContent.setParentQCId(parentQC.getId());
+                    questionnaireContent.setParentQuestionnaireContent(parentQC.getId());
 
                 }
 

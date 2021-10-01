@@ -25,7 +25,7 @@ public class SessionTable extends Table<Session> {
     public static final String KEY_DESCRIPTION = "Description";
     public static final String KEY_FIELD_TRIP_ID = "FieldTripId";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

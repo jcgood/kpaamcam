@@ -16,7 +16,7 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
     public String questionnaireId;
     public String questionId;
     public int questionOrder;
-    public String parentQCId;
+    public String ParentQuestionnaireContent;
     public int  isParent;
 
 
@@ -75,12 +75,12 @@ public class QuestionnaireContent extends Model implements Comparable<Questionna
         this.questionOrder = questionOrder;
     }
 
-    public String getParentQCId(){
-        return this.parentQCId;
+    public String getParentQuestionnaireContent(){
+        return this.ParentQuestionnaireContent;
     }
 
-    public void setParentQCId(String qcId){
-        this.parentQCId = qcId;
+    public void setParentQuestionnaireContent(String qcId){
+        this.ParentQuestionnaireContent = qcId;
     }
 
     public int getIsParent(){

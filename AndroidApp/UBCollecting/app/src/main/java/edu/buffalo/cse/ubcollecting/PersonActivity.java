@@ -24,18 +24,22 @@ import android.widget.Toast;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
+import edu.buffalo.cse.ubcollecting.app.App;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
 import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseSynch;
 import edu.buffalo.cse.ubcollecting.data.models.Person;
 import edu.buffalo.cse.ubcollecting.data.models.Role;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 import edu.buffalo.cse.ubcollecting.ui.EntryOnItemSelectedListener;
 
 import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.PERSON_TABLE;
+import static edu.buffalo.cse.ubcollecting.data.DatabaseHelper.ROLE_TABLE;
 import static edu.buffalo.cse.ubcollecting.ui.interviewer.UserLandingActivity.FLAG_INTERVIEWER_EDIT;
 import static edu.buffalo.cse.ubcollecting.ui.LoginActivity.genHash;
 
@@ -48,7 +52,8 @@ public class PersonActivity extends EntryActivity<Person> {
     private static final String TAG = PersonActivity.class.getSimpleName().toString();
     private static final int REQUEST_CODE_ROLE = 0;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    FireBaseCloudHelper fireBaseCloudHelper;
+
+
 
 
     private EditText nameField;
@@ -89,7 +94,7 @@ public class PersonActivity extends EntryActivity<Person> {
     }
 
     @Override
-    public void setEntryByUI() {
+    public void setEntryByUI()  {
         Role role = (Role) roleSpinner.getSelectedItem();
 
         entry.setName(nameField.getText().toString());
@@ -102,9 +107,6 @@ public class PersonActivity extends EntryActivity<Person> {
         entry.setEmail(emailField.getText().toString());
         entry.setPassword(genHash(passwordField.getText().toString()));
 
-        //create person object to send to cloud
-        Person person = entry;
-        fireBaseCloudHelper.WriteNewPerson(person);
 
     }
 
@@ -116,7 +118,9 @@ public class PersonActivity extends EntryActivity<Person> {
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        fireBaseCloudHelper = new FireBaseCloudHelper(PersonActivity.this);
+
+
+
 
 
         nameField = this.findViewById(R.id.person_name_field);
@@ -128,11 +132,11 @@ public class PersonActivity extends EntryActivity<Person> {
         List<Role> roles;
 
         if (getIntent().getFlags() == FLAG_INTERVIEWER_EDIT) {
-            roles = DatabaseHelper.ROLE_TABLE.getOnClientRoles();
+            roles = ROLE_TABLE.getOnClientRoles();
 
         }
         else {
-            roles = DatabaseHelper.ROLE_TABLE.getAll();
+            roles = ROLE_TABLE.getAll();
         }
 
         roleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roles);

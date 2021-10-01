@@ -18,7 +18,7 @@ public class SessionQuestionnaire extends Model {
         return label;
     }
 
-    public String getQuestionnaire_id() {
+    public String getQuestionnaireId() {
         return questionnaire_id;
     }
 

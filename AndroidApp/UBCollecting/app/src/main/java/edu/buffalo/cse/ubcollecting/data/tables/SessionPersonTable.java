@@ -26,7 +26,7 @@ public class SessionPersonTable extends Table<SessionPerson> {
     public static final String KEY_PERSON_ID = "PersonId";
     public static final String KEY_ROLE_ID = "RoleId";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

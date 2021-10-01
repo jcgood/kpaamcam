@@ -18,7 +18,7 @@ public class QuestionnaireTable extends Table<Questionnaire> {
     public static final String KEY_DESCRIPTION = "Description";
     public static final String KEY_TYPE_ID = "TypeId";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

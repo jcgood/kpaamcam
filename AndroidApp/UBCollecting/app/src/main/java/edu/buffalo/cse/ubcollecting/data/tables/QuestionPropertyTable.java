@@ -25,7 +25,7 @@ public class QuestionPropertyTable extends Table<QuestionProperty> {
     public static final String KEY_PROPERTY_ID = "PropertyId";
     public static final String KEY_VALUE = "Value";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

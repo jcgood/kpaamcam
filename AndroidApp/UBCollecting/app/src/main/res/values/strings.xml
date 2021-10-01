@@ -44,4 +44,7 @@
     <string name="type_question_option_hint">Type option</string>
     <string name="action_logout">Logout</string>
 
+    <string name="update_textview">New data available from the cloud. Update?</string>
+    <string name="update_button">Update</string>
+
 </resources>

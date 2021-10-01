@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Role;
 import edu.buffalo.cse.ubcollecting.data.tables.Table;
 
@@ -25,6 +26,7 @@ public class RoleActivity extends EntryActivity<Role> {
     private CheckBox onClientBox;
     private Button updateButton;
     private Button submitButton;
+    private static FireBaseCloudHelper fireBaseCloudHelper;
 
     public static Intent newIntent(Context packageContext) {
         Intent i = new Intent(packageContext, RoleActivity.class);

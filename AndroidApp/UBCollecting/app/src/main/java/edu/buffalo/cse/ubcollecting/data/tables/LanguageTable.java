@@ -21,7 +21,7 @@ public class LanguageTable extends Table<Language> {
     public static final String KEY_DESCRIPTION = "Description";
     public static final String KEY_OTHER_NAMES = "OtherNames";
     public static final String KEY_TYPE_ID = "TypeId";
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

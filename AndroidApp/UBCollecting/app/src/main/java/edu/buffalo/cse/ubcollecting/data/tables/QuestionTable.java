@@ -19,7 +19,7 @@ public class QuestionTable extends Table<Question> {
     public static final String KEY_TYPE = "Type";
     public static final String KEY_DISPLAY_TEXT = "DisplayText";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
     public static final String KEY_MIN_LENGTH = "MinLength";

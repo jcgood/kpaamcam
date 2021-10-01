@@ -27,7 +27,7 @@ public class AnswerTable extends Table<Answer> {
     public static final String KEY_SESSION_ID = "SessionId";
     public static final String KEY_PARENT_ANSWER = "parentAnswer";
 
-    public static final String KEY_VERSION ="VersionNumber";
+    public static final String KEY_VERSION ="Version";
     public static final String KEY_NOTES ="Notes";
     public static final String KEY_DELETED ="Deleted";
 

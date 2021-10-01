@@ -1,218 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AndroidLayouts">
-    <shared>
-      <config />
-    </shared>
+  <component name="BranchesTreeState">
+    <expand />
+    <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36669120-998b-4340-9d47-be35445c7f15" name="Default Changelist" comment="">
-
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-
-      <change beforePath="$PROJECT_DIR$/.idea/kpaamcam.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kpaamcam.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/AnswerActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/AnswerActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/EntryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/EntryActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/FileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/FileActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/LanguageTypeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/LanguageTypeActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionLangVersionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionLangVersionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionOptionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionOptionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionPropertyActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionPropertyActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionPropertyDefActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionPropertyDefActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionnaireActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionnaireActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionnaireContentActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/QuestionnaireContentActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/SessionAnswerActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/SessionAnswerActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/SessionPersonActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/SessionPersonActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/DatabaseHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/tables/QuestionPropertyTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/tables/QuestionPropertyTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/tables/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/data/tables/Table.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/CreateQuestionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/CreateQuestionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/UpdateQuestionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/UpdateQuestionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/AddSessionRolesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/AddSessionRolesActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/AudioFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/AudioFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/ListFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/ListFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/LoopFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/LoopFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/PhotoFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/PhotoFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/TextFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/TextFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/UserSelectSessionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/UserSelectSessionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/VideoFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/AndroidApp/UBCollecting/app/src/main/java/edu/buffalo/cse/ubcollecting/ui/interviewer/VideoFragment.java" afterDir="false" />
-    </list>
+    <list default="true" id="36669120-998b-4340-9d47-be35445c7f15" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1nhyxUtsZAN0sv3oft3tkKU2Dya" />
-
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectId" id="1o7OKORv8a4IWqL80l9BCOTEnUz" />
-
+  <component name="ProjectId" id="1rmROvJPO5q2ROZHEJOmL7fum87" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/AndroidApp/UBCollecting" />
-    <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
-  </component>
-  <component name="RunManager" selected="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/app/build.gradle (1)">
-    <configuration name="APP" type="AndroidRunConfigurationType" factoryName="Android App">
-      <option name="DEPLOY" value="true" />
-      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
-      <option name="DEPLOY_AS_INSTANT" value="false" />
-      <option name="ARTIFACT_NAME" value="" />
-      <option name="PM_INSTALL_OPTIONS" value="" />
-      <option name="ALL_USERS" value="false" />
-      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
-      <option name="MODE" value="default_activity" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
-      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
-      <option name="FORCE_STOP_RUNNING_APP" value="true" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="DEBUGGER_TYPE" value="Auto" />
-      <Auto>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-      </Auto>
-      <Hybrid>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-      </Hybrid>
-      <Java />
-      <Native>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-      </Native>
-      <Profilers>
-        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
-        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
-        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
-      </Profilers>
-      <option name="DEEP_LINK" value="" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
-      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="/Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/app/build.gradle (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/AndroidApp/UBCollecting/app/build.gradle" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list />
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="/Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/app/build.gradle" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/AndroidApp/UBCollecting/app/build.gradle" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list />
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="/Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/build.gradle (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/AndroidApp/UBCollecting/build.gradle" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list />
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="/Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/build.gradle" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/AndroidApp/UBCollecting/build.gradle" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list />
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Android App.APP" />
-      <item itemvalue="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/app/build.gradle (1)" />
-      <item itemvalue="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/app/build.gradle" />
-      <item itemvalue="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/build.gradle (1)" />
-      <item itemvalue="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/build.gradle" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/app/build.gradle (1)" />
-        <item itemvalue="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/build.gradle (1)" />
-        <item itemvalue="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/app/build.gradle" />
-        <item itemvalue="Gradle./Users/mengyuan/Downloads/kpaamcam/AndroidApp/UBCollecting/build.gradle" />
-      </list>
-    </recent_temporary>
-
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/AndroidApp/UBCollecting" />
     <property name="show.migrate.to.gradle.popup" value="false" />
-
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -227,53 +46,24 @@
     </task>
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-
-    <state x="487" y="147" width="574" height="514" key="#APP" timestamp="1611857080604">
-      <screen x="0" y="23" width="1440" height="820" />
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1626188661374">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="487" y="147" width="574" height="514" key="#APP/0.23.1440.820@0.23.1440.820" timestamp="1611857080604" />
-    <state x="180" y="95" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1611859551401">
-      <screen x="0" y="23" width="1440" height="820" />
-    </state>
-    <state x="180" y="95" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.820@0.23.1440.820" timestamp="1611859551401" />
-    <state x="160" y="123" width="1111" height="620" key="AVDManager" timestamp="1611856948042">
-      <screen x="0" y="23" width="1440" height="820" />
-    </state>
-    <state x="160" y="123" width="1111" height="620" key="AVDManager/0.23.1440.820@0.23.1440.820" timestamp="1611856948042" />
-    <state width="1290" height="212" key="GridCell.Tab.0.bottom" timestamp="1611857216258">
-      <screen x="0" y="23" width="1440" height="820" />
-    </state>
-    <state width="1290" height="212" key="GridCell.Tab.0.bottom/0.23.1440.820@0.23.1440.820" timestamp="1611857216258" />
-    <state width="1290" height="212" key="GridCell.Tab.0.center" timestamp="1611857216258">
-      <screen x="0" y="23" width="1440" height="820" />
-    </state>
-    <state width="1290" height="212" key="GridCell.Tab.0.center/0.23.1440.820@0.23.1440.820" timestamp="1611857216258" />
-    <state width="1290" height="212" key="GridCell.Tab.0.left" timestamp="1611857216257">
-      <screen x="0" y="23" width="1440" height="820" />
-    </state>
-    <state width="1290" height="212" key="GridCell.Tab.0.left/0.23.1440.820@0.23.1440.820" timestamp="1611857216257" />
-    <state width="1290" height="212" key="GridCell.Tab.0.right" timestamp="1611857216258">
-      <screen x="0" y="23" width="1440" height="820" />
-    </state>
-    <state width="1290" height="212" key="GridCell.Tab.0.right/0.23.1440.820@0.23.1440.820" timestamp="1611857216258" />
-    <state x="203" y="23" width="1024" height="820" key="SettingsEditor" timestamp="1611857213931">
-      <screen x="0" y="23" width="1440" height="820" />
-    </state>
-    <state x="203" y="23" width="1024" height="820" key="SettingsEditor/0.23.1440.820@0.23.1440.820" timestamp="1611857213931" />
-
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1612634202969">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/-1920.283.1536.864@0.0.1920.1040" timestamp="1612634202969" />
-    <state x="1039" y="449" width="2018" height="1484" key="SettingsEditor" timestamp="1612979066406">
-      <screen x="0" y="54" width="4096" height="2250" />
-    </state>
-    <state x="1039" y="449" width="2018" height="1484" key="SettingsEditor/0.54.4096.2250@0.54.4096.2250" timestamp="1612979066406" />
-    <state x="1699" y="436" width="1742" height="1530" key="find.popup" timestamp="1612981011141">
-      <screen x="0" y="54" width="4096" height="2250" />
-    </state>
-    <state x="1699" y="436" width="1742" height="1530" key="find.popup/0.54.4096.2250@0.54.4096.2250" timestamp="1612981011141" />
-
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/-1920.-214.1920.1080@0.0.1536.824" timestamp="1619579327177" />
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1080@0.0.1536.824" timestamp="1623865110943" />
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1626188661374" />
   </component>
 </project>

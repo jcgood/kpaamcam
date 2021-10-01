@@ -21,12 +21,14 @@ import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import edu.buffalo.cse.ubcollecting.R;
 import edu.buffalo.cse.ubcollecting.data.DatabaseHelper;
+import edu.buffalo.cse.ubcollecting.data.FireBaseCloudHelper;
 import edu.buffalo.cse.ubcollecting.data.models.Answer;
 import edu.buffalo.cse.ubcollecting.data.models.Session;
 
@@ -54,6 +56,8 @@ public class VideoFragment extends QuestionFragment{
     private String mCurrentPath;
     private Button viewVideo;
     static final int REQUEST_VIDEO_CAPTURE = 1;
+
+    private final FireBaseCloudHelper fireBaseCloudHelper = new FireBaseCloudHelper(this.getContext());
 
 
     @Nullable
@@ -196,6 +200,14 @@ public class VideoFragment extends QuestionFragment{
         answer.setSessionId(((Session) getArguments().getSerializable(SELECTED_SESSION)).getId());
         answer.setVersion(version+1);
         /* INSERT */
+        try {
+            fireBaseCloudHelper.insert(DatabaseHelper.ANSWER_TABLE, answer);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(TAG, "Could not access server database (Firebase)");
+            e.printStackTrace();
+        }
         DatabaseHelper.ANSWER_TABLE.insert(answer);
 
     }
